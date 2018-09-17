@@ -18,8 +18,10 @@ public class ServoValueFinder extends OpMode {
     boolean isCR = false;
     int currentServo = 0;
     int currentCRServo = 0;
-    final int cooldownTime = 10;
-    int timer;
+    final int cooldownTime = 100;
+    int timerServo = 0;
+    int timerSwap = 0;
+    int timerShuffle = 0;
 
     @Override
     public void init() {
@@ -65,7 +67,7 @@ public class ServoValueFinder extends OpMode {
                     telemetry.addData("Current Servo Name: ", current.getDeviceName());
                     telemetry.addData("Current Servo Port: ", current.getPortNumber());
                     telemetry.addData("Current Servo Position:", current.getPosition());
-                    if (gamepad1.a && timer  <= 0) {
+                    if (gamepad1.a && timerServo  <= 0) {
                         if (gamepad1.right_bumper) {
                             servoValues[currentServo] = servoValues[currentServo] + .001;
                         } else if (gamepad1.left_bumper) {
@@ -73,8 +75,8 @@ public class ServoValueFinder extends OpMode {
                         } else {
                             servoValues[currentServo] = servoValues[currentServo] + .01;
                         }
-                        timer = cooldownTime;
-                    } else if (gamepad1.y && timer  <= 0) {
+                        timerServo = cooldownTime;
+                    } else if (gamepad1.y && timerServo  <= 0) {
                         if (gamepad1.right_bumper) {
                             servoValues[currentServo] = servoValues[currentServo] - .001;
                         } else if (gamepad1.left_bumper) {
@@ -82,7 +84,7 @@ public class ServoValueFinder extends OpMode {
                         } else {
                             servoValues[currentServo] = servoValues[currentServo] - .01;
                         }
-                        timer = cooldownTime;
+                        timerServo = cooldownTime;
                     }
                 }
             }
@@ -100,7 +102,7 @@ public class ServoValueFinder extends OpMode {
         }
 
         //switching logic
-        if (gamepad1.left_trigger > .65) {
+        if (gamepad1.left_trigger > .65 && timerShuffle < 0) {
             if (isCR) {
                 currentCRServo--;
                 if (currentCRServo < 0) {
@@ -112,7 +114,8 @@ public class ServoValueFinder extends OpMode {
                     currentServo = currentServo + servos.size();
                 }
             }
-        } else if (gamepad1.right_trigger > .65) {
+            timerShuffle = cooldownTime;
+        } else if (gamepad1.right_trigger > .65  && timerShuffle < 0) {
             if (isCR) {
                 currentCRServo++;
                 if (currentCRServo > crservos.size() - 1) {
@@ -124,11 +127,15 @@ public class ServoValueFinder extends OpMode {
                     currentServo = currentServo - servos.size();
                 }
             }
+            timerShuffle = cooldownTime;
         }
-        if (gamepad1.start) {
+        if (gamepad1.start && timerSwap < 0) {
             isCR = !isCR;
+            timerSwap = cooldownTime;
         }
-        timer--;
+        timerSwap--;
+        timerShuffle--;
+        timerServo--;
     }
 
     @Override
