@@ -115,17 +115,19 @@ public class ServoValueFinder extends OpMode {
         } else if (gamepad1.right_trigger > .65) {
             if (isCR) {
                 currentCRServo++;
-                if (currentCRServo > crservos.size()) {
+                if (currentCRServo > crservos.size() - 1) {
                     currentCRServo = currentCRServo - crservos.size();
                 }
             } else {
                 currentServo++;
-                if (currentServo > 0) {
+                if (currentServo > servos.size() - 1) {
                     currentServo = currentServo - servos.size();
                 }
             }
         }
-
+        if (gamepad1.start) {
+            isCR = !isCR;
+        }
         timer--;
     }
 
