@@ -3,31 +3,58 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 @TeleOp(name = "ServoValueFinder", group = "Teleop")
 public class ServoValueFinder extends OpMode {
 
+    final int cooldownTime = 100;
     ArrayList<CRServo> crservos = new ArrayList<CRServo>();
+    ArrayList<String> crservosNames = new ArrayList<>();
     ArrayList<Servo> servos = new ArrayList<Servo>();
+    ArrayList<String> servosNames = new ArrayList<>();
     double[] servoValues;
     boolean isCR = false;
     int currentServo = 0;
     int currentCRServo = 0;
-    final int cooldownTime = 100;
     int timerServo = 0;
     int timerSwap = 0;
     int timerShuffle = 0;
 
     @Override
     public void init() {
-        servos.addAll(hardwareMap.getAll(Servo.class));
-        crservos.addAll(hardwareMap.getAll(CRServo.class));
-        servoValues = new double[servos.size()];
+        try {
+            //might be better way to do this
+            Field f = hardwareMap.getClass().getDeclaredField("allDevicesMap");
+            f.setAccessible(true);
+            HashMap<String, List<HardwareDevice>> config = (HashMap<String, List<HardwareDevice>>) f.get(hardwareMap);
+            Object[] configNames = config.keySet().toArray();
+            for (int i = 0; i < configNames.length; i++) {
+                String currentName = (String) configNames[i];
+                HardwareDevice chd = hardwareMap.get(currentName);
+                if (chd instanceof Servo) {
+                    servos.add((Servo) chd);
+                    servosNames.add(currentName);
+                } else if (chd instanceof CRServo) {
+                    crservos.add((CRServo) chd);
+                    crservosNames.add(currentName);
+
+                }
+                servoValues = new double[servos.size()];
+            }
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -53,7 +80,7 @@ public class ServoValueFinder extends OpMode {
                     CRServo current = crservos.get(currentCRServo);
                     current.setPower(gamepad1.right_stick_y);
                     telemetry.addData("CRServo", "");
-                    telemetry.addData("Current CRServo Name: ", current.getDeviceName());
+                    telemetry.addData("Current CRServo Name: ", crservosNames.get(currentCRServo));
                     telemetry.addData("Current CRServo Port: ", current.getPortNumber());
                     telemetry.addData("Current CRServo Power: ", current.getPower());
                 }
@@ -64,10 +91,10 @@ public class ServoValueFinder extends OpMode {
                 } else {
                     Servo current = servos.get(currentServo);
                     telemetry.addData("Servo", "");
-                    telemetry.addData("Current Servo Name: ", current.getDeviceName());
+                    telemetry.addData("Current Servo Name: ", servosNames.get(currentServo));
                     telemetry.addData("Current Servo Port: ", current.getPortNumber());
                     telemetry.addData("Current Servo Position:", current.getPosition());
-                    if (gamepad1.a && timerServo  <= 0) {
+                    if (gamepad1.a && timerServo <= 0) {
                         if (gamepad1.right_bumper) {
                             servoValues[currentServo] = servoValues[currentServo] + .001;
                         } else if (gamepad1.left_bumper) {
@@ -76,7 +103,7 @@ public class ServoValueFinder extends OpMode {
                             servoValues[currentServo] = servoValues[currentServo] + .01;
                         }
                         timerServo = cooldownTime;
-                    } else if (gamepad1.y && timerServo  <= 0) {
+                    } else if (gamepad1.y && timerServo <= 0) {
                         if (gamepad1.right_bumper) {
                             servoValues[currentServo] = servoValues[currentServo] - .001;
                         } else if (gamepad1.left_bumper) {
@@ -115,7 +142,7 @@ public class ServoValueFinder extends OpMode {
                 }
             }
             timerShuffle = cooldownTime;
-        } else if (gamepad1.right_trigger > .65  && timerShuffle < 0) {
+        } else if (gamepad1.right_trigger > .65 && timerShuffle < 0) {
             if (isCR) {
                 currentCRServo++;
                 if (currentCRServo > crservos.size() - 1) {
