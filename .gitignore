@@ -10,3 +10,5 @@ autoLogStuff/outputLog.pdf
 *.hi
 
 *.DS_Store
+
+Testing/*
