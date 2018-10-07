@@ -4,7 +4,7 @@ import org.ejml.simple.SimpleMatrix;
 import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
 import org.firstinspires.ftc.teamcode.Matrices.PowerVector4WD;
 
-class MecanumDriveTrainSimple {
+public class MecanumDriveTrainSimple {
 
     final double l, alpha, r;
     final SimpleMatrix powerMatrix;

@@ -17,4 +17,8 @@ public class PowerVector4WD extends SimpleMatrix {
         super(s);
     }
 
+    public PowerVector4WD scale() {
+        double max = Math.max(Math.max(this.get(0,0), this.get(1,0)), Math.max(this.get(2,0), this.get(3,0)));
+        return new PowerVector4WD(this.scale(1/max));
+    }
 }
