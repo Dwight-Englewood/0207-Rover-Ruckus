@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -29,8 +30,6 @@ public class FieldCentricDrive extends OpMode {
     MecanumDriveTrainSimple mdts = new MecanumDriveTrainSimple(5, 9, 9);
 
 
-
-
     @Override
     public void init() {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
@@ -38,6 +37,11 @@ public class FieldCentricDrive extends OpMode {
         fr = this.hardwareMap.get(DcMotor.class, "fr");
         bl = this.hardwareMap.get(DcMotor.class, "bl");
         br = this.hardwareMap.get(DcMotor.class, "br");
+        this.fl.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.bl.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.fr.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.br.setDirection(DcMotorSimple.Direction.REVERSE);
+
     }
 
     @Override
@@ -51,12 +55,24 @@ public class FieldCentricDrive extends OpMode {
 
     @Override
     public void loop() {
-        PowerVector4WD merp = mdts.drive(new DirRotVector(gamepad1.right_stick_x, -gamepad1.right_stick_y, imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle));
-        merp = merp.scale();
-        this.fl.setPower(merp.get(0,0));
-        this.fr.setPower(merp.get(1,0));
-        this.br.setPower(merp.get(2,0));
-        this.bl.setPower(merp.get(3,0));
+        if (gamepad1.left_trigger > .5) {
+            this.fl.setPower(1);
+            this.bl.setPower(1);
+            this.fr.setPower(-1);
+            this.br.setPower(-1);
+        } else if (gamepad1.right_trigger > .5) {
+            this.fl.setPower(-1);
+            this.bl.setPower(-1);
+            this.fr.setPower(1);
+            this.br.setPower(1);
+        } else {
+            PowerVector4WD merp = mdts.drive(new DirRotVector(gamepad1.right_stick_x, -gamepad1.right_stick_y, imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle));
+            merp = merp.scale();
+            this.fl.setPower(merp.get(0, 0));
+            this.fr.setPower(merp.get(1, 0));
+            this.br.setPower(merp.get(2, 0));
+            this.bl.setPower(merp.get(3, 0));
+        }
 
 
     }
