@@ -11,20 +11,5 @@
 // Include common definitions from above.
 apply from: '../build.common.gradle'
 dependencies {
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-simple-0.36.jar')
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-cdense-0.36.jar')
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-cdense-0.36-sources.jar')
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-core-0.36.jar')
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-core-0.36-sources.jar')
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-ddense-0.36.jar')
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-ddense-0.36-sources.jar')
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-dsparse-0.36.jar')
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-dsparse-0.36-sources.jar')
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-experimental-0.36.jar')
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-experimental-0.36-sources.jar')
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-fdense-0.36.jar')
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-fdense-0.36-sources.jar')
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-simple-0.36-sources.jar')
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-zdense-0.36.jar')
-    implementation files('/home/weznon/programming/0207Programming/0207-Rover-Ruckus/ftc_app/libs/ejml-zdense-0.36-sources.jar')
+    compile fileTree(dir: rootProject.file('libs'), include: ['*.jar'])
 }
