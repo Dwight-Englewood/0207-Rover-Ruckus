@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Hardware.Drivetrain;
+package org.firstinspires.ftc.teamcode.Hardware;
 
 import org.ejml.simple.SimpleMatrix;
 import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;

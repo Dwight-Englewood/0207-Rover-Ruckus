@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.teamcode.Hardware.Drivetrain.MecanumDriveTrainSimple;
+import org.firstinspires.ftc.teamcode.Hardware.MecanumDriveTrainSimple;
 import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
 import org.firstinspires.ftc.teamcode.Matrices.PowerVector4WD;
 
