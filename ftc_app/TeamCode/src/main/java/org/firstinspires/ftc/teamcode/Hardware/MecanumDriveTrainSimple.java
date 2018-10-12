@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.Hardware;
 
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import org.ejml.simple.SimpleMatrix;
 import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
 import org.firstinspires.ftc.teamcode.Matrices.PowerVector4WD;
 
-public class MecanumDriveTrainSimple {
+public class MecanumDriveTrainSimple implements Subsystem {
 
     final double l, alpha, r;
     final SimpleMatrix powerMatrix;
@@ -48,5 +50,25 @@ public class MecanumDriveTrainSimple {
 
     SimpleMatrix rotationMatrix(double theta) {
         return new SimpleMatrix(new double[][]{{Math.cos(theta), Math.sin(theta), 0}, {-Math.sin(theta), Math.cos(theta), 0}, {0, 0, 1}});
+    }
+
+    @Override
+    public void init(HardwareMap hwMap) {
+        
+    }
+
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
+    @Override
+    public Enum getState() {
+        return null;
     }
 }
