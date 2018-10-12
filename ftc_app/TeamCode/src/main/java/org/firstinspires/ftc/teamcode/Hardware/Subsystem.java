@@ -1,5 +1,10 @@
 package org.firstinspires.ftc.teamcode.Hardware;
 
-public interface Subsystem {
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
+public interface Subsystem {
+    void init(HardwareMap hwMap);
+    void start();
+    void reset();
+    Enum getState();
 }
