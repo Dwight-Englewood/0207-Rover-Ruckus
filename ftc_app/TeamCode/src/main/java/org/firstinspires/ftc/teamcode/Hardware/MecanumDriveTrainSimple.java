@@ -48,7 +48,7 @@ public class MecanumDriveTrainSimple implements Subsystem {
         return new PowerVector4WD(powerMatrix.mult(rotationMatrix(drv.get(2,0)).mult(drv).scale(-Math.sqrt(2)/r)));
     }
 
-    SimpleMatrix rotationMatrix(double theta) {
+    private SimpleMatrix rotationMatrix(double theta) {
         return new SimpleMatrix(new double[][]{{Math.cos(theta), Math.sin(theta), 0}, {-Math.sin(theta), Math.cos(theta), 0}, {0, 0, 1}});
     }
 
