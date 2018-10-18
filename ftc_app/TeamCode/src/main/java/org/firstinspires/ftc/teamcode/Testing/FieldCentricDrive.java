@@ -51,7 +51,7 @@ public class FieldCentricDrive extends OpMode {
             boot.mdts.rotate(false);
 
         } else {
-            DirRotVector merp = new DirRotVector(gamepad1.right_stick_x, -gamepad1.right_stick_y, imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
+            DirRotVector merp = new DirRotVector(gamepad1.right_stick_x, -gamepad1.right_stick_y, imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle);
             boot.mdts.drive(merp);
         }
 
