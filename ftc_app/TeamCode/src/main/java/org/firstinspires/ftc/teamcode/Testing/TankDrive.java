@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Testing;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
 @TeleOp(name = "TankDrive", group = "Teleop")
@@ -18,6 +19,10 @@ public class TankDrive extends OpMode {
         fr = this.hardwareMap.get(DcMotor.class, "fr");
         bl = this.hardwareMap.get(DcMotor.class, "bl");
         br = this.hardwareMap.get(DcMotor.class, "br");
+        this.fl.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.br.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
 

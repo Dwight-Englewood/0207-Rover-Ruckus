@@ -53,10 +53,10 @@ public class MecanumDriveTrain implements Subsystem {
     public void drive(DirRotVector drv) {
         PowerVector4WD merp = this.driveVector(drv);
         merp = merp.scale();
-        this.fl.setPower(merp.get(0, 0));
-        this.fr.setPower(merp.get(1, 0));
-        this.br.setPower(merp.get(2, 0));
-        this.bl.setPower(merp.get(3, 0));
+        this.fr.setPower(merp.get(0, 0));
+        this.fl.setPower(merp.get(1, 0));
+        this.bl.setPower(merp.get(2, 0));
+        this.br.setPower(merp.get(3, 0));
     }
 
     public void rotate(boolean m) {
@@ -85,8 +85,8 @@ public class MecanumDriveTrain implements Subsystem {
         bl = hwMap.get(DcMotor.class, "bl");
         br = hwMap.get(DcMotor.class, "br");
         this.fl.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.bl.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.fr.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.fr.setDirection(DcMotorSimple.Direction.FORWARD);
         this.br.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
