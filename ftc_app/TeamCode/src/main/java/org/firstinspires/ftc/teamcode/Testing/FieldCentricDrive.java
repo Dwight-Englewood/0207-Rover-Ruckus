@@ -51,7 +51,18 @@ public class FieldCentricDrive extends OpMode {
             boot.mdts.rotate(false);
 
         } else {
-            DirRotVector merp = new DirRotVector(gamepad1.right_stick_x, -gamepad1.right_stick_y, imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle);
+            double angle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
+            double rsx = gamepad1.right_stick_x;
+            double nrsy = -gamepad1.right_stick_y;
+            DirRotVector merp = new DirRotVector(rsx , nrsy , angle);
+            telemetry.addData("right_stick_x", rsx);
+            telemetry.addData("-gamepad1.right_stick_y", nrsy);
+            telemetry.addData("angle", angle);
+
+            telemetry.addData("fr_power", merp.get(0, 0));
+            telemetry.addData("fl_power", merp.get(1,0));
+            telemetry.addData("bl_power", merp.get(2,0));
+            telemetry.addData("br_power", merp.get(3,0));
             boot.mdts.drive(merp);
         }
 
@@ -73,10 +84,10 @@ public class FieldCentricDrive extends OpMode {
             this.boot.mdts.fr.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
-        telemetry.addData("fl", this.boot.mdts.fl.getDirection());
-        telemetry.addData("bl", this.boot.mdts.bl.getDirection());
-        telemetry.addData("br", this.boot.mdts.br.getDirection());
-        telemetry.addData("fr", this.boot.mdts.fr.getDirection());
+        telemetry.addData("fl_dir", this.boot.mdts.fl.getDirection());
+        telemetry.addData("bl_dir", this.boot.mdts.bl.getDirection());
+        telemetry.addData("br_dir", this.boot.mdts.br.getDirection());
+        telemetry.addData("fr_dir", this.boot.mdts.fr.getDirection());
 
     }
 
