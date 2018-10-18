@@ -17,7 +17,7 @@ public class MecanumDriveTrain implements Subsystem {
     final double l, alpha, r;
     final SimpleMatrix powerMatrix;
 
-    DcMotor fl, fr, bl, br;
+    public DcMotor fl, fr, bl, br;
 
 
 
