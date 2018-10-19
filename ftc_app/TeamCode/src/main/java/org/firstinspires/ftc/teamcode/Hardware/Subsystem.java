@@ -6,4 +6,5 @@ public interface Subsystem {
     void init(HardwareMap hwMap);
     void start();
     void reset();
+    String toString();
 }
