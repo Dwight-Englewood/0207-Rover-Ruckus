@@ -10,10 +10,10 @@ import org.firstinspires.ftc.teamcode.Matrices.PowerVector4WD;
 
 public class MecanumDriveTrain extends GenericDriveTrain {
 
-    final double l, alpha, r;
-    final SimpleMatrix powerMatrix;
+    private final double l, alpha, r;
+    private final SimpleMatrix powerMatrix;
 
-    public DcMotor fl, fr, bl, br;
+    private DcMotor fl, fr, bl, br;
 
 
 
@@ -80,10 +80,10 @@ public class MecanumDriveTrain extends GenericDriveTrain {
         fr = hwMap.get(DcMotor.class, "fr");
         bl = hwMap.get(DcMotor.class, "bl");
         br = hwMap.get(DcMotor.class, "br");
-        this.fl.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.br.setDirection(DcMotorSimple.Direction.REVERSE);
+        fl.setDirection(DcMotorSimple.Direction.FORWARD);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        br.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
     }
@@ -103,6 +103,6 @@ public class MecanumDriveTrain extends GenericDriveTrain {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "";
     }
 }
