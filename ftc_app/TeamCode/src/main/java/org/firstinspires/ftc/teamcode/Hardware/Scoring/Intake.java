@@ -2,9 +2,9 @@ package org.firstinspires.ftc.teamcode.Hardware.Scoring;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
+import org.firstinspires.ftc.teamcode.Hardware.System;
 
-public class Intake implements Subsystem {
+public class Intake implements System {
     public Intake() {
 
     }

@@ -6,7 +6,6 @@ import org.firstinspires.ftc.teamcode.Hardware.Drivetrain.MecanumDriveTrain;
 import org.firstinspires.ftc.teamcode.Hardware.Scoring.Intake;
 import org.firstinspires.ftc.teamcode.Hardware.Scoring.MarkerDeploy;
 import org.firstinspires.ftc.teamcode.Hardware.Scoring.Shooter;
-import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
 import java.lang.reflect.Field;
 
@@ -25,8 +24,8 @@ public class Bot {
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field f : fields) {
             try {
-                if (f.get(this) instanceof Subsystem) {
-                    Subsystem ss = (Subsystem) f.get(this);
+                if (f.get(this) instanceof System) {
+                    System ss = (System) f.get(this);
                     ss.init(hwm);
                 }
             } catch (IllegalAccessException e) {
@@ -39,8 +38,8 @@ public class Bot {
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field f : fields) {
             try {
-                if (f.get(this) instanceof Subsystem) {
-                    Subsystem ss = (Subsystem) f.get(this);
+                if (f.get(this) instanceof System) {
+                    System ss = (System) f.get(this);
                     ss.start();
                 }
             } catch (IllegalAccessException e) {
@@ -53,8 +52,8 @@ public class Bot {
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field f : fields) {
             try {
-                if (f.get(this) instanceof Subsystem) {
-                    Subsystem ss = (Subsystem) f.get(this);
+                if (f.get(this) instanceof System) {
+                    System ss = (System) f.get(this);
                     ss.reset();
                 }
             } catch (IllegalAccessException e) {
@@ -69,8 +68,8 @@ public class Bot {
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field f : fields) {
             try {
-                if (f.get(this) instanceof Subsystem) {
-                    Subsystem ss = (Subsystem) f.get(this);
+                if (f.get(this) instanceof System) {
+                    System ss = (System) f.get(this);
                     state += ss.toString() + "\n";
                 }
             } catch (IllegalAccessException e) {
