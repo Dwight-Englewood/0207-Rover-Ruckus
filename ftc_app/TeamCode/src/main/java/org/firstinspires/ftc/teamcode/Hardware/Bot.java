@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.Hardware;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Hardware.Drivetrain.MecanumDriveTrain;
+import org.firstinspires.ftc.teamcode.Hardware.Scoring.Intake;
+import org.firstinspires.ftc.teamcode.Hardware.Scoring.MarkerDeploy;
+import org.firstinspires.ftc.teamcode.Hardware.Scoring.Shooter;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
 import java.lang.reflect.Field;
@@ -13,7 +16,12 @@ public class Bot {
 
     }
 
-    public MecanumDriveTrain mdts = new MecanumDriveTrain(5, 9, 9);
+    public MecanumDriveTrain driveTrain = new MecanumDriveTrain(5, 9, 9);
+    public Intake intake = new Intake();
+    public Shooter shooter = new Shooter();
+    public MarkerDeploy markerDeploy = new MarkerDeploy();
+    public Sensors sensors = new Sensors();
+
 
     public void init(HardwareMap hwm) {
         Field[] fields = this.getClass().getDeclaredFields();
