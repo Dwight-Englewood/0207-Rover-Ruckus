@@ -12,9 +12,7 @@ import java.lang.reflect.Field;
 
 public class Bot {
 
-    public Bot() {
-
-    }
+    public Bot() {}
 
     public MecanumDriveTrain driveTrain = new MecanumDriveTrain(5, 9, 9);
     public Intake intake = new Intake();
@@ -35,5 +33,50 @@ public class Bot {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void start() {
+        Field[] fields = this.getClass().getDeclaredFields();
+        for (Field f : fields) {
+            try {
+                if (f.get(this) instanceof Subsystem) {
+                    Subsystem ss = (Subsystem) f.get(this);
+                    ss.start();
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void reset() {
+        Field[] fields = this.getClass().getDeclaredFields();
+        for (Field f : fields) {
+            try {
+                if (f.get(this) instanceof Subsystem) {
+                    Subsystem ss = (Subsystem) f.get(this);
+                    ss.reset();
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        String state = "";
+        Field[] fields = this.getClass().getDeclaredFields();
+        for (Field f : fields) {
+            try {
+                if (f.get(this) instanceof Subsystem) {
+                    Subsystem ss = (Subsystem) f.get(this);
+                    state += ss.toString() + "\n";
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return state;
     }
 }
