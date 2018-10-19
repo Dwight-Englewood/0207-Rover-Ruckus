@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Hardware.MecanumDriveTrain;
+import org.firstinspires.ftc.teamcode.Hardware.Drivetrain.MecanumDriveTrain;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
 import java.lang.reflect.Field;

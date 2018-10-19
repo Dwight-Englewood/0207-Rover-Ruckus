@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Hardware;
+package org.firstinspires.ftc.teamcode.Hardware.Drivetrain;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,10 +9,11 @@ import org.ejml.simple.SimpleMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
 import org.firstinspires.ftc.teamcode.Matrices.PowerVector4WD;
 
-public class MecanumDriveTrain implements Subsystem {
+public class MecanumDriveTrain extends GenericDriveTrain {
 
     final double l, alpha, r;
     final SimpleMatrix powerMatrix;
