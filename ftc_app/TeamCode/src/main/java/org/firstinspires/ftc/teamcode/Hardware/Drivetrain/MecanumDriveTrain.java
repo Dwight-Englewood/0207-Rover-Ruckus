@@ -107,7 +107,7 @@ public class MecanumDriveTrain extends GenericDriveTrain {
     }
 
     @Override
-    public Enum getState() {
-        return null;
+    public String toString() {
+        return super.toString();
     }
 }
