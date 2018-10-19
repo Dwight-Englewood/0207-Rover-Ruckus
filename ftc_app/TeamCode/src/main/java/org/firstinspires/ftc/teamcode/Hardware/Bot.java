@@ -70,7 +70,7 @@ public class Bot {
             try {
                 if (f.get(this) instanceof System) {
                     System ss = (System) f.get(this);
-                    state += ss.toString() + "\n";
+                    state += f.getName() + ": " + f.toString() + "\n";
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
