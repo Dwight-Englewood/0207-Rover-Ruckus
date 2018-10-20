@@ -46,9 +46,9 @@ public class FieldCentricDrive extends OpMode {
     @Override
     public void loop() {
         if (gamepad1.left_trigger > .5) {
-            boot.mdts.rotate(true);
+            boot.driveTrain.rotate(true);
         } else if (gamepad1.right_trigger > .5) {
-            boot.mdts.rotate(false);
+            boot.driveTrain.rotate(false);
 
         } else {
             double angle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
@@ -63,31 +63,31 @@ public class FieldCentricDrive extends OpMode {
             telemetry.addData("fl_power", merp.get(1,0));
             telemetry.addData("bl_power", merp.get(2,0));
             telemetry.addData("br_power", merp.get(3,0));
-            boot.mdts.drive(merp);
+            boot.driveTrain.drive(merp);
         }
 
         if (gamepad1.y) {
-            this.boot.mdts.fl.setDirection(DcMotorSimple.Direction.FORWARD);
+            this.boot.driveTrain.fl.setDirection(DcMotorSimple.Direction.FORWARD);
         } else if (gamepad1.x) {
-            this.boot.mdts.bl.setDirection(DcMotorSimple.Direction.FORWARD);
+            this.boot.driveTrain.bl.setDirection(DcMotorSimple.Direction.FORWARD);
         } else if (gamepad1.a) {
-            this.boot.mdts.br.setDirection(DcMotorSimple.Direction.FORWARD);
+            this.boot.driveTrain.br.setDirection(DcMotorSimple.Direction.FORWARD);
         } else if (gamepad1.b) {
-            this.boot.mdts.fr.setDirection(DcMotorSimple.Direction.FORWARD);
+            this.boot.driveTrain.fr.setDirection(DcMotorSimple.Direction.FORWARD);
         } else if (gamepad1.dpad_up) {
-            this.boot.mdts.fl.setDirection(DcMotorSimple.Direction.REVERSE);
+            this.boot.driveTrain.fl.setDirection(DcMotorSimple.Direction.REVERSE);
         } else if (gamepad1.dpad_left) {
-            this.boot.mdts.bl.setDirection(DcMotorSimple.Direction.REVERSE);
+            this.boot.driveTrain.bl.setDirection(DcMotorSimple.Direction.REVERSE);
         } else if (gamepad1.dpad_down) {
-            this.boot.mdts.br.setDirection(DcMotorSimple.Direction.REVERSE);
+            this.boot.driveTrain.br.setDirection(DcMotorSimple.Direction.REVERSE);
         } else if (gamepad1.dpad_right) {
-            this.boot.mdts.fr.setDirection(DcMotorSimple.Direction.REVERSE);
+            this.boot.driveTrain.fr.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
-        telemetry.addData("fl_dir", this.boot.mdts.fl.getDirection());
-        telemetry.addData("bl_dir", this.boot.mdts.bl.getDirection());
-        telemetry.addData("br_dir", this.boot.mdts.br.getDirection());
-        telemetry.addData("fr_dir", this.boot.mdts.fr.getDirection());
+        telemetry.addData("fl_dir", this.boot.driveTrain.fl.getDirection());
+        telemetry.addData("bl_dir", this.boot.driveTrain.bl.getDirection());
+        telemetry.addData("br_dir", this.boot.driveTrain.br.getDirection());
+        telemetry.addData("fr_dir", this.boot.driveTrain.fr.getDirection());
 
     }
 

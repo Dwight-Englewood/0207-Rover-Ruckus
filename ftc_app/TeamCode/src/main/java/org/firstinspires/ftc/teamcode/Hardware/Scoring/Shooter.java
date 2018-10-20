@@ -2,10 +2,13 @@ package org.firstinspires.ftc.teamcode.Hardware.Scoring;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Hardware.System;
+import org.firstinspires.ftc.teamcode.Hardware.State;
+import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
-public class Shooter implements System {
-    public Shooter() {}
+public class Shooter implements Subsystem {
+    public Shooter() {
+
+    }
 
     @Override
     public void init(HardwareMap hwMap) {
@@ -23,7 +26,12 @@ public class Shooter implements System {
     }
 
     @Override
-    public String toString() {
-        return "";
+    public void stop() {
+
+    }
+
+    @Override
+    public State getState() {
+        return null;
     }
 }

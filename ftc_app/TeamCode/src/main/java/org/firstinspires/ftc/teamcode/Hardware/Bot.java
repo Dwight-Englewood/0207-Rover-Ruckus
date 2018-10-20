@@ -24,8 +24,8 @@ public class Bot {
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field f : fields) {
             try {
-                if (f.get(this) instanceof System) {
-                    System ss = (System) f.get(this);
+                if (f.get(this) instanceof Subsystem) {
+                    Subsystem ss = (Subsystem) f.get(this);
                     ss.init(hwm);
                 }
             } catch (IllegalAccessException e) {
@@ -38,8 +38,8 @@ public class Bot {
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field f : fields) {
             try {
-                if (f.get(this) instanceof System) {
-                    System ss = (System) f.get(this);
+                if (f.get(this) instanceof Subsystem) {
+                    Subsystem ss = (Subsystem) f.get(this);
                     ss.start();
                 }
             } catch (IllegalAccessException e) {
@@ -52,8 +52,8 @@ public class Bot {
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field f : fields) {
             try {
-                if (f.get(this) instanceof System) {
-                    System ss = (System) f.get(this);
+                if (f.get(this) instanceof Subsystem) {
+                    Subsystem ss = (Subsystem) f.get(this);
                     ss.reset();
                 }
             } catch (IllegalAccessException e) {
@@ -62,15 +62,19 @@ public class Bot {
         }
     }
 
+    public void stop() {
+
+    }
+
     @Override
     public String toString() {
         String state = "";
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field f : fields) {
             try {
-                if (f.get(this) instanceof System) {
-                    System ss = (System) f.get(this);
-                    state += f.getName() + ": " + f.toString() + "\n";
+                if (f.get(this) instanceof Subsystem) {
+                    Subsystem ss = (Subsystem) f.get(this);
+                    state += f.getName() + ": " + ss.getState().getStateVal() + "\n";
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
