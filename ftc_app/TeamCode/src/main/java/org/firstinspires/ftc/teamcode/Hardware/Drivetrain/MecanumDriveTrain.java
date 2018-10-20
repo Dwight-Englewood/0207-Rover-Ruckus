@@ -13,7 +13,7 @@ public class MecanumDriveTrain extends GenericDriveTrain {
     private final double l, alpha, r;
     private final SimpleMatrix powerMatrix;
 
-    private DcMotor fl, fr, bl, br;
+    public DcMotor fl, fr, bl, br;
 
 
 
