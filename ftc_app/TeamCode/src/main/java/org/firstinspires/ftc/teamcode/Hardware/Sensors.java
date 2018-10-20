@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Hardware;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Sensors implements System {
+public class Sensors implements Subsystem {
     public Sensors(){}
 
     @Override

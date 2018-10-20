@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Hardware.Scoring;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Hardware.System;
+import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
 public class Shooter implements System {
     public Shooter() {

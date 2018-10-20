@@ -1,14 +1,13 @@
 package org.firstinspires.ftc.teamcode.Hardware.Scoring;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
-import org.firstinspires.ftc.teamcode.Hardware.System;
+import org.firstinspires.ftc.teamcode.Hardware.State;
+import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
-public class Intake implements System {
+public class Intake implements Subsystem {
     public Intake() {}
 
     private DcMotor motor;
