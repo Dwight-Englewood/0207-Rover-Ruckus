@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
-public class Shooter implements System {
+public class Shooter implements Subsystem {
     public Shooter() {
 
     }

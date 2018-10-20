@@ -11,10 +11,18 @@ public class Intake implements Subsystem {
     public Intake() {}
 
     private DcMotor motor;
-    private enum intakeState {
-        INTAKING,
-        OUTTAKING,
-        STOPPED;
+    private enum intakeState implements State {
+        INTAKING("Intaking"),
+        OUTTAKING("Outtaking"),
+        STOPPED("Stopped");
+
+        private String str;
+        intakeState(String str) {this.str = str;}
+
+        @Override
+        public String getStateVal() {
+            return this.str;
+        }
     }
     private intakeState state;
 
@@ -49,19 +57,7 @@ public class Intake implements Subsystem {
     }
 
     @Override
-    public String toString() {
-        switch(state) {
-            case INTAKING:
-                return "Intaking";
-
-            case OUTTAKING:
-                return "Outtaking";
-
-            case STOPPED:
-                return "Stopped";
-
-            default:
-                return super.toString();
-        }
+    public intakeState getState() {
+        return state;
     }
 }

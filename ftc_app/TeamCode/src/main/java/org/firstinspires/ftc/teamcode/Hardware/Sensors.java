@@ -21,7 +21,7 @@ public class Sensors implements Subsystem {
     }
 
     @Override
-    public String toString() {
-        return "";
+    public State getState() {
+        return null;
     }
 }

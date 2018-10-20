@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
-public class MarkerDeploy implements System {
+public class MarkerDeploy implements Subsystem {
     public MarkerDeploy() {
 
     }
