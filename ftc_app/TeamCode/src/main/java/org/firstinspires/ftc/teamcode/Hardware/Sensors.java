@@ -21,6 +21,11 @@ public class Sensors implements Subsystem {
     }
 
     @Override
+    public void stop() {
+
+    }
+
+    @Override
     public State getState() {
         return null;
     }

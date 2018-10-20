@@ -46,6 +46,11 @@ public class Intake implements Subsystem {
         state = intakeState.STOPPED;
     }
 
+    @Override
+    public void stop() {
+
+    }
+
     public void intake() {
         motor.setPower(1);
         state = intakeState.INTAKING;

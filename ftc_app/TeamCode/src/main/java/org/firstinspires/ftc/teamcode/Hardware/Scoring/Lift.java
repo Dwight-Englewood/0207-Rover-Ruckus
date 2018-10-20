@@ -46,6 +46,11 @@ public class Lift implements Subsystem {
         state = liftState.STOPPED;
     }
 
+    @Override
+    public void stop() {
+
+    }
+
     public void lift() {
         motor.setPower(1);
         state = liftState.LIFTING;

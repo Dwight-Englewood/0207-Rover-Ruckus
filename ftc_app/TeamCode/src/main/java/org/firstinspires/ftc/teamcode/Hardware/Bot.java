@@ -62,6 +62,10 @@ public class Bot {
         }
     }
 
+    public void stop() {
+
+    }
+
     @Override
     public String toString() {
         String state = "";
