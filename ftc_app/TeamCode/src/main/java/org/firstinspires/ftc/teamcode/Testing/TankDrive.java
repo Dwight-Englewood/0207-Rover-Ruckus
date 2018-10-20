@@ -23,6 +23,10 @@ public class TankDrive extends OpMode {
         this.bl.setDirection(DcMotorSimple.Direction.REVERSE);
         this.fr.setDirection(DcMotorSimple.Direction.FORWARD);
         this.br.setDirection(DcMotorSimple.Direction.REVERSE);
+        fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
 
