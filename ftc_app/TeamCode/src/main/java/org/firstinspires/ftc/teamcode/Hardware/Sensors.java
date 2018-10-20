@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Hardware;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Sensors implements System {
+public class Sensors implements Subsystem {
     public Sensors(){}
 
     @Override
@@ -21,7 +21,12 @@ public class Sensors implements System {
     }
 
     @Override
-    public String toString() {
-        return "";
+    public void stop() {
+
+    }
+
+    @Override
+    public State getState() {
+        return null;
     }
 }

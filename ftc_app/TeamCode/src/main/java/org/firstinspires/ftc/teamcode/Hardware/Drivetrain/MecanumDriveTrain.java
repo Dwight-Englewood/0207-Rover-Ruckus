@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.ejml.simple.SimpleMatrix;
+import org.firstinspires.ftc.teamcode.Hardware.State;
 import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
 import org.firstinspires.ftc.teamcode.Matrices.PowerVector4WD;
 
@@ -12,10 +13,9 @@ public class MecanumDriveTrain extends GenericDriveTrain {
 
     private final double l, alpha, r;
     private final SimpleMatrix powerMatrix;
-
+    
+    //make private
     public DcMotor fl, fr, bl, br;
-
-
 
     public MecanumDriveTrain(double r, double a, double b) {
         this.l = Math.sqrt(Math.pow(a, 2.0) + Math.pow(b, 2));
@@ -85,7 +85,7 @@ public class MecanumDriveTrain extends GenericDriveTrain {
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.REVERSE);
 
-
+        //Set to brake zeroPower for wacky drifting?
     }
 
     @Override
@@ -99,6 +99,16 @@ public class MecanumDriveTrain extends GenericDriveTrain {
     @Override
     public void reset() {
 
+    }
+
+    @Override
+    public void stop() {
+
+    }
+
+    @Override
+    public State getState() {
+        return null;
     }
 
     @Override

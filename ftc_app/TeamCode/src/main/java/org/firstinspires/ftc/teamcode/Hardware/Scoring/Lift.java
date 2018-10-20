@@ -7,32 +7,34 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.Hardware.State;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
-public class Intake implements Subsystem {
-    public Intake() {}
+public class Lift implements Subsystem {
+    public Lift() {}
 
     private DcMotor motor;
-    private enum intakeState implements State {
-        INTAKING("Intaking"),
-        OUTTAKING("Outtaking"),
+    private enum liftState implements State {
+        LIFTING("Lifting"),
+        DROPPING("Dropping"),
         STOPPED("Stopped");
 
         private String str;
-        intakeState(String str) {this.str = str;}
+        liftState(String str) {
+            this.str = str;
+        }
 
         @Override
         public String getStateVal() {
-            return this.str;
+            return str;
         }
     }
-    private intakeState state;
+    private liftState state;
 
     @Override
     public void init(HardwareMap hwMap) {
-        motor = hwMap.get(DcMotor.class, "int");
+        motor = hwMap.get(DcMotor.class, "lift");
         motor.setDirection(DcMotorSimple.Direction.FORWARD);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        state = intakeState.STOPPED;
+        state = liftState.STOPPED;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class Intake implements Subsystem {
     @Override
     public void reset() {
         motor.setPower(0);
-        state = intakeState.STOPPED;
+        state = liftState.STOPPED;
     }
 
     @Override
@@ -51,18 +53,20 @@ public class Intake implements Subsystem {
 
     }
 
-    public void intake() {
+    public void lift() {
         motor.setPower(1);
-        state = intakeState.INTAKING;
+        state = liftState.LIFTING;
     }
 
-    public void outtake() {
+    public void drop() {
         motor.setPower(-1);
-        state = intakeState.OUTTAKING;
+        state = liftState.DROPPING;
     }
 
     @Override
-    public intakeState getState() {
+    public liftState getState() {
         return state;
     }
 }
+
+

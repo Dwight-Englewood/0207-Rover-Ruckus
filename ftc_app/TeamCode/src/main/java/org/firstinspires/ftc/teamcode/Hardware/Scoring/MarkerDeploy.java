@@ -2,9 +2,10 @@ package org.firstinspires.ftc.teamcode.Hardware.Scoring;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Hardware.System;
+import org.firstinspires.ftc.teamcode.Hardware.State;
+import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
-public class MarkerDeploy implements System {
+public class MarkerDeploy implements Subsystem {
     public MarkerDeploy() {
 
     }
@@ -25,7 +26,12 @@ public class MarkerDeploy implements System {
     }
 
     @Override
-    public String toString() {
-        return "";
+    public void stop() {
+
+    }
+
+    @Override
+    public State getState() {
+        return null;
     }
 }
