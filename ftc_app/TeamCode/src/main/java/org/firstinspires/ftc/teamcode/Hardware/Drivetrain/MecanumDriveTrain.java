@@ -13,7 +13,8 @@ public class MecanumDriveTrain extends GenericDriveTrain {
 
     private final double l, alpha, r;
     private final SimpleMatrix powerMatrix;
-    private DcMotor fl, fr, bl, br;
+    //make private
+    public DcMotor fl, fr, bl, br;
 
     public MecanumDriveTrain(double r, double a, double b) {
         this.l = Math.sqrt(Math.pow(a, 2.0) + Math.pow(b, 2));
