@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Hardware.Scoring;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.Hardware.State;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
 public class Shooter implements Subsystem {
@@ -25,7 +26,7 @@ public class Shooter implements Subsystem {
     }
 
     @Override
-    public String toString() {
-        return "";
+    public State getState() {
+        return null;
     }
 }
