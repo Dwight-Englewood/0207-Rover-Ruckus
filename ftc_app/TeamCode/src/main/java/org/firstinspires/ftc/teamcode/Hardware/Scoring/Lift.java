@@ -20,6 +20,8 @@ public class Lift implements Subsystem {
         liftState(String str) {
             this.str = str;
         }
+
+        @Override
         public String getStateVal() {
             return str;
         }

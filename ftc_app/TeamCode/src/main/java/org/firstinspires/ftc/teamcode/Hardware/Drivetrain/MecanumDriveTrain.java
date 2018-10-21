@@ -13,6 +13,7 @@ public class MecanumDriveTrain extends GenericDriveTrain {
 
     private final double l, alpha, r;
     private final SimpleMatrix powerMatrix;
+    
     //make private
     public DcMotor fl, fr, bl, br;
 
@@ -83,6 +84,8 @@ public class MecanumDriveTrain extends GenericDriveTrain {
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        //Set to brake zeroPower for wacky drifting?
     }
 
     @Override
