@@ -50,7 +50,8 @@ public class Lift implements Subsystem {
 
     @Override
     public void stop() {
-
+        motor.setPower(0);
+        state = liftState.STOPPED;
     }
 
     public void lift() {
