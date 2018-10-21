@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Hardware.Drivetrain.MecanumDriveTrain;
 import org.firstinspires.ftc.teamcode.Hardware.Scoring.Intake;
+import org.firstinspires.ftc.teamcode.Hardware.Scoring.Lift;
 import org.firstinspires.ftc.teamcode.Hardware.Scoring.MarkerDeploy;
 import org.firstinspires.ftc.teamcode.Hardware.Scoring.Shooter;
 
@@ -15,9 +16,10 @@ public class Bot {
 
     public MecanumDriveTrain driveTrain = new MecanumDriveTrain(5, 9, 9);
     public Intake intake = new Intake();
-    public Shooter shooter = new Shooter();
-    public MarkerDeploy markerDeploy = new MarkerDeploy();
-    public Sensors sensors = new Sensors();
+    public Lift lift = new Lift();
+    //public Shooter shooter = new Shooter();
+    //public MarkerDeploy markerDeploy = new MarkerDeploy();
+    //public Sensors sensors = new Sensors();
 
 
     public void init(HardwareMap hwm) {
