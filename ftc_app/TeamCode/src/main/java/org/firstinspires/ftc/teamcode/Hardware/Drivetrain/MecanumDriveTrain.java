@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Hardware.Drivetrain;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.ejml.simple.SimpleMatrix;
@@ -72,6 +73,31 @@ public class MecanumDriveTrain extends GenericDriveTrain {
 
     private SimpleMatrix rotationMatrix(double theta) {
         return new SimpleMatrix(new double[][]{{Math.cos(theta), Math.sin(theta), 0}, {-Math.sin(theta), Math.cos(theta), 0}, {0, 0, 1}});
+    }
+
+    public void tankControl(Gamepad gamepad) {
+        if (gamepad.left_trigger >.15) {
+            fl.setPower(-gamepad.left_trigger);
+            fr.setPower(gamepad.left_trigger);
+            bl.setPower(gamepad.left_trigger);
+            br.setPower(-gamepad.left_trigger);
+            return;
+        }
+        if (gamepad.right_trigger >.15) {
+            fl.setPower(gamepad.left_trigger);
+            fr.setPower(-gamepad.left_trigger);
+            bl.setPower(-gamepad.left_trigger);
+            br.setPower(gamepad.left_trigger);
+            return;
+        }
+        fl.setPower(-gamepad.left_stick_y);
+        bl.setPower(-gamepad.left_stick_y);
+        fr.setPower(-gamepad.right_stick_y);
+        br.setPower(-gamepad.right_stick_y);
+
+
+
+
     }
 
     @Override
