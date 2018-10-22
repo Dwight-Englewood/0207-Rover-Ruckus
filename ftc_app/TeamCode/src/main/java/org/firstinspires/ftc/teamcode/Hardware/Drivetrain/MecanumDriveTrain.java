@@ -43,12 +43,12 @@ public class MecanumDriveTrain extends GenericDriveTrain {
         });
     }
 
-    public PowerVector4WD driveVector(DirRotVector drv) {
-        return new PowerVector4WD(powerMatrix.mult(rotationMatrix(drv.get(2,0)).mult(drv).scale(-Math.sqrt(2)/r)));
+    public PowerVector4WD driveVector(DirRotVector drv, double botTheta) {
+        return new PowerVector4WD(powerMatrix.mult(rotationMatrix(botTheta).mult(drv).scale(-Math.sqrt(2)/r)));
     }
 
-    public void drive(DirRotVector drv) {
-        PowerVector4WD merp = this.driveVector(drv);
+    public void drive(DirRotVector drv, double botTheta) {
+        PowerVector4WD merp = this.driveVector(drv, botTheta);
         merp = merp.scale();
         this.fr.setPower(merp.get(0, 0));
         this.fl.setPower(merp.get(1, 0));

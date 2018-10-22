@@ -51,19 +51,21 @@ public class FieldCentricDrive extends OpMode {
             boot.driveTrain.rotate(false);
 
         } else {
-            double angle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
-            double rsx = gamepad1.right_stick_x;
-            double nrsy = -gamepad1.right_stick_y;
-            DirRotVector merp = new DirRotVector(rsx , nrsy , angle);
+            double botTheta = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
+            double rsx = gamepad1.left_stick_x;
+            double nrsy = -gamepad1.left_stick_y;
+            double theta = gamepad1.right_stick_x;
+            DirRotVector merp = new DirRotVector(rsx , nrsy , theta);
             telemetry.addData("right_stick_x", rsx);
             telemetry.addData("-gamepad1.right_stick_y", nrsy);
-            telemetry.addData("angle", angle);
+            telemetry.addData("theta", theta);
+            telemetry.addData("botTheta", botTheta);
 
             telemetry.addData("fr_power", merp.get(0, 0));
             telemetry.addData("fl_power", merp.get(1,0));
             telemetry.addData("bl_power", merp.get(2,0));
             telemetry.addData("br_power", merp.get(3,0));
-            boot.driveTrain.drive(merp);
+            boot.driveTrain.drive(merp, botTheta);
         }
 
         if (gamepad1.y) {
