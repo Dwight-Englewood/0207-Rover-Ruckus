@@ -67,7 +67,7 @@ public class Lift implements Subsystem {
     }
 
     public boolean dropAmount() {
-        if (!magSwitch.getState()) {
+        if (magSwitch.getState()) {
             this.stop();
             return true;
         }
@@ -75,7 +75,7 @@ public class Lift implements Subsystem {
         return false;
     }
     public boolean liftAmount() {
-        if (!magSwitch.getState()) {
+        if (magSwitch.getState()) {
             this.stop();
             return true;
         }
