@@ -1,9 +1,8 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -13,8 +12,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
-@Autonomous(name = "normal", group = "Auton")
-public class RedGold extends OpMode {
+@Autonomous(name = "normal hanging", group = "Auton")
+public class RedGoldwHang extends OpMode {
 
     Bot robot = new Bot();
     int command = 0;
@@ -43,19 +42,19 @@ public class RedGold extends OpMode {
         switch(command) {
             case 0:
                 timer.reset();
-                //robot.lift.drop();
+                robot.lift.drop();
                 command = 5;
                 break;
 
-            /*case 1:
+            case 1:
                 if (timer.milliseconds() > 4000) {
                     robot.lift.stop();
                     timer.reset();
                     command++;
                 }
-                break;*/
+                break;
 
-            /*case 2:
+            case 2:
                 robot.driveTrain.drivepow(-.5);
                 if (timer.milliseconds() > 500) {
                     robot.driveTrain.stop();
@@ -81,7 +80,7 @@ public class RedGold extends OpMode {
                 } else {
                     adjustHeading(0, false);
                 }
-                break;*/
+                break;
 
             case 5:
                 robot.driveTrain.drivepow(1);

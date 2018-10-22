@@ -95,9 +95,20 @@ public class MecanumDriveTrain extends GenericDriveTrain {
         fr.setPower(-gamepad.right_stick_y);
         br.setPower(-gamepad.right_stick_y);
 
+    }
 
+    public void drivepow(double power) {
+        fl.setPower(power);
+        fr.setPower(power);
+        bl.setPower(power);
+        br.setPower(power);
+    }
 
-
+    public void strafepow(double power) {
+        fl.setPower(-power);
+        fr.setPower(power);
+        bl.setPower(power);
+        br.setPower(-power);
     }
 
     @Override
@@ -110,6 +121,18 @@ public class MecanumDriveTrain extends GenericDriveTrain {
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.REVERSE);
+        fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
+
 
         //Set to brake zeroPower for wacky drifting?
     }
