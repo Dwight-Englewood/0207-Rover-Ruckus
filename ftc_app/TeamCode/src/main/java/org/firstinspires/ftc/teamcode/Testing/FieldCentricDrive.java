@@ -45,28 +45,23 @@ public class FieldCentricDrive extends OpMode {
 
     @Override
     public void loop() {
-        if (gamepad1.left_trigger > .5) {
-            boot.driveTrain.rotate(true);
-        } else if (gamepad1.right_trigger > .5) {
-            boot.driveTrain.rotate(false);
 
-        } else {
-            double botTheta = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
-            double rsx = gamepad1.left_stick_x;
-            double nrsy = -gamepad1.left_stick_y;
-            double theta = gamepad1.right_stick_x;
-            DirRotVector merp = new DirRotVector(rsx , nrsy , theta);
-            telemetry.addData("right_stick_x", rsx);
-            telemetry.addData("-gamepad1.right_stick_y", nrsy);
-            telemetry.addData("theta", theta);
-            telemetry.addData("botTheta", botTheta);
+        double botTheta = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
+        double rsx = gamepad1.left_stick_x;
+        double nrsy = -gamepad1.left_stick_y;
+        double theta = gamepad1.right_stick_x;
+        DirRotVector merp = new DirRotVector(rsx, nrsy, theta);
+        telemetry.addData("right_stick_x", rsx);
+        telemetry.addData("-gamepad1.right_stick_y", nrsy);
+        telemetry.addData("theta", theta);
+        telemetry.addData("botTheta", botTheta);
 
-            telemetry.addData("fr_power", merp.get(0, 0));
-            telemetry.addData("fl_power", merp.get(1,0));
-            telemetry.addData("bl_power", merp.get(2,0));
-            telemetry.addData("br_power", merp.get(3,0));
-            boot.driveTrain.drive(merp, botTheta);
-        }
+        telemetry.addData("fr_power", merp.get(0, 0));
+        telemetry.addData("fl_power", merp.get(1, 0));
+        telemetry.addData("bl_power", merp.get(2, 0));
+        telemetry.addData("br_power", merp.get(3, 0));
+        boot.driveTrain.drive(merp, botTheta);
+
 
         if (gamepad1.y) {
             this.boot.driveTrain.fl.setDirection(DcMotorSimple.Direction.FORWARD);
