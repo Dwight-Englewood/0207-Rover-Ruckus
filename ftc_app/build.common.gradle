@@ -21,7 +21,6 @@ apply plugin: 'com.android.application'
 
 android {
 
-
     compileSdkVersion 23
 
     signingConfigs {
@@ -31,6 +30,10 @@ android {
             storeFile rootProject.file('libs/ftc.debug.keystore')
             storePassword 'android'
         }
+    }
+
+    aaptOptions {
+        noCompress "tflite"
     }
 
     defaultConfig {
@@ -90,6 +93,8 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 
     sourceSets.main {
