@@ -52,9 +52,9 @@ public class Telebop extends OpMode {
         else if (gamepad2.dpad_down) robot.lift.lift();
         else robot.lift.stop();
 
-        if (gamepad2.a) robot.intake.intake();
+        /*if (gamepad2.a) robot.intake.intake();
         else if (gamepad2.b) robot.intake.outtake();
-        else robot.intake.stop();
+        else robot.intake.stop();*/
     }
 
     @Override

@@ -15,7 +15,7 @@ public class Bot {
     public Bot() {}
 
     public MecanumDriveTrain driveTrain = new MecanumDriveTrain(5, 9, 9);
-    public Intake intake = new Intake();
+    //public Intake intake = new Intake();
     public Lift lift = new Lift();
     //public Shooter shooter = new Shooter();
     //public MarkerDeploy markerDeploy = new MarkerDeploy();
