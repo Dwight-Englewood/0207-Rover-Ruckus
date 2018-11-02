@@ -9,10 +9,10 @@ import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
 @Autonomous(name = "BlueSilver", group = "Auton")
-@Disabled
+//@Disabled
 public class BlueSilver extends OpMode {
     Bot robot = new Bot();
-    int level = 0;
+    int command = 0;
     ElapsedTime timer = new ElapsedTime();
 
     @Override
@@ -33,45 +33,11 @@ public class BlueSilver extends OpMode {
 
     @Override
     public void loop() {
-        switch(level) {
-            case 0:
-                timer.reset();
-                robot.lift.drop();
-                level++;
-                break;
+        switch(command) {
 
-            case 1:
-                if (timer.milliseconds() > 4000) {
-                    robot.lift.stop();
-                    timer.reset();
-                    level++;
-                }
-                break;
-
-            case 2:
-                robot.driveTrain.drivepow(.5);
-                if (timer.milliseconds() > 1000) {
-                    robot.driveTrain.stop();
-                    level++;
-                    timer.reset();
-                }
-                break;
-
-            case 3:
-                robot.driveTrain.strafepow(-1);
-                if (timer.milliseconds() > 1000) {
-                    robot.driveTrain.stop();
-                    level++;
-                    timer.reset();
-                }
-                break;
-
-            case 4:
-                robot.stop();
-                level++;
-                break;
         }
 
+        telemetry.addData("Command: ", command);
     }
 
     @Override
