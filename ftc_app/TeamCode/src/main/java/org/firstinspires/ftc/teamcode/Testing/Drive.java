@@ -3,11 +3,10 @@ package org.firstinspires.ftc.teamcode.Testing;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
-@TeleOp(name = "TankDrive", group = "Teleop")
-public class TankDrive extends OpMode {
+@TeleOp(name = "DriveTest", group = "Teleop")
+public class Drive extends OpMode {
 
     DcMotor fl, fr, bl, br;
     double joyL;
@@ -37,12 +36,15 @@ public class TankDrive extends OpMode {
 
     @Override
     public void loop() {
-        joyL = -gamepad1.left_stick_y;
-        joyR = -gamepad1.right_stick_y;
-        fl.setPower(joyL);
-        bl.setPower(joyL);
-        fr.setPower(joyR);
-        br.setPower(joyR);
+        fl.setPower(gamepad1.a ? 1 : 0);
+        bl.setPower(gamepad1.b ? 1 : 0);
+        fr.setPower(gamepad1.y ? 1 : 0);
+        br.setPower(gamepad1.x ? 1 : 0);
+        telemetry.addData("fl", "a");
+        telemetry.addData("bl", "b");
+        telemetry.addData("fr", "y");
+        telemetry.addData("br", "x");
+
 
     }
 

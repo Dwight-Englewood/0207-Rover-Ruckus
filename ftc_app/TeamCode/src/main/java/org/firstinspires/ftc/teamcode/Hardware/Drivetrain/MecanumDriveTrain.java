@@ -84,10 +84,10 @@ public class MecanumDriveTrain extends GenericDriveTrain {
             return;
         }
         if (gamepad.right_trigger >.15) {
-            fl.setPower(gamepad.left_trigger);
-            fr.setPower(-gamepad.left_trigger);
-            bl.setPower(-gamepad.left_trigger);
-            br.setPower(gamepad.left_trigger);
+            fl.setPower(gamepad.right_trigger);
+            fr.setPower(-gamepad.right_trigger);
+            bl.setPower(-gamepad.right_trigger);
+            br.setPower(gamepad.right_trigger);
             return;
         }
         fl.setPower(-gamepad.left_stick_y);
@@ -117,8 +117,8 @@ public class MecanumDriveTrain extends GenericDriveTrain {
         fr = hwMap.get(DcMotor.class, "fr");
         bl = hwMap.get(DcMotor.class, "bl");
         br = hwMap.get(DcMotor.class, "br");
-        fl.setDirection(DcMotorSimple.Direction.FORWARD);
-        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        bl.setDirection(DcMotorSimple.Direction.FORWARD);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.REVERSE);
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

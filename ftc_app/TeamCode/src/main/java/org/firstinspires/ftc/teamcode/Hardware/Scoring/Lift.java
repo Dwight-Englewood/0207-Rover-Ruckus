@@ -37,7 +37,7 @@ public class Lift implements Subsystem {
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         state = liftState.STOPPED;
-        magSwitch = hwMap.get(DigitalChannel.class, "mag");
+        //magSwitch = hwMap.get(DigitalChannel.class, "mag");
     }
 
     @Override
