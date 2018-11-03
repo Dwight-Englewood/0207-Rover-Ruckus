@@ -50,11 +50,11 @@ public class MarkerDeploy implements Subsystem {
     public void stop() {}
 
     public void drop() {
-        servo.setPosition(0);
+        servo.setPosition(1);
     }
 
     public void raise() {
-        servo.setPosition(1);
+        servo.setPosition(0);
     }
 
     @Override

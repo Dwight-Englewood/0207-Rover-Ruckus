@@ -48,12 +48,12 @@ BlueGold extends OpMode {
                 break;
 
             case 1:
-                if (timer.milliseconds() > 750) {
+                if (timer.milliseconds() > 500) {
                     robot.driveTrain.stop();
                     timer.reset();
                     command++;
                 }
-                robot.driveTrain.strafepow(-.4);
+                robot.driveTrain.drivepow(.3);
                 break;
 
             case 2:
@@ -67,7 +67,7 @@ BlueGold extends OpMode {
 
             case 3:
                 robot.driveTrain.setTarget(86 + 75);
-                robot.driveTrain.drivepow(.3);
+                robot.driveTrain.drivepow(.4);
                 timer.reset();
                 break;
 
@@ -82,7 +82,7 @@ BlueGold extends OpMode {
 
             case 5:
                 gyroVal = (int)robot.sensors.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
-                robot.driveTrain.gyroCorrect(-90, 2, gyroVal, .05, .3);
+                robot.driveTrain.gyroCorrect(90, 2, gyroVal, .05, .3);
                 if (robot.driveTrain.fl.getPower() == 0) {
                     timer.reset();
                     command++;
@@ -106,7 +106,7 @@ BlueGold extends OpMode {
 
             case 8:
                 gyroVal = (int)robot.sensors.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
-                robot.driveTrain.gyroCorrect(135, 1, gyroVal, .05, .2);
+                robot.driveTrain.gyroCorrect(-135, 1, gyroVal, .05, .2);
                 if (robot.driveTrain.fl.getPower() == 0) {
                     timer.reset();
                     command++;

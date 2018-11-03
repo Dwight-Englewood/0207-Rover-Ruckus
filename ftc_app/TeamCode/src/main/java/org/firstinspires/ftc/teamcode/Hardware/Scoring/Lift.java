@@ -58,37 +58,41 @@ public class Lift implements Subsystem {
     }
 
     public void lift() {
-        motor.setPower(1);
+        motor.setPower(-1);
         state = liftState.LIFTING;
     }
 
     public void drop() {
-        motor.setPower(-1);
+        motor.setPower(1);
         state = liftState.DROPPING;
     }
 
     public boolean newYears() {
-        if (motor.getCurrentPosition() < -1000) {
+        if (motor.getCurrentPosition() >= 19700) {
             motor.setPower(0);
             motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            return true; //temp value
+            return true;
         }
         if (motor.getMode() != DcMotor.RunMode.RUN_TO_POSITION) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if (motor.getTargetPosition() != -1200) motor.setTargetPosition(-1200); //temp value
-        motor.setPower(-1); //temp value
+        if (motor.getTargetPosition() != 19700) motor.setTargetPosition(19700); //temp value
+        motor.setPower(1); //temp value
         return false;
     }
 
     public boolean oldYears() {
-        if (motor.getCurrentPosition() > -25) {
+        if (motor.getCurrentPosition() < 25) {
             motor.setPower(0);
             motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             return true; //temp value
         }
         if (motor.getMode() != DcMotor.RunMode.RUN_TO_POSITION) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         if (motor.getTargetPosition() != 0) motor.setTargetPosition(0); //temp value
-        motor.setPower(1); //temp value
+        motor.setPower(-1); //temp value
         return false;
+    }
+
+    public int getTicks() {
+        return motor.getCurrentPosition();
     }
 
     /*public boolean dropAmount() {

@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
-@Autonomous(name = "normal", group = "Auton")
+@Autonomous(name = "RedGold", group = "Auton")
 //@Disabled
 public class RedGold extends OpMode {
 
@@ -48,12 +48,12 @@ public class RedGold extends OpMode {
                 break;
 
             case 1:
-                if (timer.milliseconds() > 750) {
+                if (timer.milliseconds() > 500) {
                     robot.driveTrain.stop();
                     timer.reset();
                     command++;
                 }
-                robot.driveTrain.strafepow(-.4);
+                robot.driveTrain.drivepow(.3);
                 break;
 
             case 2:
@@ -82,7 +82,7 @@ public class RedGold extends OpMode {
 
             case 5:
                 gyroVal = (int)robot.sensors.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
-                robot.driveTrain.gyroCorrect(-90, 2, gyroVal, .05, .3);
+                robot.driveTrain.gyroCorrect(90, 2, gyroVal, .05, .3);
                 if (robot.driveTrain.fl.getPower() == 0) {
                     timer.reset();
                     command++;
@@ -106,7 +106,7 @@ public class RedGold extends OpMode {
 
             case 8:
                 gyroVal = (int)robot.sensors.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
-                robot.driveTrain.gyroCorrect(135, 1, gyroVal, .05, .2);
+                robot.driveTrain.gyroCorrect(-135, 1, gyroVal, .05, .2);
                 if (robot.driveTrain.fl.getPower() == 0) {
                     timer.reset();
                     command++;
