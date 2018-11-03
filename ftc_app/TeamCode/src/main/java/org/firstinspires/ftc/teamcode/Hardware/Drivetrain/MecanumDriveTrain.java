@@ -153,7 +153,8 @@ public class MecanumDriveTrain extends GenericDriveTrain {
         br.setPower(0);
     }
 
-    public void setTarget(int target) {
+    public void setTarget(int targetDistance) {
+        int target = this.distanceToRevsNRO20(targetDistance);
         fl.setTargetPosition(fl.getCurrentPosition() + target);
         fr.setTargetPosition(fr.getCurrentPosition() + target);
         bl.setTargetPosition(bl.getCurrentPosition() + target);
@@ -191,6 +192,12 @@ public class MecanumDriveTrain extends GenericDriveTrain {
         fr.setPower(sPower);
         bl.setPower(-sPower);
         br.setPower(sPower);
+    }
+
+    private int distanceToRevsNRO20(double distance) {
+        final double wheelCirc = 31.9185813;
+        final double gearMotorTickThing = 537.6; //neverrest orbital 20 = 537.6 counts per revolution
+        return (int) (gearMotorTickThing * (distance / wheelCirc));
     }
 
     @Override

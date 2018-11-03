@@ -40,6 +40,98 @@ public class RedGold extends OpMode {
     @Override
     public void loop() {
         switch(command) {
+            case 0:
+                if (robot.lift.newYears()) {
+                    timer.reset();
+                    command++;
+                }
+                break;
+
+            case 1:
+                if (timer.milliseconds() > 750) {
+                    robot.driveTrain.stop();
+                    timer.reset();
+                    command++;
+                }
+                robot.driveTrain.strafepow(-.4);
+                break;
+
+            case 2:
+                int gyroVal = (int)robot.sensors.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+                robot.driveTrain.gyroCorrect(0, 1, gyroVal, .05, .2);
+                if (robot.driveTrain.fl.getPower() == 0) {
+                    timer.reset();
+                    command++;
+                }
+                break;
+
+            case 3:
+                robot.driveTrain.setTarget(86 + 75);
+                robot.driveTrain.drivepow(.3);
+                timer.reset();
+                break;
+
+            case 4:
+                if (timer.milliseconds() > 4000 ||
+                        Math.abs(robot.driveTrain.fl.getTargetPosition() - robot.driveTrain.fl.getCurrentPosition()) < 25) {
+                    robot.driveTrain.stop();
+                    robot.driveTrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    command++;
+                }
+                break;
+
+            case 5:
+                gyroVal = (int)robot.sensors.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+                robot.driveTrain.gyroCorrect(-90, 2, gyroVal, .05, .3);
+                if (robot.driveTrain.fl.getPower() == 0) {
+                    timer.reset();
+                    command++;
+                }
+                break;
+
+            case 6:
+                robot.markerDeploy.drop();
+                timer.reset();
+                command++;
+                break;
+
+            case 7:
+                if (timer.milliseconds() > 500) {
+                    robot.driveTrain.stop();
+                    timer.reset();
+                    command++;
+                }
+                robot.driveTrain.strafepow(-.5);
+                break;
+
+            case 8:
+                gyroVal = (int)robot.sensors.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+                robot.driveTrain.gyroCorrect(135, 1, gyroVal, .05, .2);
+                if (robot.driveTrain.fl.getPower() == 0) {
+                    timer.reset();
+                    command++;
+                }
+                break;
+
+            case 9:
+                robot.driveTrain.setTarget(8 * 60);
+                robot.driveTrain.drivepow(.7);
+                timer.reset();
+                break;
+
+            case 10:
+                if (timer.milliseconds() > 10000 ||
+                        Math.abs(robot.driveTrain.fl.getTargetPosition() - robot.driveTrain.fl.getCurrentPosition()) < 25) {
+                    robot.driveTrain.stop();
+                    robot.driveTrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    command++;
+                }
+                break;
+
+            case 11:
+                robot.stop();
+                command++;
+                break;
 
         }
 
