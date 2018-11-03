@@ -48,9 +48,12 @@ public class Telebop extends OpMode {
 
         robot.driveTrain.tankControl(gamepad1);
 
-        if (gamepad2.dpad_up) robot.lift.drop();
-        else if (gamepad2.dpad_down) robot.lift.lift();
+        if (gamepad1.dpad_up) robot.lift.drop();
+        else if (gamepad1.dpad_down) robot.lift.lift();
         else robot.lift.stop();
+
+        if (gamepad1.a) robot.markerDeploy.drop();
+        else robot.markerDeploy.raise();
 
         /*if (gamepad2.a) robot.intake.intake();
         else if (gamepad2.b) robot.intake.outtake();
