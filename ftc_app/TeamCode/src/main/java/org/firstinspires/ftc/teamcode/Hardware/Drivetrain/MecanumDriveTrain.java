@@ -129,11 +129,6 @@ public class MecanumDriveTrain extends GenericDriveTrain {
         fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-
-
-
         //Set to brake zeroPower for wacky drifting?
     }
 
@@ -152,7 +147,50 @@ public class MecanumDriveTrain extends GenericDriveTrain {
 
     @Override
     public void stop() {
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
+    }
 
+    public void setTarget(int target) {
+        fl.setTargetPosition(fl.getCurrentPosition() + target);
+        fr.setTargetPosition(fr.getCurrentPosition() + target);
+        bl.setTargetPosition(bl.getCurrentPosition() + target);
+        br.setTargetPosition(br.getCurrentPosition() + target);
+    }
+
+    public void setRunMode(DcMotor.RunMode mode) {
+        fl.setMode(mode);
+        fr.setMode(mode);
+        bl.setMode(mode);
+        br.setMode(mode);
+    }
+
+    /**
+     * @param gyroTarget The target heading in degrees, between 0 and 360
+     * @param gyroRange The acceptable range off target in degrees, usually 1 or 2
+     * @param gyroActual The current heading in degrees, between 0 and 360
+     * @param minSpeed The minimum power to apply in order to turn (e.g. 0.05 when moving or 0.15 when stopped)
+     * @param addSpeed The maximum additional speed to apply in order to turn (proportional component), e.g. 0.3
+     */
+    public void gyroCorrect(double gyroTarget, double gyroRange, double gyroActual, double minSpeed, double addSpeed) {
+        double delta = (gyroTarget - gyroActual + 360.0) % 360.0; //the difference between target and actual mod 360
+        if (delta > 180.0) delta -= 360.0; //makes delta between -180 and 180
+        if (Math.abs(delta) > gyroRange) { //checks if delta is out of range
+            double gyroMod = delta / 45.0; //scale from -1 to 1 if delta is less than 45 degrees
+            if (Math.abs(gyroMod) > 1.0) gyroMod = Math.signum(gyroMod); //set gyromod to 1 or -1 if the error is more than 45 degrees
+            this.turn(minSpeed * Math.signum(gyroMod) + addSpeed * gyroMod);
+        }
+        else {
+            this.turn(0.0);
+        }
+    }
+    private void turn(double sPower) {
+        fl.setPower(-sPower);
+        fr.setPower(sPower);
+        bl.setPower(-sPower);
+        br.setPower(sPower);
     }
 
     @Override
