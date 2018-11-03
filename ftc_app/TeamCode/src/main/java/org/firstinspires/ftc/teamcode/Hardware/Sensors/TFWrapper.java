@@ -1,10 +1,12 @@
-package org.firstinspires.ftc.teamcode.Hardware;
+package org.firstinspires.ftc.teamcode.Hardware.Sensors;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Sensors implements Subsystem {
-    public Sensors(){}
+import org.firstinspires.ftc.teamcode.Hardware.State;
+import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
+
+public class TFWrapper implements Subsystem {
+    public TFWrapper() {}
 
     @Override
     public void init(HardwareMap hwMap) {
