@@ -18,7 +18,7 @@ public class Bot {
     //public Intake intake = new Intake();
     public Lift lift = new Lift();
     //public Shooter shooter = new Shooter();
-    //public MarkerDeploy markerDeploy = new MarkerDeploy();
+    public MarkerDeploy markerDeploy = new MarkerDeploy();
     //public Sensors sensors = new Sensors();
 
 
