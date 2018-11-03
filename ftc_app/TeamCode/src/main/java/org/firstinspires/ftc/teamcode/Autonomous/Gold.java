@@ -13,9 +13,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
-@Autonomous(name = "RedGold", group = "Auton")
+@Autonomous(name = "Gold", group = "Auton")
 //@Disabled
-public class RedGold extends OpMode {
+public class Gold extends OpMode {
 
     Bot robot = new Bot();
     int command = 0;
@@ -66,9 +66,10 @@ public class RedGold extends OpMode {
                 break;
 
             case 3:
-                robot.driveTrain.setTarget(86 + 75);
-                robot.driveTrain.drivepow(.3);
+                robot.driveTrain.setTarget(86 + 45);
+                robot.driveTrain.drivepow(.5);
                 timer.reset();
+                command++;
                 break;
 
             case 4:
@@ -101,26 +102,58 @@ public class RedGold extends OpMode {
                     timer.reset();
                     command++;
                 }
-                robot.driveTrain.strafepow(-.5);
+                robot.driveTrain.strafepow(.5);
                 break;
 
             case 8:
+                robot.markerDeploy.drop();
+                timer.reset();
+                command++;
+                break;
+
+            case 9:
+                if (timer.milliseconds() > 500) {
+                    robot.driveTrain.stop();
+                    timer.reset();
+                    command++;
+                }
+                robot.driveTrain.strafepow(-.5);
+                break;
+
+            case 10:
+                robot.markerDeploy.drop();
+                timer.reset();
+                command++;
+                break;
+
+            case 11:
+                if (timer.milliseconds() > 500) {
+                    robot.driveTrain.stop();
+                    timer.reset();
+                    command++;
+                }
+                robot.driveTrain.strafepow(.1);
+                break;
+
+            case 12:
                 gyroVal = (int)robot.sensors.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
                 robot.driveTrain.gyroCorrect(-135, 1, gyroVal, .05, .2);
                 if (robot.driveTrain.fl.getPower() == 0) {
                     timer.reset();
+                    robot.markerDeploy.raise();
                     command++;
                 }
                 break;
 
-            case 9:
+            case 13:
                 robot.driveTrain.setTarget(8 * 60);
                 robot.driveTrain.drivepow(.7);
                 timer.reset();
+                command++;
                 break;
 
-            case 10:
-                if (timer.milliseconds() > 10000 ||
+            case 14:
+                if (timer.milliseconds() > 5000 ||
                         Math.abs(robot.driveTrain.fl.getTargetPosition() - robot.driveTrain.fl.getCurrentPosition()) < 25) {
                     robot.driveTrain.stop();
                     robot.driveTrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -128,7 +161,7 @@ public class RedGold extends OpMode {
                 }
                 break;
 
-            case 11:
+            case 15:
                 robot.stop();
                 command++;
                 break;
