@@ -43,6 +43,48 @@ public class MecanumDriveTrain extends GenericDriveTrain {
         });
     }
 
+    @Override
+    public void init(HardwareMap hwMap) {
+        fl = hwMap.get(DcMotor.class, "fl");
+        fr = hwMap.get(DcMotor.class, "fr");
+        bl = hwMap.get(DcMotor.class, "bl");
+        br = hwMap.get(DcMotor.class, "br");
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        br.setDirection(DcMotorSimple.Direction.FORWARD);
+        fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //Set to brake zeroPower for wacky drifting?
+    }
+
+    @Override
+    public void start() {
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
+    @Override
+    public void stop() {
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
+    }
+
     public PowerVector4WD driveVector(DirRotVector drv, double botTheta) {
         return new PowerVector4WD(powerMatrix.mult(rotationMatrix(botTheta).mult(drv).scale(-Math.sqrt(2)/r)));
     }
@@ -109,48 +151,6 @@ public class MecanumDriveTrain extends GenericDriveTrain {
         fr.setPower(power);
         bl.setPower(power);
         br.setPower(-power);
-    }
-
-    @Override
-    public void init(HardwareMap hwMap) {
-        fl = hwMap.get(DcMotor.class, "fl");
-        fr = hwMap.get(DcMotor.class, "fr");
-        bl = hwMap.get(DcMotor.class, "bl");
-        br = hwMap.get(DcMotor.class, "br");
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        br.setDirection(DcMotorSimple.Direction.FORWARD);
-        fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //Set to brake zeroPower for wacky drifting?
-    }
-
-    @Override
-    public void start() {
-        fl.setPower(0);
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);
-    }
-
-    @Override
-    public void reset() {
-
-    }
-
-    @Override
-    public void stop() {
-        fl.setPower(0);
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);
     }
 
     public void setTarget(int targetDistance) {
