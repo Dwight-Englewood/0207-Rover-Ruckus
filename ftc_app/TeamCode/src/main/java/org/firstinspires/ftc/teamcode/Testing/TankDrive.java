@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Testing;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
 @TeleOp(name = "TankDrive", group = "Teleop")
+@Disabled
 public class TankDrive extends OpMode {
 
     DcMotor fl, fr, bl, br;

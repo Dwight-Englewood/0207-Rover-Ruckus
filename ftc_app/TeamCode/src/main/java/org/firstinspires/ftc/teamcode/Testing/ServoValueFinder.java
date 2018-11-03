@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Testing;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -14,6 +15,7 @@ import java.util.List;
 
 
 @TeleOp(name = "ServoValueFinder", group = "Teleop")
+@Disabled
 public class ServoValueFinder extends OpMode {
 
     final int cooldownTime = 100;

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Testing;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
 
 
 @TeleOp(name = "FieldCentricDrive", group = "Teleop")
+@Disabled
 public class FieldCentricDrive extends OpMode {
 
     Bot boot = new Bot();
