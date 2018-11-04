@@ -8,10 +8,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
-@Autonomous(name = "BlueSilver", group = "Auton")
+@Autonomous(name = "Silver", group = "Auton")
 //@Disabled
-public class BlueSilver extends OpMode {
-    Bot robot = new Bot();
+public class Silver extends OpMode {
+    Bot robot = new Bot(true);
     int command = 0;
     ElapsedTime timer = new ElapsedTime();
 
@@ -33,11 +33,10 @@ public class BlueSilver extends OpMode {
 
     @Override
     public void loop() {
-        switch(command) {
+        switch (command) {
 
         }
 
-        telemetry.addData("Command: ", command);
     }
 
     @Override
