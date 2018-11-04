@@ -37,7 +37,6 @@ public class Lift implements Subsystem {
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         state = liftState.STOPPED;
-        //magSwitch = hwMap.get(DigitalChannel.class, "mag");
     }
 
     @Override
@@ -94,25 +93,6 @@ public class Lift implements Subsystem {
     public int getTicks() {
         return motor.getCurrentPosition();
     }
-
-    /*public boolean dropAmount() {
-        if (magSwitch.getState()) {
-            this.stop();
-            return true;
-        }
-        this.drop();
-        return false;
-    }
-    public boolean liftAmount() {
-        if (magSwitch.getState()) {
-            this.stop();
-            return true;
-        }
-        this.lift();
-        return false;
-    }*/
-
-
 
     @Override
     public liftState getState() {

@@ -26,19 +26,25 @@ public class TFWrapper implements Subsystem {
     public TFWrapper() {}
 
     private enum TFState implements State {
-        LEFT("Left"),
-        RIGHT("Right"),
-        CENTER("Center");
+        LEFT("Left", 0, 0), //temp vals
+        RIGHT("Right", 0, 0), //temp vals
+        CENTER("Center", 0, 0); //temp vals
 
         private String str;
-        TFState(String str) {
+        private int craterAng;
+        private int depotAng;
+        TFState(String str, int craterAng, int depotAng) {
             this.str = str;
+            this.craterAng = craterAng;
+            this.depotAng = depotAng;
         }
 
         @Override
         public String getStateVal() {
             return str;
         }
+        public int getCraterAng() {return craterAng;}
+        public int getDepotAng() {return depotAng;}
     }
     private TFState state;
 
@@ -75,7 +81,6 @@ public class TFWrapper implements Subsystem {
             // the last time that call was made.
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null) {
-                //telemetry.addData("# Object Detected", updatedRecognitions.size());
                 if (updatedRecognitions.size() == 3) {
                     int goldMineralX = -1;
                     int silverMineral1X = -1;
@@ -93,15 +98,12 @@ public class TFWrapper implements Subsystem {
                         if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
                             this.state = TFState.LEFT;
                             return TFState.LEFT;
-                            //telemetry.addData("Gold Mineral Position", "Left");
                         } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
                             this.state = TFState.RIGHT;
                             return TFState.RIGHT;
-                            //telemetry.addData("Gold Mineral Position", "Right");
                         } else {
                             this.state = TFState.CENTER;
                             return TFState.CENTER;
-                            //telemetry.addData("Gold Mineral Position", "Center");
                         }
                     }
                 }
