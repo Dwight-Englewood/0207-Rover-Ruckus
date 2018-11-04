@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Bot;
 @TeleOp(name = "LiftTest", group = "Teleop")
 public class LiftTest extends OpMode {
 
-    Bot robot = new Bot();
+    Bot robot = new Bot(false);
 
     @Override
     public void init() {

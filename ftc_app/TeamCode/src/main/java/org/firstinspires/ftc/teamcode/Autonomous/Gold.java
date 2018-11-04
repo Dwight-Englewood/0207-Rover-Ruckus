@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Bot;
 //@Disabled
 public class Gold extends OpMode {
 
-    Bot robot = new Bot();
+    Bot robot = new Bot(true);
     int command = 0;
     ElapsedTime timer = new ElapsedTime();
 

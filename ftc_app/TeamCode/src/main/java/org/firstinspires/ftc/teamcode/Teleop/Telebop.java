@@ -14,26 +14,19 @@ import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
 @TeleOp(name = "Telebop", group = "Teleop")
 public class Telebop extends OpMode {
 
-    Bot robot = new Bot();
+    Bot robot = new Bot(false);
     BNO055IMU imu;
     BNO055IMU.Parameters parameters;
 
     @Override
     public void init() {
         robot.init(hardwareMap);
-        /*imu = hardwareMap.get(BNO055IMU.class, "imu");
-        parameters = new BNO055IMU.Parameters();
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        imu.initialize(parameters);*/
     }
 
     @Override
     public void init_loop() {
-        //if (imu.isGyroCalibrated()) {
             telemetry.addLine("Ready.");
             telemetry.update();
-        //}
     }
 
     @Override
@@ -43,9 +36,6 @@ public class Telebop extends OpMode {
 
     @Override
     public void loop() {
-        //robot.driveTrain.drive(new DirRotVector(gamepad1.left_stick_x, -gamepad1.left_stick_y,
-        //        imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle));
-
         robot.driveTrain.tankControl(gamepad1);
 
         if (gamepad1.dpad_up) robot.lift.drop();
@@ -54,10 +44,6 @@ public class Telebop extends OpMode {
 
         if (gamepad1.a) robot.markerDeploy.drop();
         else robot.markerDeploy.raise();
-
-        /*if (gamepad2.a) robot.intake.intake();
-        else if (gamepad2.b) robot.intake.outtake();
-        else robot.intake.stop();*/
     }
 
     @Override

@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Bot;
 @TeleOp(name = "IMUTest", group = "Teleop")
 public class IMUTest extends OpMode {
 
-    Bot robot = new Bot();
+    Bot robot = new Bot(false);
 
     @Override
     public void init() {

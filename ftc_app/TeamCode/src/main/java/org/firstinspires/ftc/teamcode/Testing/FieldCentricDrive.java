@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
 @Disabled
 public class FieldCentricDrive extends OpMode {
 
-    Bot boot = new Bot();
+    Bot boot = new Bot(false);
     /*
     fr = 1
     fl = 2
