@@ -56,6 +56,11 @@ public class Lift implements Subsystem {
         state = liftState.STOPPED;
     }
 
+    @Override
+    public liftState getState() {
+        return state;
+    }
+
     public void lift() {
         motor.setPower(-1);
         state = liftState.LIFTING;
@@ -73,8 +78,8 @@ public class Lift implements Subsystem {
             return true;
         }
         if (motor.getMode() != DcMotor.RunMode.RUN_TO_POSITION) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if (motor.getTargetPosition() != 19700) motor.setTargetPosition(19700); //temp value
-        motor.setPower(1); //temp value
+        if (motor.getTargetPosition() != 19700) motor.setTargetPosition(19700);
+        motor.setPower(1);
         return false;
     }
 
@@ -82,11 +87,23 @@ public class Lift implements Subsystem {
         if (motor.getCurrentPosition() < 25) {
             motor.setPower(0);
             motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            return true; //temp value
+            return true;
         }
         if (motor.getMode() != DcMotor.RunMode.RUN_TO_POSITION) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if (motor.getTargetPosition() != 0) motor.setTargetPosition(0); //temp value
-        motor.setPower(-1); //temp value
+        if (motor.getTargetPosition() != 0) motor.setTargetPosition(0);
+        motor.setPower(-1);
+        return false;
+    }
+
+    public boolean teleopOldYears() {
+        if (motor.getCurrentPosition() < -19700) {
+            motor.setPower(0);
+            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            return true;
+        }
+        if (motor.getMode() != DcMotor.RunMode.RUN_TO_POSITION) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if (motor.getTargetPosition() != -19700) motor.setTargetPosition(-19700);
+        motor.setPower(-1);
         return false;
     }
 
@@ -94,10 +111,6 @@ public class Lift implements Subsystem {
         return motor.getCurrentPosition();
     }
 
-    @Override
-    public liftState getState() {
-        return state;
-    }
 }
 
 
