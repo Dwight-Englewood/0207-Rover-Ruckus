@@ -72,7 +72,9 @@ public class TFWrapper implements Subsystem {
 
     @Override
     public void stop() {
-
+        if (tfod != null) {
+            tfod.shutdown();
+        }
     }
 
     @Override

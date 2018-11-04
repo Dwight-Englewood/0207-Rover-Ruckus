@@ -11,7 +11,6 @@ import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
 public class Sensors implements Subsystem {
     private BNO055IMU imu;
-    public TFWrapper tensorflow;
 
     public Sensors(){}
 

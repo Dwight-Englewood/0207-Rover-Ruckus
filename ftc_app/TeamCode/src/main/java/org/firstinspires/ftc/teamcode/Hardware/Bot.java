@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Drivetrain.MecanumDriveTrain;
 import org.firstinspires.ftc.teamcode.Hardware.Scoring.Lift;
 import org.firstinspires.ftc.teamcode.Hardware.Scoring.MarkerDeploy;
 import org.firstinspires.ftc.teamcode.Hardware.Sensors.Sensors;
+import org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapper;
 
 import java.lang.reflect.Field;
 
@@ -17,6 +18,7 @@ public class Bot {
     public Lift lift = new Lift();
     public MarkerDeploy markerDeploy = new MarkerDeploy();
     public Sensors sensors = new Sensors();
+    public TFWrapper tensorFlow = new TFWrapper();
 
 
     public void init(HardwareMap hwm) {
