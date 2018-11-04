@@ -75,7 +75,13 @@ public class TFWrapper implements Subsystem {
 
     }
 
-    public TFState getPlace() {
+    @Override
+    public State getState() {
+        this.state = updateState();
+        return this.state;
+    }
+
+    private TFState updateState() {
         if (tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
@@ -138,8 +144,4 @@ public class TFWrapper implements Subsystem {
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
 
-    @Override
-    public State getState() {
-        return null;
-    }
 }
