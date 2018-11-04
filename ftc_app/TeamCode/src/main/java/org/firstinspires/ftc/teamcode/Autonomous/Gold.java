@@ -57,7 +57,7 @@ public class Gold extends OpMode {
                 break;
 
             case 2:
-                int gyroVal = (int)robot.sensors.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+                int gyroVal = (int)robot.sensors.getGyroRotation(AngleUnit.DEGREES);
                 robot.driveTrain.gyroCorrect(0, 1, gyroVal, .05, .2);
                 if (robot.driveTrain.fl.getPower() == 0) {
                     timer.reset();
@@ -82,7 +82,7 @@ public class Gold extends OpMode {
                 break;
 
             case 5:
-                gyroVal = (int)robot.sensors.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+                gyroVal = (int)robot.sensors.getGyroRotation(AngleUnit.DEGREES);
                 robot.driveTrain.gyroCorrect(90, 2, gyroVal, .05, .3);
                 if (robot.driveTrain.fl.getPower() == 0) {
                     timer.reset();
@@ -136,7 +136,7 @@ public class Gold extends OpMode {
                 break;
 
             case 12:
-                gyroVal = (int)robot.sensors.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+                gyroVal = (int)robot.sensors.getGyroRotation(AngleUnit.DEGREES);
                 robot.driveTrain.gyroCorrect(-135, 1, gyroVal, .05, .2);
                 if (robot.driveTrain.fl.getPower() == 0) {
                     timer.reset();

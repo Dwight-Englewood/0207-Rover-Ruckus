@@ -31,7 +31,7 @@ public class IMUTest extends OpMode {
 
     @Override
     public void loop() {
-        int gyroVal = (int)robot.sensors.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+        int gyroVal = (int)robot.sensors.getGyroRotation(AngleUnit.DEGREES);
         robot.driveTrain.gyroCorrect(0,1, gyroVal, .05, .4);
 
         telemetry.addData("heading", gyroVal);
