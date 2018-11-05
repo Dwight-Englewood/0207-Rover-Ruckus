@@ -90,12 +90,12 @@ public class MecanumDriveTrain extends DriveTrain {
     }
 
     public void drive(DirRotVector drv, double botTheta) {
-        PowerVector4WD merp = this.driveVector(drv, botTheta);
-        merp = merp.scale();
-        this.fr.setPower(merp.get(0, 0));
-        this.fl.setPower(merp.get(1, 0));
-        this.bl.setPower(merp.get(2, 0));
-        this.br.setPower(merp.get(3, 0));
+        PowerVector4WD powVector = this.driveVector(drv, botTheta);
+        powVector = powVector.scale();
+        this.fr.setPower(powVector.get(0, 0));
+        this.fl.setPower(powVector.get(1, 0));
+        this.bl.setPower(powVector.get(2, 0));
+        this.br.setPower(powVector.get(3, 0));
     }
 
     public void rotate(boolean m) {
