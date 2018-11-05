@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Hardware.State;
 import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
 import org.firstinspires.ftc.teamcode.Matrices.PowerVector4WD;
 
-public class MecanumDriveTrain extends GenericDriveTrain {
+public class MecanumDriveTrain extends DriveTrain {
 
     private final double l, alpha, r;
     private final SimpleMatrix powerMatrix;
