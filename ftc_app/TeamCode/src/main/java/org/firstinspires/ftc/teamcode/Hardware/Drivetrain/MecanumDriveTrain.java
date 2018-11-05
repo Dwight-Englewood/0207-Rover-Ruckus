@@ -117,8 +117,9 @@ public class MecanumDriveTrain extends DriveTrain {
         return new SimpleMatrix(new double[][]{{Math.cos(theta), Math.sin(theta), 0}, {-Math.sin(theta), Math.cos(theta), 0}, {0, 0, 1}});
     }
 
-    public void tankControl(Gamepad gamepad) {
+    public void tankControl(Gamepad gamepad, boolean slowMode) {
         if (gamepad.left_trigger >.15) {
+            gamepad.left_trigger *= (slowMode ? .5 : 1);
             fl.setPower(-gamepad.left_trigger);
             fr.setPower(gamepad.left_trigger);
             bl.setPower(gamepad.left_trigger);
@@ -126,12 +127,15 @@ public class MecanumDriveTrain extends DriveTrain {
             return;
         }
         if (gamepad.right_trigger >.15) {
+            gamepad.right_trigger *= (slowMode ? .5 : 1);
             fl.setPower(gamepad.right_trigger);
             fr.setPower(-gamepad.right_trigger);
             bl.setPower(-gamepad.right_trigger);
             br.setPower(gamepad.right_trigger);
             return;
         }
+        gamepad.left_stick_y *= (slowMode ? .5 : 1);
+        gamepad.right_stick_y *= (slowMode ? .5 : 1);
         fl.setPower(-gamepad.left_stick_y);
         bl.setPower(-gamepad.left_stick_y);
         fr.setPower(-gamepad.right_stick_y);

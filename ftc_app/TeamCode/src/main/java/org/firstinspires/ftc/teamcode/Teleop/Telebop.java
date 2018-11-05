@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Teleop;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -18,6 +19,9 @@ public class Telebop extends OpMode {
     BNO055IMU imu;
     BNO055IMU.Parameters parameters;
 
+    ElapsedTime slowTimer = new ElapsedTime();
+    boolean slow = false;
+
     @Override
     public void init() {
         robot.init(hardwareMap);
@@ -32,11 +36,17 @@ public class Telebop extends OpMode {
     @Override
     public void start() {
         robot.start();
+        slowTimer.reset();
     }
 
     @Override
     public void loop() {
-        robot.driveTrain.tankControl(gamepad1);
+        if (gamepad1.start && slowTimer.milliseconds() >= 750) {
+            slow = !slow;
+            slowTimer.reset();
+        }
+
+        robot.driveTrain.tankControl(gamepad1, slow);
 
         if (gamepad1.dpad_up) robot.lift.drop();
         else if (gamepad1.dpad_down) robot.lift.lift();
