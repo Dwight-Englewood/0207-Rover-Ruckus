@@ -83,6 +83,8 @@ public class Lift implements Subsystem {
         return false;
     }
 
+
+    //HOPEFULLY REPLACE W/ MAGLIMSWITCH THING;
     public boolean oldYears() {
         if (motor.getCurrentPosition() < 25) {
             motor.setPower(0);
@@ -95,6 +97,7 @@ public class Lift implements Subsystem {
         return false;
     }
 
+    //HOPEFULLY REPLACE W/ MAGLIMSWITCH THING
     public boolean teleopOldYears() {
         if (motor.getCurrentPosition() < -19700) {
             motor.setPower(0);

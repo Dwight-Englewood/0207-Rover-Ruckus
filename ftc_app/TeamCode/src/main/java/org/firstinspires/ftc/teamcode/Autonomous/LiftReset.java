@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Testing;
+package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
-@TeleOp(name = "LiftTest", group = "Teleop")
-public class LiftTest extends OpMode {
+@TeleOp(name = "LiftReset", group = "Teleop")
+public class LiftReset extends OpMode {
 
     Bot robot = new Bot(false);
 
@@ -27,7 +27,8 @@ public class LiftTest extends OpMode {
 
     @Override
     public void loop() {
-        telemetry.addData("newyears?", robot.lift.newYears());
+        telemetry.addData("oldYears?", robot.lift.teleopOldYears());
+        telemetry.addData("ticks ", robot.lift.getTicks());
     }
 
     @Override
