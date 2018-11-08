@@ -34,7 +34,21 @@ public class Silver extends OpMode {
     @Override
     public void loop() {
         switch (command) {
+            case 0:
+                if (robot.lift.newYears()) {
+                    timer.reset();
+                    command++;
+                }
+                break;
 
+            case 1:
+                if (timer.milliseconds() > 500) {
+                    robot.driveTrain.stop();
+                    timer.reset();
+                    command++;
+                }
+                robot.driveTrain.drivepow(.3);
+                break;
         }
 
     }

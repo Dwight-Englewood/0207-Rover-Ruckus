@@ -163,12 +163,14 @@ public class Gold extends OpMode {
 
             case 15:
                 robot.stop();
+                timer.reset();
                 command++;
                 break;
 
         }
 
         telemetry.addData("Command: ", command);
+        telemetry.addData("Time: ", timer.milliseconds());
     }
 
     @Override

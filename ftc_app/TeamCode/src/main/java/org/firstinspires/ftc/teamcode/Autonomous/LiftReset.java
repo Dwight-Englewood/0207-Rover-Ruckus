@@ -27,7 +27,7 @@ public class LiftReset extends OpMode {
 
     @Override
     public void loop() {
-        telemetry.addData("oldYears?", robot.lift.teleopOldYears());
+        //telemetry.addData("oldYears?", robot.lift.teleopOldYears());
         telemetry.addData("ticks ", robot.lift.getTicks());
     }
 
