@@ -52,7 +52,7 @@ import java.util.List;
  * is explained below.
  */
 @TeleOp(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
-@Disabled
+//@Disabled
 public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
@@ -70,7 +70,7 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
      * Once you've obtained a license key, copy the string from the Vuforia web site
      * and paste it in to your code on the next line, between the double quotes.
      */
-    private static final String VUFORIA_KEY = "AbZUuPf/////AAAAGUmS0Chan00iu7rnRhzu63+JgDtPo889M6dNtjvv+WKxiMJ8w2DgSJdM2/zEI+a759I7DlPj++D2Ryr5sEHAg4k1bGKdo3BKtkSeh8hCy78w0SIwoOACschF/ImuyP/V259ytjiFtEF6TX4teE8zYpQZiVkCQy0CmHI9Ymoa7NEvFEqfb3S4P6SicguAtQ2NSLJUX+Fdn49SEJKvpSyhwyjbrinJbak7GWqBHcp7fGh7TNFcfPFMacXg28XxlvVpQaVNgkvuqolN7wkTiR9ZMg6Fnm0zN4Xjr5lRtDHeE51Y0bZoBUbyLWSA+ts3SyDjDPPUU7GMI+Ed/ifb0csVpM12aOiNr8d+HsfF2Frnzrj2";
+    private static final String VUFORIA_KEY = "ASNkUkr/////AAABmTrV/eSRl0jiu2pfD5+BlNVK1BgJEwQIn1y56pTURHM2cq1DcP2cGw877jrqqx4pu8COKt8gLSS5R6JTMZSrAwqOs9SL8RpZAbmamry52RWgXxiWAAZgtI+GOH2k+cYvGl74UcgcXk8sRlQQdpk9GOwQhEMZpsnbq/7sMIyc+P4RHocs1gFVitOG9HRknFLBWl1xTm32yKrl3oi/UA5HWXAcCXmZPp6q4WTqb2ntEBw9wh2sf/Fb7bWiQp2Grmt+Q3Gzs10NIyM9GiFCTQbj2onoes7cXcphisfFE2pC69KFG3qytN5w2uR4m1h2+3Or1KedRWKAxwoXcHeKGHVsXcbZoAIrTNNxa2uGjcLNEixI";
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
