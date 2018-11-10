@@ -38,7 +38,7 @@ public class VisionTest extends OpMode {
 
     @Override
     public void loop() {
-        vmw.updateState();
+        //vmw.updateState();
         telemetry.addData("dab", vmw.getState().vumarkName.toString());
         telemetry.addData("dab", vmw.getState().visible);
 

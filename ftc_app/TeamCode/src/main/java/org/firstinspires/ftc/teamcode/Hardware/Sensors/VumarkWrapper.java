@@ -23,12 +23,15 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 
 public class VumarkWrapper implements Subsystem {
+
     private static final String VUFORIA_KEY = "ASNkUkr/////AAABmTrV/eSRl0jiu2pfD5+BlNVK1BgJEwQIn1y56pTURHM2cq1DcP2cGw877jrqqx4pu8COKt8gLSS5R6JTMZSrAwqOs9SL8RpZAbmamry52RWgXxiWAAZgtI+GOH2k+cYvGl74UcgcXk8sRlQQdpk9GOwQhEMZpsnbq/7sMIyc+P4RHocs1gFVitOG9HRknFLBWl1xTm32yKrl3oi/UA5HWXAcCXmZPp6q4WTqb2ntEBw9wh2sf/Fb7bWiQp2Grmt+Q3Gzs10NIyM9GiFCTQbj2onoes7cXcphisfFE2pC69KFG3qytN5w2uR4m1h2+3Or1KedRWKAxwoXcHeKGHVsXcbZoAIrTNNxa2uGjcLNEixI";
     private static final float mmPerInch = 25.4f;
     private static final float mmFTCFieldWidth = (12 * 6) * mmPerInch;       // the width of the FTC field (from the center point to the outer panels)
     private static final float mmTargetHeight = (6) * mmPerInch;          // the height of the center of the target image above the floor
+
     WebcamName cam;
     List<VuforiaTrackable> allTrackables;
+
     private OpenGLMatrix lastLocation = null;
     private boolean targetVisible = false;
     private VuforiaLocalizer vuforia;
@@ -64,7 +67,7 @@ public class VumarkWrapper implements Subsystem {
         return this.state;
     }
 
-    public void updateState() {
+    private void updateState() {
 
         // check all the trackable target to see which one (if any) is visible.
         targetVisible = false;
