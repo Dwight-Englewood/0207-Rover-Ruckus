@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.Hardware.Drivetrain.MecanumDriveTrain;
 import org.firstinspires.ftc.teamcode.Hardware.Scoring.Lift;
 import org.firstinspires.ftc.teamcode.Hardware.Scoring.MarkerDeploy;
-import org.firstinspires.ftc.teamcode.Hardware.Sensors.Sensors;
+import org.firstinspires.ftc.teamcode.Hardware.Sensors.SensorSystem;
 import org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapper;
 
 import java.lang.reflect.Field;
@@ -15,7 +15,7 @@ public class Bot {
     public MecanumDriveTrain driveTrain = new MecanumDriveTrain(5, 9, 9);
     public Lift lift = new Lift();
     public MarkerDeploy markerDeploy = new MarkerDeploy();
-    public Sensors sensors = new Sensors();
+    public SensorSystem sensorSystem = new SensorSystem();
     public TFWrapper tensorFlow = new TFWrapper();
 
     private boolean isAuton;

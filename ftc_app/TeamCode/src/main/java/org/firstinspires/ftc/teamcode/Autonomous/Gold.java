@@ -1,15 +1,11 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
@@ -57,7 +53,7 @@ public class Gold extends OpMode {
                 break;
 
             case 2:
-                int gyroVal = (int)robot.sensors.getGyroRotation(AngleUnit.DEGREES);
+                int gyroVal = (int)robot.sensorSystem.getGyroRotation(AngleUnit.DEGREES);
                 robot.driveTrain.gyroCorrect(0, 1, gyroVal, .05, .2);
                 if (robot.driveTrain.fl.getPower() == 0) {
                     timer.reset();
@@ -82,7 +78,7 @@ public class Gold extends OpMode {
                 break;
 
             case 5:
-                gyroVal = (int)robot.sensors.getGyroRotation(AngleUnit.DEGREES);
+                gyroVal = (int)robot.sensorSystem.getGyroRotation(AngleUnit.DEGREES);
                 robot.driveTrain.gyroCorrect(90, 2, gyroVal, .05, .3);
                 if (robot.driveTrain.fl.getPower() == 0) {
                     timer.reset();
@@ -136,7 +132,7 @@ public class Gold extends OpMode {
                 break;
 
             case 12:
-                gyroVal = (int)robot.sensors.getGyroRotation(AngleUnit.DEGREES);
+                gyroVal = (int)robot.sensorSystem.getGyroRotation(AngleUnit.DEGREES);
                 robot.driveTrain.gyroCorrect(-135, 1, gyroVal, .05, .2);
                 if (robot.driveTrain.fl.getPower() == 0) {
                     timer.reset();

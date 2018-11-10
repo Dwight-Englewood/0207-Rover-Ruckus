@@ -1,12 +1,9 @@
 package org.firstinspires.ftc.teamcode.Testing.Sensors;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
@@ -31,7 +28,7 @@ public class IMUTest extends OpMode {
 
     @Override
     public void loop() {
-        int gyroVal = (int)robot.sensors.getGyroRotation(AngleUnit.DEGREES);
+        int gyroVal = (int)robot.sensorSystem.getGyroRotation(AngleUnit.DEGREES);
         robot.driveTrain.gyroCorrect(0,1, gyroVal, .05, .4);
 
         telemetry.addData("heading", gyroVal);

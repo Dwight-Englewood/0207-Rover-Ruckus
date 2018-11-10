@@ -9,10 +9,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.Hardware.State;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
-public class Sensors implements Subsystem {
+public class SensorSystem implements Subsystem {
     private BNO055IMU imu;
 
-    public Sensors(){}
+    public SensorSystem(){}
 
     @Override
     public void init(HardwareMap hwMap) {
