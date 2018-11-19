@@ -22,6 +22,7 @@ public class TFWrapper implements Subsystem {
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
 
+    private boolean threeObjects = true;
 
     public TFWrapper() {}
 
@@ -50,10 +51,10 @@ public class TFWrapper implements Subsystem {
 
     @Override
     public void init(HardwareMap hwMap) {
-        initVuforia();
+        this.initVuforia();
 
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
-            initTfod(hwMap);
+            this.initTfod(hwMap);
         }
     }
 
@@ -78,18 +79,18 @@ public class TFWrapper implements Subsystem {
     }
 
     @Override
-    public State getState() {
-        this.state = updateState();
+    public TFState getState() {
+        this.updateState();
         return this.state;
     }
 
-    private TFState updateState() {
+    private void updateState() {
         if (tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null) {
-                if (updatedRecognitions.size() == 3) {
+                if (threeObjects && updatedRecognitions.size() == 3) {
                     int goldMineralX = -1;
                     int silverMineral1X = -1;
                     int silverMineral2X = -1;
@@ -105,19 +106,19 @@ public class TFWrapper implements Subsystem {
                     if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
                         if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
                             this.state = TFState.LEFT;
-                            return TFState.LEFT;
+                            //return TFState.LEFT;
                         } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
                             this.state = TFState.RIGHT;
-                            return TFState.RIGHT;
+                            //return TFState.RIGHT;
                         } else {
                             this.state = TFState.CENTER;
-                            return TFState.CENTER;
+                            //return TFState.CENTER;
                         }
                     }
                 }
             }
         }
-        return null;
+        //return null;
     }
 
     private void initVuforia() {
@@ -146,4 +147,5 @@ public class TFWrapper implements Subsystem {
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
 
+    public void setThreeObjects(boolean threeObjects) {this.threeObjects = threeObjects;}
 }
