@@ -14,6 +14,22 @@ public class SensorSystem implements Subsystem {
 
     public SensorSystem(){}
 
+    private enum sensorState implements State {
+        RUNNING("Running");
+
+
+        private String str;
+        sensorState(String str) {
+            this.str = str;
+        }
+
+        @Override
+        public String getStateVal() {
+            return str;
+        }
+    }
+    private sensorState state;
+
     @Override
     public void init(HardwareMap hwMap) {
         imu = hwMap.get(BNO055IMU.class, "imu");
@@ -35,8 +51,8 @@ public class SensorSystem implements Subsystem {
     }
 
     @Override
-    public State getState() {
-        return null;
+    public sensorState getState() {
+        return this.state;
     }
 
     public float getGyroRotation(AngleUnit unit) {

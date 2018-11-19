@@ -37,7 +37,27 @@ public class VumarkWrapper implements Subsystem {
     private VuforiaLocalizer vuforia;
     private VumarkState state;
 
-    public VumarkWrapper() {
+    public VumarkWrapper() {}
+
+    public class VumarkState implements State {
+        public VumarkName vumarkName;
+        public boolean visible;
+        public double posX;
+        public double posY;
+        public double posZ;
+        public double pitch;
+        public double roll;
+        public double heading;
+
+        public VumarkState() {
+            this.vumarkName = VumarkName.None;
+        }
+
+
+        @Override
+        public String getStateVal() {
+            return vumarkName.toString();
+        }
     }
 
     @Override
@@ -239,26 +259,5 @@ public class VumarkWrapper implements Subsystem {
 
     public enum VumarkName {
         BlueRover, RedFootprint, FrontCraters, BackSpace, None
-    }
-
-    public class VumarkState implements State {
-        public VumarkName vumarkName;
-        public boolean visible;
-        public double posX;
-        public double posY;
-        public double posZ;
-        public double pitch;
-        public double roll;
-        public double heading;
-
-        public VumarkState() {
-            this.vumarkName = VumarkName.None;
-        }
-
-
-        @Override
-        public String getStateVal() {
-            return vumarkName.toString();
-        }
     }
 }

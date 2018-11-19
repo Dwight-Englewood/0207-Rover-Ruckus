@@ -58,7 +58,7 @@ public class MarkerDeploy implements Subsystem {
     }
 
     @Override
-    public State getState() {
+    public markerState getState() {
         return state;
     }
 }
