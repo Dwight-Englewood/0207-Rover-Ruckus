@@ -36,34 +36,16 @@ public class VumarkWrapper implements Subsystem {
     private boolean targetVisible = false;
     private VuforiaLocalizer vuforia;
     private VumarkState state;
+    private VumarkData data;
 
-    public VumarkWrapper() {}
-
-    public class VumarkState implements State {
-        public VumarkName vumarkName;
-        public boolean visible;
-        public double posX;
-        public double posY;
-        public double posZ;
-        public double pitch;
-        public double roll;
-        public double heading;
-
-        public VumarkState() {
-            this.vumarkName = VumarkName.None;
-        }
-
-
-        @Override
-        public String getStateVal() {
-            return vumarkName.toString();
-        }
+    public VumarkWrapper() {
     }
 
     @Override
     public void init(HardwareMap hwMap) {
         cam = hwMap.get(WebcamName.class, "Webcam 1");
         this.state = new VumarkState();
+        this.data = new VumarkData(0, 0, 0, 0, 0, 0);
         initVuforia();
     }
 
@@ -81,10 +63,19 @@ public class VumarkWrapper implements Subsystem {
     public void stop() {
     }
 
-    @Override
-    public VumarkState getState() {
+    public State getState() {
         this.updateState();
         return this.state;
+    }
+
+    public double[] getPosition() {
+        this.updateState();
+        return (new double[]{this.data.posX, this.data.posY, this.data.posZ});
+    }
+
+    public double[] getOrientation() {
+        this.updateState();
+        return (new double[]{this.data.pitch, this.data.roll, this.data.heading});
     }
 
     private void updateState() {
@@ -92,9 +83,21 @@ public class VumarkWrapper implements Subsystem {
         // check all the trackable target to see which one (if any) is visible.
         targetVisible = false;
         for (VuforiaTrackable trackable : allTrackables) {
+
+
             if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
                 targetVisible = true;
-
+                if (trackable.getName().equals("Blue-Rover")) {
+                    this.state.vumarkName = VumarkName.BlueRover;
+                } else if (trackable.getName().equals("Back-Space")) {
+                    this.state.vumarkName = VumarkName.BackSpace;
+                } else if (trackable.getName().equals("Front-Craters")) {
+                    this.state.vumarkName = VumarkName.FrontCraters;
+                } else if (trackable.getName().equals("Red-Footprint")) {
+                    this.state.vumarkName = VumarkName.RedFootprint;
+                } else {
+                    this.state.vumarkName = VumarkName.VisibleUnknown;
+                }
                 // getUpdatedRobotLocation() will return null if no new information is available since
                 // the last time that call was made, or if the trackable is not currently visible.
                 OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
@@ -111,17 +114,18 @@ public class VumarkWrapper implements Subsystem {
 
             // express position (translation) of robot in inches.
             VectorF translation = lastLocation.getTranslation();
-            this.state.posX = translation.get(0) / mmPerInch;
-            this.state.posY = translation.get(1) / mmPerInch;
-            this.state.posZ = translation.get(2) / mmPerInch;
+            this.data.posX = translation.get(0) / mmPerInch;
+            this.data.posY = translation.get(1) / mmPerInch;
+            this.data.posZ = translation.get(2) / mmPerInch;
 
             // express the rotation of the robot in degrees.
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-            this.state.pitch = rotation.firstAngle;
-            this.state.roll = rotation.secondAngle;
-            this.state.heading = rotation.thirdAngle;
+            this.data.pitch = rotation.firstAngle;
+            this.data.roll = rotation.secondAngle;
+            this.data.heading = rotation.thirdAngle;
         } else {
             this.state.visible = false;
+            this.state.vumarkName = VumarkName.NotVisible;
         }
     }
 
@@ -258,6 +262,38 @@ public class VumarkWrapper implements Subsystem {
     }
 
     public enum VumarkName {
-        BlueRover, RedFootprint, FrontCraters, BackSpace, None
+        BlueRover, RedFootprint, FrontCraters, BackSpace, NotVisible, VisibleUnknown
+    }
+
+    private class VumarkState implements State {
+        public VumarkName vumarkName;
+        public boolean visible;
+
+
+        public VumarkState() {
+            this.vumarkName = VumarkName.NotVisible;
+        }
+
+        public String getStateVal() {
+            return vumarkName.toString();
+        }
+    }
+
+    private class VumarkData {
+        public double posX;
+        public double posY;
+        public double posZ;
+        public double pitch;
+        public double roll;
+        public double heading;
+
+        public VumarkData(double posX, double posY, double posZ, double pitch, double roll, double heading) {
+            this.posX = posX;
+            this.posY = posY;
+            this.posZ = posZ;
+            this.pitch = pitch;
+            this.roll = roll;
+            this.heading = heading;
+        }
     }
 }

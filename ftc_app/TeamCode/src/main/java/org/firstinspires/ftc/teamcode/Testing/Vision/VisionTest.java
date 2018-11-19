@@ -12,16 +12,14 @@ import org.firstinspires.ftc.teamcode.Hardware.Sensors.VumarkWrapper;
 @TeleOp(name = "VisionTest", group = "Teleop")
 public class VisionTest extends OpMode {
 
-    VumarkWrapper vmw = new VumarkWrapper();
-    BNO055IMU imu;
-    BNO055IMU.Parameters parameters;
+    Bot boot = new Bot(false);
 
     ElapsedTime slowTimer = new ElapsedTime();
     boolean slow = false;
 
     @Override
     public void init() {
-        vmw.init(hardwareMap);
+        boot.init(hardwareMap);
     }
 
     @Override
@@ -32,20 +30,28 @@ public class VisionTest extends OpMode {
 
     @Override
     public void start() {
-        vmw.start();
+        boot.start();
         slowTimer.reset();
     }
 
     @Override
     public void loop() {
         //vmw.updateState();
-        telemetry.addData("dab", vmw.getState().vumarkName.toString());
-        telemetry.addData("dab", vmw.getState().visible);
+        telemetry.addData("vumark", boot.vumarkWrapper.getState().getStateVal());
+        double[] pos = boot.vumarkWrapper.getPosition();
+        telemetry.addData("posX", pos[0]);
+        telemetry.addData("posY", pos[1]);
+        telemetry.addData("posZ", pos[2]);
+        double[] rot = boot.vumarkWrapper.getOrientation();
+        telemetry.addData("pitch", rot[0]);
+        telemetry.addData("roll", rot[1]);
+        telemetry.addData("heading", rot[2]);
+
 
     }
 
     @Override
     public void stop() {
-        vmw.stop();
+        boot.stop();
     }
 }

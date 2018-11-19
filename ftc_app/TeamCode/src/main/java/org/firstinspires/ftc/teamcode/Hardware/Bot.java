@@ -21,10 +21,13 @@ public class Bot {
     public VumarkWrapper vumarkWrapper = new VumarkWrapper();
 
     private boolean isAuton;
+    private boolean vumarkOn = false;
 
     public Bot(boolean isAuton) {
         this.isAuton = isAuton;
     }
+
+    public Bot(boolean isAuton, boolean vumarkOn) {this.isAuton = isAuton; this.vumarkOn = vumarkOn;}
 
     public void init(HardwareMap hwm) {
         Field[] fields = this.getClass().getDeclaredFields();
@@ -32,6 +35,9 @@ public class Bot {
             try {
                 if (f.get(this) instanceof Subsystem) {
                     if (!isAuton && f.get(this) instanceof TFWrapper) {
+                        continue;
+                    }
+                    if (vumarkOn && f.get(this) instanceof VumarkWrapper) {
                         continue;
                     }
                     Subsystem ss = (Subsystem) f.get(this);
