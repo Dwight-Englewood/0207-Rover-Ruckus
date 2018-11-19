@@ -63,7 +63,7 @@ public class Intake implements Subsystem {
     }
 
     @Override
-    public intakeState getState() {
+    public State getState() {
         return state;
     }
 }

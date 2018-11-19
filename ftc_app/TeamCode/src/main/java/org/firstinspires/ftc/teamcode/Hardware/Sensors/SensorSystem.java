@@ -51,7 +51,7 @@ public class SensorSystem implements Subsystem {
     }
 
     @Override
-    public sensorState getState() {
+    public State getState() {
         return this.state;
     }
 

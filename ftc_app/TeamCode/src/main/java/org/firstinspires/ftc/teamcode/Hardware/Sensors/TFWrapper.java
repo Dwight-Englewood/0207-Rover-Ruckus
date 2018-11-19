@@ -78,7 +78,7 @@ public class TFWrapper implements Subsystem {
     }
 
     @Override
-    public TFState getState() {
+    public State getState() {
         this.updateState();
         return this.state;
     }
