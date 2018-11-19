@@ -57,7 +57,7 @@ public class Lift implements Subsystem {
     }
 
     @Override
-    public liftState getState() {
+    public State getState() {
         return state;
     }
 

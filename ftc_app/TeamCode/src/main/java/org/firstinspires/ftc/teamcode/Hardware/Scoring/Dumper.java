@@ -6,20 +6,17 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Hardware.State;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
-public class MarkerDeploy implements Subsystem {
-    public MarkerDeploy() {
+public class Dumper implements Subsystem {
+    public Dumper() {}
 
-    }
-
-    private Servo servo;
-
-    private enum markerState implements State {
-        HOLDING("Holding"),
-        DROPPING("Dropping");
+    private Servo wall;
+    private enum DumperState implements State {
+        DUMPING("Dumping"),
+        HOLDING("Holding");
 
 
         private String str;
-        markerState(String str) {
+        DumperState(String str) {
             this.str = str;
         }
 
@@ -28,37 +25,39 @@ public class MarkerDeploy implements Subsystem {
             return str;
         }
     }
-    private markerState state;
+    private DumperState state;
 
     @Override
     public void init(HardwareMap hwMap) {
-        servo = hwMap.get(Servo.class, "mark");
-        this.raise();
+        wall = hwMap.get(Servo.class, "dump");
+        this.close();
     }
 
     @Override
     public void start() {
-        this.raise();
+
     }
 
     @Override
     public void reset() {
-        this.raise();
+        this.close();
     }
 
     @Override
-    public void stop() {}
+    public void stop() {
 
-    public void drop() {
-        servo.setPosition(1);
-    }
-
-    public void raise() {
-        servo.setPosition(0);
     }
 
     @Override
     public State getState() {
-        return state;
+        return this.state;
+    }
+
+    public void close() {
+        wall.setPosition(1);
+    }
+
+    public void open() {
+        wall.setPosition(0);
     }
 }
