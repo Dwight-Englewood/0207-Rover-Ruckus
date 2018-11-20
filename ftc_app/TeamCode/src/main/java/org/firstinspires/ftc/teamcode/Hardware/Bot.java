@@ -27,7 +27,10 @@ public class Bot {
         this.isAuton = isAuton;
     }
 
-    public Bot(boolean isAuton, boolean vumarkOn) {this.isAuton = isAuton; this.vumarkOn = vumarkOn;}
+    public Bot(boolean isAuton, boolean vumarkOn) {
+        this.isAuton = isAuton;
+        this.vumarkOn = vumarkOn;
+    }
 
     public void init(HardwareMap hwm) {
         Field[] fields = this.getClass().getDeclaredFields();
@@ -37,7 +40,7 @@ public class Bot {
                     if (!isAuton && f.get(this) instanceof TFWrapper) {
                         continue;
                     }
-                    if (vumarkOn && f.get(this) instanceof VumarkWrapper) {
+                    if (f.get(this) instanceof VumarkWrapper && vumarkOn) {
                         continue;
                     }
                     Subsystem ss = (Subsystem) f.get(this);
@@ -57,6 +60,10 @@ public class Bot {
                     if (!isAuton && f.get(this) instanceof TFWrapper) {
                         continue;
                     }
+
+                    if (f.get(this) instanceof VumarkWrapper && vumarkOn) {
+                        continue;
+                    }
                     Subsystem ss = (Subsystem) f.get(this);
                     ss.start();
                 }
@@ -74,6 +81,10 @@ public class Bot {
                     if (!isAuton && f.get(this) instanceof TFWrapper) {
                         continue;
                     }
+
+                    if (f.get(this) instanceof VumarkWrapper && vumarkOn) {
+                        continue;
+                    }
                     Subsystem ss = (Subsystem) f.get(this);
                     ss.reset();
                 }
@@ -86,7 +97,6 @@ public class Bot {
     public void stop() {
 
     }
-
     @Override
     public String toString() {
         String state = "";
@@ -95,6 +105,10 @@ public class Bot {
             try {
                 if (f.get(this) instanceof Subsystem) {
                     if (!isAuton && f.get(this) instanceof TFWrapper) {
+                        continue;
+                    }
+
+                    if (f.get(this) instanceof VumarkWrapper && vumarkOn) {
                         continue;
                     }
                     Subsystem ss = (Subsystem) f.get(this);
