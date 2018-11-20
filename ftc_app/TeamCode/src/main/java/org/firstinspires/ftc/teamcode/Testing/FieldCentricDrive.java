@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Matrices.PowerVector4WD;
 //@Disabled
 public class FieldCentricDrive extends OpMode {
 
-    Bot boot = new Bot(false);
+    Bot boot = new Bot(false, true);
     /*
     fr = 1
     fl = 2
@@ -53,6 +53,7 @@ public class FieldCentricDrive extends OpMode {
     public void loop() {
 
         double botTheta = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
+        botTheta =  (botTheta < 0) ? -botTheta : 2*Math.PI-botTheta;
         double rsx = -gamepad1.left_stick_x;
         double nrsy = -gamepad1.left_stick_y;
         double theta = gamepad1.right_stick_x;
@@ -87,7 +88,7 @@ public class FieldCentricDrive extends OpMode {
             telemetry.addData("theta", theta);
             telemetry.addData("botThetaRaw1", botTheta);
 
-            telemetry.addData("botTheta", (botTheta < 0) ? -botTheta : 2*Math.PI-botTheta);
+            telemetry.addData("botTheta", botTheta);
 
             PowerVector4WD powVector = boot.driveTrain.drive(merp, botTheta);
             telemetry.addData("fr_dri", powVector.get(0, 0));
