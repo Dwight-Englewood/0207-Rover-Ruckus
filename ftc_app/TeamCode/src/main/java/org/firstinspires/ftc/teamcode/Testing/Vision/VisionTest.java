@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Sensors.VumarkWrapper;
 @TeleOp(name = "VisionTest", group = "Teleop")
 public class VisionTest extends OpMode {
 
-    Bot boot = new Bot(false);
+    Bot boot = new Bot(false, false);
 
     ElapsedTime slowTimer = new ElapsedTime();
     boolean slow = false;
@@ -37,6 +37,7 @@ public class VisionTest extends OpMode {
     @Override
     public void loop() {
         //vmw.updateState();
+        telemetry.addData("mineralSample", boot.tensorFlow.getState().getStateVal());
         telemetry.addData("vumark", boot.vumarkWrapper.getState().getStateVal());
         double[] pos = boot.vumarkWrapper.getPosition();
         telemetry.addData("posX", pos[0]);
