@@ -11,8 +11,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
 import java.util.List;
 
-public class TFWrapper implements Subsystem {
-
+public class TFWrapperDriveby implements Subsystem {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
@@ -21,32 +20,25 @@ public class TFWrapper implements Subsystem {
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
 
-    public TFWrapper() {}
+    public TFWrapperDriveby() {}
 
-    public enum TFState implements State {
-        LEFT("Left", 0, 0), //temp vals
-        RIGHT("Right", 0, 0), //temp vals
-        CENTER("Center", 0, 0), //temp vals
-        NOTVISIBLE("None", 0, 0);
+    public enum TFStateDriveby implements State {
+        GOLD("Gold"),
+        SILVER("Silver"),
+        NONE("None");
 
         private String str;
-        private int craterAng;
-        private int depotAng;
-        TFState(String str, int craterAng, int depotAng) {
+        TFStateDriveby(String str) {
             this.str = str;
-            this.craterAng = craterAng;
-            this.depotAng = depotAng;
         }
 
         @Override
         public String getStateVal() {
             return str;
         }
-        public int getCraterAng() {return craterAng;}
-        public int getDepotAng() {return depotAng;}
     }
 
-    private TFState state;
+    private TFStateDriveby state;
 
     @Override
     public void init(HardwareMap hwMap) {
@@ -62,6 +54,7 @@ public class TFWrapper implements Subsystem {
         if (tfod != null) {
             tfod.activate();
         }
+
     }
 
     @Override
@@ -88,30 +81,14 @@ public class TFWrapper implements Subsystem {
             // the last time that call was made.
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null) {
-                if (updatedRecognitions.size() == 3) {
-                    int goldMineralX = -1;
-                    int silverMineral1X = -1;
-                    int silverMineral2X = -1;
-                    for (Recognition recognition : updatedRecognitions) {
-                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                            goldMineralX = (int) recognition.getLeft();
-                        } else if (silverMineral1X == -1) {
-                            silverMineral1X = (int) recognition.getLeft();
-                        } else {
-                            silverMineral2X = (int) recognition.getLeft();
-                        }
+                if (updatedRecognitions.size() == 1) {
+                    if (updatedRecognitions.get(0).getLabel().equals(LABEL_GOLD_MINERAL)) {
+                        this.state = TFStateDriveby.GOLD;
+                    } else if (updatedRecognitions.get(0).getLabel().equals(LABEL_SILVER_MINERAL)) {
+                        this.state = TFStateDriveby.SILVER;
+                    } else {
+                        this.state = TFStateDriveby.NONE;
                     }
-                    if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
-                        if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
-                            this.state = TFState.LEFT;
-                        } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
-                            this.state = TFState.RIGHT;
-                        } else {
-                            this.state = TFState.CENTER;
-                        }
-                    }
-                } else {
-                    this.state = TFState.NOTVISIBLE;
                 }
             }
         }
@@ -142,4 +119,5 @@ public class TFWrapper implements Subsystem {
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
+
 }
