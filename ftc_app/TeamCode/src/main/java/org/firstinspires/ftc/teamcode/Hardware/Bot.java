@@ -21,15 +21,15 @@ public class Bot {
     public VumarkWrapper vumarkWrapper = new VumarkWrapper();
 
     private boolean isAuton;
-    private boolean vumarkOn = false;
+    private boolean vumarkOff = true;
 
     public Bot(boolean isAuton) {
         this.isAuton = isAuton;
     }
 
-    public Bot(boolean isAuton, boolean vumarkOn) {
+    public Bot(boolean isAuton, boolean vumarkOff) {
         this.isAuton = isAuton;
-        this.vumarkOn = vumarkOn;
+        this.vumarkOff = vumarkOff;
     }
 
     public void init(HardwareMap hwm) {
@@ -40,7 +40,7 @@ public class Bot {
                     if (!isAuton && f.get(this) instanceof TFWrapper) {
                         continue;
                     }
-                    if (f.get(this) instanceof VumarkWrapper && vumarkOn) {
+                    if (f.get(this) instanceof VumarkWrapper && vumarkOff) {
                         continue;
                     }
                     Subsystem ss = (Subsystem) f.get(this);
@@ -61,7 +61,7 @@ public class Bot {
                         continue;
                     }
 
-                    if (f.get(this) instanceof VumarkWrapper && vumarkOn) {
+                    if (f.get(this) instanceof VumarkWrapper && vumarkOff) {
                         continue;
                     }
                     Subsystem ss = (Subsystem) f.get(this);
@@ -82,7 +82,7 @@ public class Bot {
                         continue;
                     }
 
-                    if (f.get(this) instanceof VumarkWrapper && vumarkOn) {
+                    if (f.get(this) instanceof VumarkWrapper && vumarkOff) {
                         continue;
                     }
                     Subsystem ss = (Subsystem) f.get(this);
@@ -108,7 +108,7 @@ public class Bot {
                         continue;
                     }
 
-                    if (f.get(this) instanceof VumarkWrapper && vumarkOn) {
+                    if (f.get(this) instanceof VumarkWrapper && vumarkOff) {
                         continue;
                     }
                     Subsystem ss = (Subsystem) f.get(this);
