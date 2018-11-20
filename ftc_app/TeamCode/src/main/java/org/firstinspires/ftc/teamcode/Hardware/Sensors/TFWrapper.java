@@ -26,25 +26,19 @@ public class TFWrapper implements Subsystem {
     public TFWrapper() {}
 
     private enum TFState implements State {
-        LEFT("Left", 0, 0), //temp vals
-        RIGHT("Right", 0, 0), //temp vals
-        CENTER("Center", 0, 0); //temp vals
+        LEFT("Left"),
+        RIGHT("Right"),
+        CENTER("Center");
 
         private String str;
-        private int craterAng;
-        private int depotAng;
-        TFState(String str, int craterAng, int depotAng) {
+        TFState(String str) {
             this.str = str;
-            this.craterAng = craterAng;
-            this.depotAng = depotAng;
         }
 
         @Override
         public String getStateVal() {
             return str;
         }
-        public int getCraterAng() {return craterAng;}
-        public int getDepotAng() {return depotAng;}
     }
     private TFState state;
 
