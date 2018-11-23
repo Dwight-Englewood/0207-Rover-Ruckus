@@ -37,6 +37,8 @@ public class Lift implements Subsystem {
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         state = liftState.STOPPED;
+
+        magSwitch = hwMap.get(DigitalChannel.class, "mag");
     }
 
     @Override
@@ -83,29 +85,13 @@ public class Lift implements Subsystem {
         return false;
     }
 
-
     //HOPEFULLY REPLACE W/ MAGLIMSWITCH THING;
     public boolean oldYears() {
-        if (motor.getCurrentPosition() < 25) {
+        if (magSwitch.getState()) {
             motor.setPower(0);
             motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             return true;
         }
-        if (motor.getMode() != DcMotor.RunMode.RUN_TO_POSITION) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if (motor.getTargetPosition() != 0) motor.setTargetPosition(0);
-        motor.setPower(-1);
-        return false;
-    }
-
-    //HOPEFULLY REPLACE W/ MAGLIMSWITCH THING
-    public boolean teleopOldYears() {
-        if (motor.getCurrentPosition() < -19700) {
-            motor.setPower(0);
-            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            return true;
-        }
-        if (motor.getMode() != DcMotor.RunMode.RUN_TO_POSITION) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if (motor.getTargetPosition() != -19700) motor.setTargetPosition(-19700);
         motor.setPower(-1);
         return false;
     }
