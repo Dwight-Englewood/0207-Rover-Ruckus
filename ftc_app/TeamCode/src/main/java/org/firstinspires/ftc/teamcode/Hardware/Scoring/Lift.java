@@ -85,7 +85,7 @@ public class Lift implements Subsystem {
         return false;
     }
 
-    //HOPEFULLY REPLACE W/ MAGLIMSWITCH THING;
+    //TODO: Check if works
     public boolean oldYears() {
         if (magSwitch.getState()) {
             motor.setPower(0);
