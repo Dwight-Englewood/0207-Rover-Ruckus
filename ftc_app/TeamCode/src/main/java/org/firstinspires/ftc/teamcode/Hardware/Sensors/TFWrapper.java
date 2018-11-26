@@ -24,18 +24,23 @@ public class TFWrapper implements Subsystem {
     public TFWrapper() {}
 
     public enum TFState implements State {
-        LEFT("Left", 0, 0), //temp vals
-        RIGHT("Right", 0, 0), //temp vals
-        CENTER("Center", 0, 0), //temp vals
-        NOTVISIBLE("None", 0, 0);
+        // crater angle, depot angle, crater distance, depot distance; all in degrees & cm
+        LEFT("Left", 0, 0, 0, 0), //temp vals
+        RIGHT("Right", 0, 0, 0, 0), //temp vals
+        CENTER("Center", 0, 0, 0, 0), //temp vals
+        NOTVISIBLE("None", 0, 0, 0, 0);
 
         private String str;
         private int craterAng;
         private int depotAng;
-        TFState(String str, int craterAng, int depotAng) {
+        private int craterDist;
+        private int depotDist;
+        TFState(String str, int craterAng, int depotAng, int craterDist, int depotDist) {
             this.str = str;
             this.craterAng = craterAng;
             this.depotAng = depotAng;
+            this.craterDist = craterDist;
+            this.depotDist = depotDist;
         }
 
         @Override
@@ -44,6 +49,8 @@ public class TFWrapper implements Subsystem {
         }
         public int getCraterAng() {return craterAng;}
         public int getDepotAng() {return depotAng;}
+        public int getCraterDist() {return craterDist;}
+        public int getDepotDist() {return depotDist;}
     }
 
     private TFState state;
