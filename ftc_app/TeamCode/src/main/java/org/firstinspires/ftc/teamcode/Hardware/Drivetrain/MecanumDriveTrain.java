@@ -151,11 +151,12 @@ public class MecanumDriveTrain extends DriveTrain {
         br.setPower(power);
     }
 
+    //Note: Pos is strafe right
     public void strafepow(double power) {
-        fl.setPower(-power);
-        fr.setPower(power);
-        bl.setPower(power);
-        br.setPower(-power);
+        fl.setPower(power);
+        fr.setPower(-power);
+        bl.setPower(-power);
+        br.setPower(power);
     }
 
     public void setTarget(int targetDistance) {
@@ -163,6 +164,14 @@ public class MecanumDriveTrain extends DriveTrain {
         fl.setTargetPosition(fl.getCurrentPosition() + target);
         fr.setTargetPosition(fr.getCurrentPosition() + target);
         bl.setTargetPosition(bl.getCurrentPosition() + target);
+        br.setTargetPosition(br.getCurrentPosition() + target);
+    }
+
+    public void setStrafeTarget(int targetDistance) {
+        int target = this.distanceToRevsNRO20(targetDistance);
+        fl.setTargetPosition(fl.getCurrentPosition() + target);
+        fr.setTargetPosition(fr.getCurrentPosition() - target);
+        bl.setTargetPosition(bl.getCurrentPosition() - target);
         br.setTargetPosition(br.getCurrentPosition() + target);
     }
 
