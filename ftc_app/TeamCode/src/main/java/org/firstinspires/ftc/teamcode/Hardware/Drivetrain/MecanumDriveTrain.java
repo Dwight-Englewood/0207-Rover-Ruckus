@@ -17,6 +17,8 @@ public class MecanumDriveTrain extends DriveTrain {
     
     //make private
     public DcMotor fl, fr, bl, br;
+    private int originTick;
+
 
     public MecanumDriveTrain(double r, double a, double b) {
         this.l = Math.sqrt(Math.pow(a, 2.0) + Math.pow(b, 2));
@@ -121,18 +123,12 @@ public class MecanumDriveTrain extends DriveTrain {
     public void tankControl(Gamepad gamepad, boolean slowMode) {
         if (gamepad.left_trigger >.15) {
             gamepad.left_trigger *= (slowMode ? .5 : 1);
-            fl.setPower(-gamepad.left_trigger);
-            fr.setPower(gamepad.left_trigger);
-            bl.setPower(gamepad.left_trigger);
-            br.setPower(-gamepad.left_trigger);
+            this.strafepow(-gamepad.left_trigger);
             return;
         }
         if (gamepad.right_trigger >.15) {
             gamepad.right_trigger *= (slowMode ? .5 : 1);
-            fl.setPower(gamepad.right_trigger);
-            fr.setPower(-gamepad.right_trigger);
-            bl.setPower(-gamepad.right_trigger);
-            br.setPower(gamepad.right_trigger);
+            this.strafepow(gamepad.right_trigger);
             return;
         }
         gamepad.left_stick_y *= (slowMode ? .5 : 1);
@@ -141,7 +137,6 @@ public class MecanumDriveTrain extends DriveTrain {
         bl.setPower(-gamepad.left_stick_y);
         fr.setPower(-gamepad.right_stick_y);
         br.setPower(-gamepad.right_stick_y);
-
     }
 
     public void drivepow(double power) {
@@ -165,6 +160,7 @@ public class MecanumDriveTrain extends DriveTrain {
         fr.setTargetPosition(fr.getCurrentPosition() + target);
         bl.setTargetPosition(bl.getCurrentPosition() + target);
         br.setTargetPosition(br.getCurrentPosition() + target);
+        this.originTick = Math.abs(fl.getCurrentPosition());
     }
 
     public void setStrafeTarget(int targetDistance) {
@@ -173,6 +169,7 @@ public class MecanumDriveTrain extends DriveTrain {
         fr.setTargetPosition(fr.getCurrentPosition() - target);
         bl.setTargetPosition(bl.getCurrentPosition() - target);
         br.setTargetPosition(br.getCurrentPosition() + target);
+        this.originTick = Math.abs(fl.getCurrentPosition());
     }
 
     public void setRunMode(DcMotor.RunMode mode) {
@@ -208,9 +205,47 @@ public class MecanumDriveTrain extends DriveTrain {
         br.setPower(sPower);
     }
 
+    public void scalePower() {
+        double power;
+        int target = fl.getTargetPosition();
+        int current = fl.getCurrentPosition();
+        int diff = Math.abs(target - current);
+        int originDiff = Math.abs(this.originTick - current);
+
+        if (diff < 200) {
+            power = 0;
+        } else if (originDiff < 100) {
+            power = .1;
+        } else if (originDiff < 300) {
+            power = .3;
+        } else {
+            power = 1;
+        }
+
+        if (diff < 100) {
+            power = .1;
+        } else if (diff < 300) {
+            power = .3;
+        } else if (diff < 500) {
+            power = .5;
+        } else if (diff < 750) {
+            power = .7;
+        }
+
+        //This calculation unnecessary as runtoposition mode dictates direction of motor.
+        /*
+        fl.setPower(power * fl.getPower() / Math.abs(fl.getPower()));
+        fr.setPower(power * fr.getPower() / Math.abs(fr.getPower()));
+        bl.setPower(power * bl.getPower() / Math.abs(bl.getPower()));
+        br.setPower(power * br.getPower() / Math.abs(br.getPower()));
+        */
+        this.drivepow(power);
+    }
+
     private int distanceToRevsNRO20(double distance) {
         final double wheelCirc = 31.9185813;
         final double gearMotorTickThing = 537.6; //neverrest orbital 20 = 537.6 counts per revolution
+        //1:1 gear ratio so no need for multiplier
         return (int) (gearMotorTickThing * (distance / wheelCirc));
     }
 
