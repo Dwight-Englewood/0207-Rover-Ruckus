@@ -26,8 +26,8 @@ public class TFWrapper implements Subsystem {
     public enum TFState implements State {
         // crater angle, depot angle, crater distance, depot distance; all in degrees & cm
         LEFT("Left", 0, 0, 0, 0), //temp vals
-        RIGHT("Right", 0, 0, 0, 0), //temp vals
         CENTER("Center", 0, 0, 0, 0), //temp vals
+        RIGHT("Right", 0, 0, 0, 0), //temp vals
         NOTVISIBLE("None", 0, 0, 0, 0);
 
         private String str;
