@@ -58,7 +58,7 @@ public class Silver extends OpMode {
                 break;
 
             case 1:
-                robot.driveTrain.setTarget(12);
+                this.setTarget(12);
                 if (posCounter[0] > posCounter[1] && posCounter[0] > posCounter[2]) {
                     position = TFWrapper.TFState.LEFT;
                 } else if (posCounter[1] > posCounter[0] && posCounter[1] > posCounter[2]) {
@@ -79,9 +79,7 @@ public class Silver extends OpMode {
                 break;
 
             case 4:
-                robot.driveTrain.setStrafeTarget(-40);
-                timer.reset();
-                command++;
+                this.setStrafeTarget(-40);
                 break;
 
             case 5:
@@ -93,9 +91,7 @@ public class Silver extends OpMode {
                 break;
 
             case 7:
-                robot.driveTrain.setTarget(position.getCraterDist());
-                timer.reset();
-                command++;
+                this.setTarget(position.getCraterDist());
                 break;
 
             case 8:
@@ -103,9 +99,7 @@ public class Silver extends OpMode {
                 break;
 
             case 9:
-                robot.driveTrain.setTarget(-position.getCraterDist());
-                timer.reset();
-                command++;
+                this.setTarget(-position.getCraterDist());
                 break;
 
             case 10:
@@ -117,9 +111,7 @@ public class Silver extends OpMode {
                 break;
 
             case 12:
-                robot.driveTrain.setTarget(100);
-                timer.reset();
-                command++;
+                this.setTarget(150);
                 break;
 
             case 13:
@@ -131,9 +123,7 @@ public class Silver extends OpMode {
                 break;
 
             case 15:
-                robot.driveTrain.setTarget(100);
-                timer.reset();
-                command++;
+                this.setTarget(200);
                 break;
 
             case 16:
@@ -161,10 +151,8 @@ public class Silver extends OpMode {
                 break;
 
             case 20:
-                robot.driveTrain.setTarget(-420);
+                this.setTarget(-420);
                 robot.markerDeploy.raise();
-                timer.reset();
-                command++;
                 break;
 
             case 21:
@@ -205,5 +193,18 @@ public class Silver extends OpMode {
             this.command++;
         }
     }
+
+    private void setTarget(int target) {
+        this.robot.driveTrain.setTarget(target);
+        this.timer.reset();
+        this.command++;
+    }
+
+    private void setStrafeTarget(int target) {
+        this.robot.driveTrain.setStrafeTarget(target);
+        this.timer.reset();
+        this.command++;
+    }
+
 }
 
