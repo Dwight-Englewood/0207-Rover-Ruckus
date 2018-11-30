@@ -20,12 +20,15 @@ public class MecanumDriveTrain extends DriveTrain {
     private int originTick;
 
 
+    //The parameters r, a,  and b correspond to various measurements of the robot
     public MecanumDriveTrain(double r, double a, double b) {
         this.l = Math.sqrt(Math.pow(a, 2.0) + Math.pow(b, 2));
         this.r = a;
         this.alpha = Math.atan(b / a);
         double rollerAngleFactor = Math.sqrt(2) / 2;
         double scaleFactor = l * Math.sin(Math.PI / 4 - alpha);
+        //This powerMatrix is to perform a rotation depending on the angle of the roller's on the mecanum wheel
+        //Our mecanum wheels have rollers mounted at a 45 degree angle
         this.powerMatrix = new SimpleMatrix(new double[][]{
                 {
                         rollerAngleFactor, rollerAngleFactor, scaleFactor
@@ -86,8 +89,10 @@ public class MecanumDriveTrain extends DriveTrain {
         bl.setPower(0);
         br.setPower(0);
     }
-
+    //Takes a DirRotVector, which encodes the desired rotation and movement in the x and y directionds
+    //It also takes the angle of rotation of the robot itself
     public PowerVector4WD driveVector(DirRotVector drv, double botTheta) {
+        //The line that performs all of the computation needed to determine the motor speeds
         return new PowerVector4WD(powerMatrix.mult(rotationMatrix(botTheta).mult(drv).scale(-Math.sqrt(2)/r)));
     }
 
@@ -115,7 +120,8 @@ public class MecanumDriveTrain extends DriveTrain {
         }
     }
 
-
+    //Rotation Matrix returns a generic rotation matrix for the robot
+    //Used to apply the rotation of the bot to the motor speeds needed to move a certain direction, to make the robot move relative to the field and not its own orientation
     private SimpleMatrix rotationMatrix(double theta) {
         return new SimpleMatrix(new double[][]{{Math.cos(theta), Math.sin(theta), 0}, {-Math.sin(theta), Math.cos(theta), 0}, {0, 0, 1}});
     }
