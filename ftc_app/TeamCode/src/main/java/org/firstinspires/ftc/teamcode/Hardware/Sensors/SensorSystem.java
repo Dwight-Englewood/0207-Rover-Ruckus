@@ -12,7 +12,9 @@ import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 public class SensorSystem implements Subsystem {
     private BNO055IMU imu;
 
-    public SensorSystem(){}
+    public SensorSystem(){
+        this.state = sensorState.RUNNING;
+    }
 
     private enum sensorState implements State {
         RUNNING("Running");
