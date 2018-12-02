@@ -54,6 +54,20 @@ public class Telebop extends OpMode {
 
         if (gamepad1.a) robot.markerDeploy.drop();
         else robot.markerDeploy.raise();
+
+        if (gamepad2.left_stick_y < 0) robot.dumper.up();
+        else if (gamepad2.left_stick_y > 0) robot.dumper.down();
+        else robot.dumper.stop();
+
+        if (gamepad1.b) robot.dumper.open();
+        else robot.dumper.close();
+
+        if (gamepad2.right_trigger > .5) robot.intake.intake();
+        else if (gamepad2.right_bumper) robot.intake.outtake();
+        else robot.intake.stop();
+
+        telemetry.addData("Slow?", slow);
+        telemetry.update();
     }
 
     @Override

@@ -32,7 +32,7 @@ public class MarkerDeploy implements Subsystem {
 
     @Override
     public void init(HardwareMap hwMap) {
-        servo = hwMap.get(Servo.class, "mark");
+        servo = hwMap.get(Servo.class, "marker");
         this.raise();
     }
 
@@ -54,7 +54,7 @@ public class MarkerDeploy implements Subsystem {
     }
 
     public void raise() {
-        servo.setPosition(0);
+        servo.setPosition(0.15);
     }
 
     @Override

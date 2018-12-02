@@ -28,7 +28,7 @@ public class Intake implements Subsystem {
 
     @Override
     public void init(HardwareMap hwMap) {
-        motor = hwMap.get(DcMotor.class, "int");
+        motor = hwMap.get(DcMotor.class, "intake");
         motor.setDirection(DcMotorSimple.Direction.FORWARD);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -53,12 +53,12 @@ public class Intake implements Subsystem {
     }
 
     public void intake() {
-        motor.setPower(1);
+        motor.setPower(-1);
         state = intakeState.INTAKING;
     }
 
     public void outtake() {
-        motor.setPower(-1);
+        motor.setPower(1);
         state = intakeState.OUTTAKING;
     }
 

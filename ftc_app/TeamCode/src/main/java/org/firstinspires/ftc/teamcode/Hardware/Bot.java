@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Hardware;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Hardware.Drivetrain.MecanumDriveTrain;
+import org.firstinspires.ftc.teamcode.Hardware.Scoring.Dumper;
+import org.firstinspires.ftc.teamcode.Hardware.Scoring.Intake;
 import org.firstinspires.ftc.teamcode.Hardware.Scoring.Lift;
 import org.firstinspires.ftc.teamcode.Hardware.Scoring.MarkerDeploy;
 import org.firstinspires.ftc.teamcode.Hardware.Sensors.SensorSystem;
@@ -19,6 +21,8 @@ public class Bot {
     public SensorSystem sensorSystem = new SensorSystem();
     public TFWrapper tensorFlow = new TFWrapper();
     public VumarkWrapper vumarkWrapper = new VumarkWrapper();
+    public Dumper dumper = new Dumper();
+    public Intake intake = new Intake();
 
     private boolean isAuton;
     private boolean vumarkOff = true;
