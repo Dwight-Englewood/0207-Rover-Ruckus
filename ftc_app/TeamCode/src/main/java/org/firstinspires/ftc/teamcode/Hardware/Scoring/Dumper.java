@@ -57,11 +57,11 @@ public class Dumper implements Subsystem {
     }
 
     public void close() {
-        wall.setPosition(1);
+        wall.setPosition(.5);
     }
 
     public void open() {
-        wall.setPosition(0.1);
+        wall.setPosition(1);
     }
 
     public void up() {spool.setPower(-.5);}
