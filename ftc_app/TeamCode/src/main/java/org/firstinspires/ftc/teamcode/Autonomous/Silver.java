@@ -34,6 +34,7 @@ public class Silver extends OpMode {
     @Override
     public void start() {
         robot.start();
+        timer.reset();
     }
 
     @Override
