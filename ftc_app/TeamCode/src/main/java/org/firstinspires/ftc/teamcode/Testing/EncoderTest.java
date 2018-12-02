@@ -28,6 +28,18 @@ public class EncoderTest extends OpMode {
 
     @Override
     public void loop() {
+        if (gamepad1.dpad_up) {
+            boot.lift.lift();
+        } else if (gamepad1.dpad_down) {
+            boot.lift.drop();
+        } else {
+            boot.lift.stop();
+        }
+        boot.driveTrain.fl.setPower(gamepad1.left_stick_y);
+        boot.driveTrain.fr.setPower(gamepad1.right_stick_y);
+        boot.driveTrain.bl.setPower(gamepad1.left_stick_x);
+        boot.driveTrain.br.setPower(gamepad1.right_stick_x);
+
         telemetry.addData("bl encoder", boot.driveTrain.bl.getCurrentPosition());
         telemetry.addData("br encoder", boot.driveTrain.br.getCurrentPosition());
         telemetry.addData("fl encoder", boot.driveTrain.fl.getCurrentPosition());

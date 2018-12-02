@@ -87,11 +87,16 @@ public class Lift implements Subsystem {
 
     //TODO: Check if works
     public boolean oldYears() {
+        // if the magnet is near the switch
         if (magSwitch.getState()) {
+            //stop running the motor
             motor.setPower(0);
+            //reset the runmode
             motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //return true to flag to system that operation is complete
             return true;
         }
+        //otherwise continue pulling lift in
         motor.setPower(-1);
         return false;
     }

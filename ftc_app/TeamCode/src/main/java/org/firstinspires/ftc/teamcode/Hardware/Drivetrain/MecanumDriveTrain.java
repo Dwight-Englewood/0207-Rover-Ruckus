@@ -128,17 +128,23 @@ public class MecanumDriveTrain extends DriveTrain {
 
     public void tankControl(Gamepad gamepad, boolean slowMode) {
         if (gamepad.left_trigger >.15) {
+            //scale left strafe for precision mode
             gamepad.left_trigger *= (slowMode ? .5 : 1);
+            //apply scaled power to motors
             this.strafepow(-gamepad.left_trigger);
             return;
         }
         if (gamepad.right_trigger >.15) {
+            //scale right strafe for precision mode
             gamepad.right_trigger *= (slowMode ? .5 : 1);
+            //apply scaled power to motors
             this.strafepow(gamepad.right_trigger);
             return;
         }
+        //scale tank drive for precision mode
         gamepad.left_stick_y *= (slowMode ? .5 : 1);
         gamepad.right_stick_y *= (slowMode ? .5 : 1);
+        //apply scaled power to motors
         fl.setPower(-gamepad.left_stick_y);
         bl.setPower(-gamepad.left_stick_y);
         fr.setPower(-gamepad.right_stick_y);
