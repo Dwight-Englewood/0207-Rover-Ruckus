@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapper;
 @Autonomous(name = "Silver", group = "Auton")
 //@Disabled
 public class Silver extends OpMode {
-    Bot robot = new Bot(true, false);
+    Bot robot = new Bot(true, true);
     int command = 0;
     ElapsedTime timer = new ElapsedTime();
     // LEFT, CENTER, RIGHT

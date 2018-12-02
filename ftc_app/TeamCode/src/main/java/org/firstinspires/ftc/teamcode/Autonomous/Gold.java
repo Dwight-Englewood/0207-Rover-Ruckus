@@ -168,6 +168,7 @@ public class Gold extends OpMode {
 
         telemetry.addData("Command: ", command);
         telemetry.addData("Time: ", timer.milliseconds());
+        telemetry.addData("lift ticks", robot.lift.getTicks());
     }
 
     @Override
