@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -11,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapper;
 
 
 @Autonomous(name = "SilverNoHang", group = "Auton")
-//@Disabled
+@Disabled
 public class Silver_NoHang extends OpMode {
     Bot robot = new Bot(true, true);
     int command = 1;

@@ -29,7 +29,9 @@ public class Silver extends OpMode {
     }
 
     @Override
-    public void init_loop() {}
+    public void init_loop() {
+        telemetry.addLine("in init");
+    }
 
     @Override
     public void start() {
@@ -136,14 +138,14 @@ public class Silver extends OpMode {
                 break;
 
             case 18:
-                robot.markerDeploy.drop();
-                if (timer.milliseconds() > 500) {
-                    robot.markerDeploy.raise();
-                }
                 if (timer.milliseconds() > 750) {
                     robot.markerDeploy.drop();
                     timer.reset();
                     command++;
+                } else if (timer.milliseconds() > 500) {
+                    robot.markerDeploy.raise();
+                } else {
+                    robot.markerDeploy.drop();
                 }
                 break;
 
