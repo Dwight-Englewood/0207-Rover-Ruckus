@@ -20,40 +20,10 @@ public class TFWrapper implements Subsystem {
 
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
-
-    public TFWrapper() {}
-
-    public enum TFState implements State {
-        // crater angle, depot angle, crater distance, depot distance; all in degrees & cm
-        LEFT("Left", 0, 0, 0, 0), //temp vals
-        CENTER("Center", 0, 0, 0, 0), //temp vals
-        RIGHT("Right", 0, 0, 0, 0), //temp vals
-        NOTVISIBLE("None", 0, 0, 0, 0);
-
-        private String str;
-        private int craterAng;
-        private int depotAng;
-        private int craterDist;
-        private int depotDist;
-        TFState(String str, int craterAng, int depotAng, int craterDist, int depotDist) {
-            this.str = str;
-            this.craterAng = craterAng;
-            this.depotAng = depotAng;
-            this.craterDist = craterDist;
-            this.depotDist = depotDist;
-        }
-
-        @Override
-        public String getStateVal() {
-            return str;
-        }
-        public int getCraterAng() {return craterAng;}
-        public int getDepotAng() {return depotAng;}
-        public int getCraterDist() {return craterDist;}
-        public int getDepotDist() {return depotDist;}
-    }
-
     private TFState state;
+
+    public TFWrapper() {
+    }
 
     @Override
     public void init(HardwareMap hwMap) {
@@ -87,6 +57,17 @@ public class TFWrapper implements Subsystem {
     public TFState getState() {
         this.updateState();
         return state;
+    }
+
+    public List<Recognition> badOOP() {
+        if (tfod != null) {
+            // getUpdatedRecognitions() will return null if no new information is available since
+            // the last time that call was made.
+            List<Recognition> updatedRecognitions = tfod.getRecognitions();
+            return updatedRecognitions;
+        } else {
+            return null;
+        }
     }
 
     private void updateState() {
@@ -148,5 +129,48 @@ public class TFWrapper implements Subsystem {
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
+    }
+
+    public enum TFState implements State {
+        // crater angle, depot angle, crater distance, depot distance; all in degrees & cm
+        LEFT("Left", 0, 0, 0, 0), //temp vals
+        CENTER("Center", 0, 0, 0, 0), //temp vals
+        RIGHT("Right", 0, 0, 0, 0), //temp vals
+        NOTVISIBLE("None", 0, 0, 0, 0);
+
+        private String str;
+        private int craterAng;
+        private int depotAng;
+        private int craterDist;
+        private int depotDist;
+
+        TFState(String str, int craterAng, int depotAng, int craterDist, int depotDist) {
+            this.str = str;
+            this.craterAng = craterAng;
+            this.depotAng = depotAng;
+            this.craterDist = craterDist;
+            this.depotDist = depotDist;
+        }
+
+        @Override
+        public String getStateVal() {
+            return str;
+        }
+
+        public int getCraterAng() {
+            return craterAng;
+        }
+
+        public int getDepotAng() {
+            return depotAng;
+        }
+
+        public int getCraterDist() {
+            return craterDist;
+        }
+
+        public int getDepotDist() {
+            return depotDist;
+        }
     }
 }

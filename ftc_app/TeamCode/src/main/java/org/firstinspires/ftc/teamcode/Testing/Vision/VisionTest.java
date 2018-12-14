@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Bot;
 import org.firstinspires.ftc.teamcode.Hardware.Sensors.VumarkWrapper;
 
 
-@TeleOp(name = "VisionTest", group = "Teleop")
+@TeleOp(name = "VumarkTest", group = "Teleop")
 public class VisionTest extends OpMode {
 
     Bot boot = new Bot(false, false);
@@ -19,7 +19,8 @@ public class VisionTest extends OpMode {
 
     @Override
     public void init() {
-        boot.init(hardwareMap);
+        //boot.tensorFlow.init(hardwareMap);
+        boot.vumarkWrapper.init(hardwareMap);
     }
 
     @Override
@@ -30,14 +31,14 @@ public class VisionTest extends OpMode {
 
     @Override
     public void start() {
-        boot.start();
+        boot.vumarkWrapper.start();
         slowTimer.reset();
     }
 
     @Override
     public void loop() {
         //vmw.updateState();
-        telemetry.addData("mineralSample", boot.tensorFlow.getState().getStateVal());
+        //telemetry.addData("mineralSample", boot.tensorFlow.getState().getStateVal());
         telemetry.addData("vumark", boot.vumarkWrapper.getState().getStateVal());
         double[] pos = boot.vumarkWrapper.getPosition();
         telemetry.addData("posX", pos[0]);
@@ -53,6 +54,6 @@ public class VisionTest extends OpMode {
 
     @Override
     public void stop() {
-        boot.stop();
+        boot.vumarkWrapper.stop();
     }
 }
