@@ -26,6 +26,7 @@ public class Gold extends OpMode {
 
     @Override
     public void init_loop() {
+        telemetry.addLine("in init");
     }
 
     @Override
