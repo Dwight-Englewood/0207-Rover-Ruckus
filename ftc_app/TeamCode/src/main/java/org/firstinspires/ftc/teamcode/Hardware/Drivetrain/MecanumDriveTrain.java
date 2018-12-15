@@ -216,10 +216,10 @@ public class MecanumDriveTrain extends DriveTrain {
         }
     }
     private void turn(double sPower) {
-        fl.setPower(.5 * -sPower);
-        fr.setPower(.5 * sPower);
-        bl.setPower(.5 * -sPower);
-        br.setPower(.5 * sPower);
+        fl.setPower(-sPower);
+        fr.setPower(sPower);
+        bl.setPower(-sPower);
+        br.setPower(sPower);
     }
 
     public void scalePower() {
