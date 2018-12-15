@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Scoring.Lift;
 import org.firstinspires.ftc.teamcode.Hardware.Scoring.MarkerDeploy;
 import org.firstinspires.ftc.teamcode.Hardware.Sensors.SensorSystem;
 import org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapper;
+import org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapperDriveby;
 import org.firstinspires.ftc.teamcode.Hardware.Sensors.VumarkWrapper;
 
 import java.lang.reflect.Field;
@@ -19,7 +20,7 @@ public class Bot {
     public Lift lift = new Lift();
     public MarkerDeploy markerDeploy = new MarkerDeploy();
     public SensorSystem sensorSystem = new SensorSystem();
-    public TFWrapper tensorFlow = new TFWrapper();
+    public TFWrapperDriveby tensorFlow = new TFWrapperDriveby();
     public VumarkWrapper vumarkWrapper = new VumarkWrapper();
     //public Dumper dumper = new Dumper();
     //public Intake intake = new Intake();

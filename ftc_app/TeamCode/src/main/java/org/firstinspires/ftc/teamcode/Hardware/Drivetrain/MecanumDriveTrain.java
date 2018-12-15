@@ -157,10 +157,10 @@ public class MecanumDriveTrain extends DriveTrain {
     }
 
     public void drivepow(double power) {
-        fl.setPower(.5 * power);
-        fr.setPower(.5 * power);
-        bl.setPower(.5 * power);
-        br.setPower(.5 * power);
+        fl.setPower(power);
+        fr.setPower(power);
+        bl.setPower(power);
+        br.setPower(power);
     }
 
     //Note: Pos is strafe right

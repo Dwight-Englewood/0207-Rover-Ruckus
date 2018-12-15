@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Testing.Sensors;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -8,6 +9,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
 @TeleOp(name = "IMUTest", group = "Teleop")
+@Disabled
 public class IMUTest extends OpMode {
 
     Bot robot = new Bot(false);

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
-@TeleOp(name = "EncoderTest", group = "Teleop")
+@TeleOp(name = "EncoderTest", group = "Testing")
 public class EncoderTest extends OpMode {
     Bot boot = new Bot(false);
 

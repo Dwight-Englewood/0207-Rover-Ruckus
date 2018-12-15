@@ -52,7 +52,7 @@ public class Telebop extends OpMode {
         else if (gamepad1.dpad_down) robot.lift.lift();
         else robot.lift.stop();
 
-        if (gamepad1.a) robot.markerDeploy.drop();
+        if (gamepad2.a) robot.markerDeploy.drop();
         else robot.markerDeploy.raise();
 
         //if (gamepad2.left_stick_y < 0) robot.dumper.up();

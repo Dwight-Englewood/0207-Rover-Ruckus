@@ -1,30 +1,27 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
+import org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapper;
+import org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapperDriveby;
+
+import java.util.Arrays;
 
 
-@Autonomous(name = "Silver", group = "Auton")
+@Autonomous(name = "SilverSample", group = "AutonSample")
 //@Disabled
-public class Silver extends OpMode {
-
-
-    Bot robot = new Bot(true);
+public class SilverSample extends OpMode {
+    Bot robot = new Bot(true, true);
     int command = 0;
     ElapsedTime timer = new ElapsedTime();
-    private final int distanceLanderBracket = 12;
-    private final int gyroTurnBracket1 = 0;
-    private final int distance2LanderAvoid = 40;
-    private final int gyroTurnTowardsWall = 90;
-    private final int distanceToWall = 60;
-    private final int gyroParalellWall = 45;
-    private final int distanceDepot = 86+45;
-    private final int distanceToCraterBackwards = -420;
+    int goldCount = 0;
+    TFWrapper.TFState position;
 
     @Override
     public void init() {
@@ -49,83 +46,77 @@ public class Silver extends OpMode {
         switch (command) {
             case 0:
                 if (robot.lift.newYears()) {
-                    //if (true) {
-                    timer.reset();
-                    command++;
+                    this.timer.reset();
+                    this.command++;
                 }
                 break;
 
-            case 1: //pulling out of lander bracket
-                this.setTarget(distanceLanderBracket);
+            case 1:
+                this.setTarget(-12);
                 break;
+
             case 2:
                 this.finishDrive();
                 break;
+
             case 3:
-                this.gyroCorrect(gyroTurnBracket1, 1, .05, .2);
+                this.gyroCorrect(-90, 1, .05, .2);
                 break;
+
             case 4:
-                //driving out of lander
-                this.setTarget(distance2LanderAvoid);
+                this.setStrafeTarget(-40);
                 break;
+
             case 5:
                 this.finishDrive();
                 break;
 
             case 6:
-                //turning towards avoiding the minerals and wall
-                this.gyroCorrect(gyroTurnTowardsWall, 1, .05, .2);
+                this.gyroCorrect(-90, 1, .05, .2);
                 break;
 
             case 7:
-                //moving towards wall 1
-                this.setTarget(distanceToWall);
+                this.setTarget(50);
                 break;
+
             case 8:
                 this.finishDrive();
+                if (robot.tensorFlow.getState() == TFWrapperDriveby.TFStateDriveby.GOLD) this.goldCount++;
+                if (goldCount > 10) {
+                    robot.stop();
+                    command++;
+                }
                 break;
-            case 9://turning on the wall
-                this.gyroCorrect(gyroParalellWall, 1, .05, .2);
+
+            case 9:
+                this.setStrafeTarget(-10);
                 break;
+
             case 10:
-                this.setTarget(distanceDepot);
-                break;
-            case 11:
                 this.finishDrive();
+                break;
+
+            case 11:
+                this.setStrafeTarget(10);
                 break;
 
             case 12:
-                if (timer.milliseconds() > 750) {
-                    robot.markerDeploy.drop();
-                    timer.reset();
-                    command++;
-                } else if (timer.milliseconds() > 500) {
-                    robot.markerDeploy.raise();
-                } else {
-                    robot.markerDeploy.drop();
-                }
-                break;
-            case 13:
-                this.setTarget(distanceToCraterBackwards);
-                break;
-            case 14:
                 this.finishDrive();
                 break;
-            case 15:
-                robot.driveTrain.drivepow(0);
-                robot.markerDeploy.raise();
+
+            case 13:
+                this.gyroCorrect(-90, 1, .05, .2);
                 break;
 
+            case 14:
+                this.setTarget(0);
+                break;
         }
-
-        telemetry.addData("Command: ", command);
-        telemetry.addData("Time: ", timer.milliseconds());
-        telemetry.addData("lift ticks", robot.lift.getTicks());
+        telemetry.update();
     }
 
     @Override
     public void stop() {
-        robot.driveTrain.drivepow(0);
         robot.stop();
     }
 
@@ -142,14 +133,13 @@ public class Silver extends OpMode {
         robot.driveTrain.scalePower();
     }
 
-    private int gyroCorrect(int gyroTarget, int gyroRange, double minSpeed, double addSpeed) {
-        int gyroVal = (int) this.robot.sensorSystem.getGyroRotation(AngleUnit.DEGREES);
+    private void gyroCorrect(int gyroTarget, int gyroRange, double minSpeed, double addSpeed) {
+        int gyroVal = (int)this.robot.sensorSystem.getGyroRotation(AngleUnit.DEGREES);
         this.robot.driveTrain.gyroCorrect(gyroTarget, gyroRange, gyroVal, minSpeed, addSpeed);
         if (this.robot.driveTrain.fl.getPower() == 0) {
             this.timer.reset();
             this.command++;
         }
-        return gyroVal;
     }
 
     private void setTarget(int target) {
@@ -163,5 +153,6 @@ public class Silver extends OpMode {
         this.timer.reset();
         this.command++;
     }
+
 }
 

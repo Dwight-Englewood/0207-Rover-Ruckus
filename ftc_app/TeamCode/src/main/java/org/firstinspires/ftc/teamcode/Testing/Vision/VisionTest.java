@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Testing.Vision;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Sensors.VumarkWrapper;
 
 
 @TeleOp(name = "VumarkTest", group = "Teleop")
+@Disabled
 public class VisionTest extends OpMode {
 
     Bot boot = new Bot(false, false);

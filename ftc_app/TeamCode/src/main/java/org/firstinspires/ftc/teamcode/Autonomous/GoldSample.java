@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -9,22 +10,22 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
-@Autonomous(name = "Silver", group = "Auton")
+@Autonomous(name = "GoldSample", group = "AutonSample")
 //@Disabled
-public class Silver extends OpMode {
+public class GoldSample extends OpMode {
 
+    private final int distance1 = 12; // Distance for pulling out of the lander bracket
+    private final int distance2 = 86+45; // Distance for driving to depot
+    private final int distance3 = 42; // Distance for driving towards wall
+    private final int distance4 = 160; // Distance for driving into crater
+    private final int gyroTurn1 = 0; // Turning towards depot
+    private final int gyroTurn2 = 0; // Algining after depot movement for dropping the
+    private final int gyroTurn3 = -90; // Turning to move towards wall
+    private final int gyroTurn4 = -135; // Turning towards the crater
 
     Bot robot = new Bot(true);
     int command = 0;
     ElapsedTime timer = new ElapsedTime();
-    private final int distanceLanderBracket = 12;
-    private final int gyroTurnBracket1 = 0;
-    private final int distance2LanderAvoid = 40;
-    private final int gyroTurnTowardsWall = 90;
-    private final int distanceToWall = 60;
-    private final int gyroParalellWall = 45;
-    private final int distanceDepot = 86+45;
-    private final int distanceToCraterBackwards = -420;
 
     @Override
     public void init() {
@@ -49,72 +50,51 @@ public class Silver extends OpMode {
         switch (command) {
             case 0:
                 if (robot.lift.newYears()) {
-                    //if (true) {
+                //if (true) {
                     timer.reset();
                     command++;
                 }
                 break;
 
-            case 1: //pulling out of lander bracket
-                this.setTarget(distanceLanderBracket);
+            case 1:
+                this.setTarget(distance1);
                 break;
             case 2:
                 this.finishDrive();
                 break;
             case 3:
-                this.gyroCorrect(gyroTurnBracket1, 1, .05, .2);
+                //this.setStrafeTarget(20);
+                command++;
                 break;
             case 4:
-                //driving out of lander
-                this.setTarget(distance2LanderAvoid);
+                //this.finishDrive();
+                command++;
                 break;
+
             case 5:
-                this.finishDrive();
+                this.gyroCorrect(gyroTurn1, 1, .05, .2);
                 break;
 
             case 6:
-                //turning towards avoiding the minerals and wall
-                this.gyroCorrect(gyroTurnTowardsWall, 1, .05, .2);
+                this.setTarget(45);
                 break;
 
             case 7:
-                //moving towards wall 1
-                this.setTarget(distanceToWall);
-                break;
-            case 8:
-                this.finishDrive();
-                break;
-            case 9://turning on the wall
-                this.gyroCorrect(gyroParalellWall, 1, .05, .2);
-                break;
-            case 10:
-                this.setTarget(distanceDepot);
-                break;
-            case 11:
                 this.finishDrive();
                 break;
 
-            case 12:
-                if (timer.milliseconds() > 750) {
-                    robot.markerDeploy.drop();
-                    timer.reset();
-                    command++;
-                } else if (timer.milliseconds() > 500) {
-                    robot.markerDeploy.raise();
-                } else {
-                    robot.markerDeploy.drop();
-                }
+            case 8:
+                this.gyroCorrect(90, 1, .05, .2);
                 break;
-            case 13:
-                this.setTarget(distanceToCraterBackwards);
+
+            case 9:
+                this.setTarget(-40);
                 break;
-            case 14:
-                this.finishDrive();
+
+            case 10:
+
                 break;
-            case 15:
-                robot.driveTrain.drivepow(0);
-                robot.markerDeploy.raise();
-                break;
+
 
         }
 

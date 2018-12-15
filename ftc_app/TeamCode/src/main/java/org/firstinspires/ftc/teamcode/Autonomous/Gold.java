@@ -13,6 +13,15 @@ import org.firstinspires.ftc.teamcode.Hardware.Bot;
 //@Disabled
 public class Gold extends OpMode {
 
+    private final int distance1 = 12; // Distance for pulling out of the lander bracket
+    private final int distance2 = 86+45; // Distance for driving to depot
+    private final int distance3 = 42; // Distance for driving towards wall
+    private final int distance4 = 160; // Distance for driving into crater
+    private final int gyroTurn1 = 0; // Turning towards depot
+    private final int gyroTurn2 = 0; // Algining after depot movement for dropping the
+    private final int gyroTurn3 = -90; // Turning to move towards wall
+    private final int gyroTurn4 = -135; // Turning towards the crater
+
     Bot robot = new Bot(true);
     int command = 0;
     ElapsedTime timer = new ElapsedTime();
@@ -39,15 +48,15 @@ public class Gold extends OpMode {
     public void loop() {
         switch (command) {
             case 0:
-                //if (robot.lift.newYears()) {
-                if (true) {
+                if (robot.lift.newYears()) {
+                //if (true) {
                     timer.reset();
                     command++;
                 }
                 break;
 
             case 1:
-                this.setTarget(12);
+                this.setTarget(distance1);
                 break;
             case 2:
                 this.finishDrive();
@@ -62,17 +71,17 @@ public class Gold extends OpMode {
                 break;
 
             case 5:
-                telemetry.addData("Gyro", this.gyroCorrect(0, 5, .05, .2));
+                telemetry.addData("Gyro", this.gyroCorrect(gyroTurn1, 1, .05, .2));
                 break;
 
             case 6:
-                this.setTarget(86 + 45);
+                this.setTarget(distance2);
                 break;
             case 7:
                 this.finishDrive();
                 break;
             case 8:
-                this.gyroCorrect(0, 1, .05, .2);
+                this.gyroCorrect(gyroTurn2, 1, .05, .2);
                 break;
 
             case 9:
@@ -87,22 +96,26 @@ public class Gold extends OpMode {
                 }
                 break;
             case 10:
-                this.gyroCorrect(-90, 1, .05, .2);
+                this.gyroCorrect(gyroTurn3, 1, .05, .2);
                 break;
             case 11:
-                this.setTarget(40);
-
+                this.setTarget(distance3);
                 break;
             case 12:
                 this.finishDrive();
                 break;
             case 13:
-                this.gyroCorrect(-135, 1, .05, .2);
+                this.gyroCorrect(gyroTurn4, 1, .05, .2);
+                break;
             case 14:
-                this.setTarget(420);
+                this.setTarget(distance4);
                 break;
             case 15:
                 this.finishDrive();
+                break;
+            case 16:
+                robot.driveTrain.drivepow(0);
+                robot.markerDeploy.raise();
                 break;
 
         }
@@ -114,6 +127,7 @@ public class Gold extends OpMode {
 
     @Override
     public void stop() {
+        robot.driveTrain.drivepow(0);
         robot.stop();
     }
 

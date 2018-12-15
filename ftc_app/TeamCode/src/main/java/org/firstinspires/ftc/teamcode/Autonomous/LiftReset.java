@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -7,6 +8,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
 @TeleOp(name = "LiftReset", group = "Teleop")
+@Disabled
 public class LiftReset extends OpMode {
 
     Bot robot = new Bot(false);
