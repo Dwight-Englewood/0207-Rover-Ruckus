@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -37,132 +37,72 @@ public class Gold extends OpMode {
 
     @Override
     public void loop() {
-        switch(command) {
+        switch (command) {
             case 0:
-                if (robot.lift.newYears()) {
+                //if (robot.lift.newYears()) {
+                if (true) {
                     timer.reset();
                     command++;
                 }
                 break;
 
             case 1:
-                if (timer.milliseconds() > 500) {
-                    robot.driveTrain.stop();
-                    timer.reset();
-                    command++;
-                }
-                robot.driveTrain.drivepow(.3);
+                this.setTarget(12);
                 break;
-
             case 2:
-                int gyroVal = (int)robot.sensorSystem.getGyroRotation(AngleUnit.DEGREES);
-                robot.driveTrain.gyroCorrect(0, 1, gyroVal, .05, .2);
-                if (robot.driveTrain.fl.getPower() == 0) {
-                    timer.reset();
-                    command++;
-                }
+                this.finishDrive();
                 break;
-
             case 3:
-                robot.driveTrain.setTarget(86 + 45);
-                robot.driveTrain.drivepow(.5);
-                timer.reset();
+                //this.setStrafeTarget(20);
                 command++;
                 break;
-
             case 4:
-                if (timer.milliseconds() > 4000 ||
-                        Math.abs(robot.driveTrain.fl.getTargetPosition() - robot.driveTrain.fl.getCurrentPosition()) < 25) {
-                    robot.driveTrain.stop();
-                    robot.driveTrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    command++;
-                }
+                //this.finishDrive();
+                command++;
                 break;
 
             case 5:
-                gyroVal = (int)robot.sensorSystem.getGyroRotation(AngleUnit.DEGREES);
-                robot.driveTrain.gyroCorrect(90, 2, gyroVal, .05, .3);
-                if (robot.driveTrain.fl.getPower() == 0) {
-                    timer.reset();
-                    command++;
-                }
+                telemetry.addData("Gyro", this.gyroCorrect(0, 5, .05, .2));
                 break;
 
             case 6:
-                robot.markerDeploy.drop();
-                timer.reset();
-                command++;
+                this.setTarget(86 + 45);
                 break;
-
             case 7:
-                if (timer.milliseconds() > 500) {
-                    robot.driveTrain.stop();
-                    timer.reset();
-                    command++;
-                }
-                robot.driveTrain.strafepow(.5);
+                this.finishDrive();
                 break;
-
             case 8:
-                robot.markerDeploy.drop();
-                timer.reset();
-                command++;
+                this.gyroCorrect(0, 1, .05, .2);
                 break;
 
             case 9:
-                if (timer.milliseconds() > 500) {
-                    robot.driveTrain.stop();
+                if (timer.milliseconds() > 750) {
+                    robot.markerDeploy.drop();
                     timer.reset();
                     command++;
-                }
-                robot.driveTrain.strafepow(-.5);
-                break;
-
-            case 10:
-                robot.markerDeploy.drop();
-                timer.reset();
-                command++;
-                break;
-
-            case 11:
-                if (timer.milliseconds() > 500) {
-                    robot.driveTrain.stop();
-                    timer.reset();
-                    command++;
-                }
-                robot.driveTrain.strafepow(.1);
-                break;
-
-            case 12:
-                gyroVal = (int)robot.sensorSystem.getGyroRotation(AngleUnit.DEGREES);
-                robot.driveTrain.gyroCorrect(-135, 1, gyroVal, .05, .2);
-                if (robot.driveTrain.fl.getPower() == 0) {
-                    timer.reset();
+                } else if (timer.milliseconds() > 500) {
                     robot.markerDeploy.raise();
-                    command++;
+                } else {
+                    robot.markerDeploy.drop();
                 }
                 break;
+            case 10:
+                this.gyroCorrect(-90, 1, .05, .2);
+                break;
+            case 11:
+                this.setTarget(40);
 
+                break;
+            case 12:
+                this.finishDrive();
+                break;
             case 13:
-                robot.driveTrain.setTarget(8 * 60);
-                robot.driveTrain.drivepow(.7);
-                timer.reset();
-                command++;
-                break;
-
+                this.gyroCorrect(-135, 1, .05, .2);
             case 14:
-                if (timer.milliseconds() > 5000 ||
-                        Math.abs(robot.driveTrain.fl.getTargetPosition() - robot.driveTrain.fl.getCurrentPosition()) < 25) {
-                    robot.driveTrain.stop();
-                    robot.driveTrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    command++;
-                }
+                this.setTarget(420);
                 break;
-
             case 15:
-                robot.stop();
-                timer.reset();
-                command++;
+                this.finishDrive();
                 break;
 
         }
@@ -177,5 +117,39 @@ public class Gold extends OpMode {
         robot.stop();
     }
 
+    private void finishDrive() {
+        if (Math.abs(robot.driveTrain.fl.getTargetPosition() - robot.driveTrain.fl.getCurrentPosition()) < 20 ||
+                Math.abs(robot.driveTrain.br.getTargetPosition() - robot.driveTrain.br.getCurrentPosition()) < 20 ||
+                Math.abs(robot.driveTrain.bl.getTargetPosition() - robot.driveTrain.bl.getCurrentPosition()) < 20 ||
+                Math.abs(robot.driveTrain.fr.getTargetPosition() - robot.driveTrain.fr.getCurrentPosition()) < 20) {
+            robot.driveTrain.stop();
+            robot.driveTrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            this.timer.reset();
+            this.command++;
+        }
+        robot.driveTrain.scalePower();
+    }
+
+    private int gyroCorrect(int gyroTarget, int gyroRange, double minSpeed, double addSpeed) {
+        int gyroVal = (int) this.robot.sensorSystem.getGyroRotation(AngleUnit.DEGREES);
+        this.robot.driveTrain.gyroCorrect(gyroTarget, gyroRange, gyroVal, minSpeed, addSpeed);
+        if (this.robot.driveTrain.fl.getPower() == 0) {
+            this.timer.reset();
+            this.command++;
+        }
+        return gyroVal;
+    }
+
+    private void setTarget(int target) {
+        this.robot.driveTrain.setTarget(target);
+        this.timer.reset();
+        this.command++;
+    }
+
+    private void setStrafeTarget(int target) {
+        this.robot.driveTrain.setStrafeTarget(target);
+        this.timer.reset();
+        this.command++;
+    }
 }
 
