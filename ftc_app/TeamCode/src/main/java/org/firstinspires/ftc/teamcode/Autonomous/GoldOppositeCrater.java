@@ -9,9 +9,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
-@Autonomous(name = "Gold", group = "Auton")
+@Autonomous(name = "GoldOppositeCrater", group = "AutonOppositeCrater")
 //@Disabled
-public class Gold extends OpMode {
+public class GoldOppositeCrater extends OpMode {
 
     private final int distance1 = 12; // Distance for pulling out of the lander bracket
     private final int distance2 = 86+45; // Distance for driving to depot
@@ -19,8 +19,8 @@ public class Gold extends OpMode {
     private final int distance4 = 160; // Distance for driving into crater
     private final int gyroTurn1 = 0; // Turning towards depot
     private final int gyroTurn2 = 0; // Algining after depot movement for dropping the
-    private final int gyroTurn3 = -90; // Turning to move towards wall
-    private final int gyroTurn4 = -135; // Turning towards the crater
+    private final int gyroTurn3 = 90; // Turning to move towards wall
+    private final int gyroTurn4 = 135; // Turning towards the crater
 
     Bot robot = new Bot(true);
     int command = 0;
@@ -110,15 +110,12 @@ public class Gold extends OpMode {
             case 14:
                 this.setTarget(distance4);
                 break;
-
             case 15:
                 this.finishDrive();
                 break;
-
             case 16:
                 robot.driveTrain.drivepow(0);
                 robot.markerDeploy.raise();
-                command++;
                 break;
 
             case 17:

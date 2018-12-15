@@ -17,14 +17,14 @@ public class Silver extends OpMode {
     Bot robot = new Bot(true);
     int command = 0;
     ElapsedTime timer = new ElapsedTime();
-    private final int distanceLanderBracket = 12;
-    private final int gyroTurnBracket1 = 0;
-    private final int distance2LanderAvoid = 40;
-    private final int gyroTurnTowardsWall = 90;
-    private final int distanceToWall = 60;
-    private final int gyroParalellWall = 45;
-    private final int distanceDepot = 86+45;
-    private final int distanceToCraterBackwards = -420;
+    private final int distanceLanderBracket = 12; // distance for pulling out of the lander
+    private final int gyroTurnBracket1 = 0; // turning towards crater
+    private final int distance2LanderAvoid = 40; // moving towards crater
+    private final int gyroTurnTowardsWall = 90; // turning towards wall
+    private final int distanceToWall = 60; // moving towards wall
+    private final int gyroParalellWall = 45; // turning towards depot
+    private final int distanceDepot = 86+45; // moving into depot
+    private final int distanceToCraterBackwards = -420; // backing into crater
 
     @Override
     public void init() {
