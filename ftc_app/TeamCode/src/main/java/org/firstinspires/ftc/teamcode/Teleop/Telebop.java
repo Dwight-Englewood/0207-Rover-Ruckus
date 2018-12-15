@@ -66,6 +66,7 @@ public class Telebop extends OpMode {
         //else if (gamepad2.right_bumper) robot.intake.outtake();
         //else robot.intake.stop();
 
+        telemetry.addData("Lift Ticks", robot.lift.getTicks());
         telemetry.addData("Slow?", slow);
         telemetry.update();
     }

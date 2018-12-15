@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
 public class Lift implements Subsystem {
     public Lift() {}
-    private final int tickCount = -17000;
+    private final int tickCount = 18000;
 
     private DcMotor motor;
     private DigitalChannel magSwitch;
@@ -75,7 +75,7 @@ public class Lift implements Subsystem {
     }
 
     public boolean newYears() {
-        if (motor.getCurrentPosition() <= tickCount) {
+        if (motor.getCurrentPosition() >= tickCount) {
             motor.setPower(0);
             motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             return true;

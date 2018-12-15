@@ -55,8 +55,8 @@ public class MecanumDriveTrain extends DriveTrain {
         bl = hwMap.get(DcMotor.class, "bl");
         br = hwMap.get(DcMotor.class, "br");
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        bl.setDirection(DcMotorSimple.Direction.FORWARD);
-        fr.setDirection(DcMotorSimple.Direction.REVERSE);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fr.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -165,10 +165,10 @@ public class MecanumDriveTrain extends DriveTrain {
 
     //Note: Pos is strafe right
     public void strafepow(double power) {
-        fl.setPower(.5 * power);
-        fr.setPower(.5 * -power);
-        bl.setPower(.5 * -power);
-        br.setPower(.5 * power);
+        fl.setPower(power);
+        fr.setPower(-power);
+        bl.setPower(-power);
+        br.setPower(power);
     }
 
     public void setTarget(int targetDistance) {

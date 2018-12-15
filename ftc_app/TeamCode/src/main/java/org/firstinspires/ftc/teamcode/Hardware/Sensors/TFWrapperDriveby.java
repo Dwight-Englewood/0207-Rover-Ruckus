@@ -20,7 +20,8 @@ public class TFWrapperDriveby implements Subsystem {
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
 
-    public TFWrapperDriveby() {}
+    public TFWrapperDriveby() {
+    }
 
     public enum TFStateDriveby implements State {
         GOLD("Gold"),
@@ -28,6 +29,7 @@ public class TFWrapperDriveby implements Subsystem {
         NONE("None");
 
         private String str;
+
         TFStateDriveby(String str) {
             this.str = str;
         }
@@ -80,16 +82,25 @@ public class TFWrapperDriveby implements Subsystem {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-            if (updatedRecognitions != null) {
-                if (updatedRecognitions.size() == 1) {
-                    if (updatedRecognitions.get(0).getLabel().equals(LABEL_GOLD_MINERAL)) {
-                        this.state = TFStateDriveby.GOLD;
-                    } else if (updatedRecognitions.get(0).getLabel().equals(LABEL_SILVER_MINERAL)) {
-                        this.state = TFStateDriveby.SILVER;
-                    } else {
-                        this.state = TFStateDriveby.NONE;
+
+            if (updatedRecognitions != null && updatedRecognitions.size() > 0) {
+                Recognition largestR = updatedRecognitions.get(0);
+                double maxArea = largestR.getHeight() * largestR.getWidth();
+                for (Recognition r : updatedRecognitions) {
+                    double area = r.getHeight() * r.getWidth();
+                    if (area > maxArea) {
+                        maxArea = area;
+                        largestR = r;
                     }
                 }
+                if (largestR.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                    this.state = TFStateDriveby.GOLD;
+                } else if (largestR.getLabel().equals(LABEL_SILVER_MINERAL)) {
+                    this.state = TFStateDriveby.SILVER;
+                } else {
+                    this.state = TFStateDriveby.NONE;
+                }
+
             }
         }
     }

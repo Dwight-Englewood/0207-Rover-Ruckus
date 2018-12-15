@@ -21,8 +21,8 @@ public class Bot {
     public SensorSystem sensorSystem = new SensorSystem();
     public TFWrapper tensorFlow = new TFWrapper();
     public VumarkWrapper vumarkWrapper = new VumarkWrapper();
-    public Dumper dumper = new Dumper();
-    public Intake intake = new Intake();
+    //public Dumper dumper = new Dumper();
+    //public Intake intake = new Intake();
 
     private boolean isAuton;
     private boolean vumarkOff = true;

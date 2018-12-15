@@ -10,6 +10,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 import org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapper;
 
+import java.util.Arrays;
+
 
 @Autonomous(name = "Silver", group = "Auton")
 //@Disabled
@@ -61,7 +63,7 @@ public class Silver extends OpMode {
                 break;
 
             case 1:
-                this.setTarget(12);
+                this.setTarget(-12);
                 if (posCounter[0] > posCounter[1] && posCounter[0] > posCounter[2]) {
                     position = TFWrapper.TFState.LEFT;
                 } else if (posCounter[1] > posCounter[0] && posCounter[1] > posCounter[2]) {
@@ -167,7 +169,8 @@ public class Silver extends OpMode {
                 command++;
                 break;
         }
-
+        telemetry.addData("Pos Count:", Arrays.toString(posCounter));
+        telemetry.update();
     }
 
     @Override
