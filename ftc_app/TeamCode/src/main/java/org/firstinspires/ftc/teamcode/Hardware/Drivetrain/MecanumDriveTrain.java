@@ -226,6 +226,7 @@ public class MecanumDriveTrain extends DriveTrain {
         double power;
         int target = fl.getTargetPosition();
         int current = fl.getCurrentPosition();
+        int sign = target < 0 ? -1  : 1;
         int diff = Math.abs(target - current);
         int originDiff = Math.abs(this.originTick - current);
 
@@ -256,7 +257,7 @@ public class MecanumDriveTrain extends DriveTrain {
         bl.setPower(power * Math.signum(bl.getPower()));
         br.setPower(power * Math.signum(br.getPower()));
         */
-        this.drivepow(power);
+        this.drivepow(sign * power);
     }
 
     private int distanceToRevsNRO20(double distance) {

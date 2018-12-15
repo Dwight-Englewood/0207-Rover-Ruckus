@@ -16,7 +16,7 @@ public class GoldOppositeCrater extends OpMode {
     private final int distance1 = 12; // Distance for pulling out of the lander bracket
     private final int distance2 = 86+45; // Distance for driving to depot
     private final int distance3 = 42; // Distance for driving towards wall
-    private final int distance4 = 160; // Distance for driving into crater
+    private final int distance4 = 150; // Distance for driving into crater
     private final int gyroTurn1 = 0; // Turning towards depot
     private final int gyroTurn2 = 0; // Algining after depot movement for dropping the
     private final int gyroTurn3 = 90; // Turning to move towards wall
@@ -116,6 +116,7 @@ public class GoldOppositeCrater extends OpMode {
             case 16:
                 robot.driveTrain.drivepow(0);
                 robot.markerDeploy.raise();
+                command++;
                 break;
 
             case 17:

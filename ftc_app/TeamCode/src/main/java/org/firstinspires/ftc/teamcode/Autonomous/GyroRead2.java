@@ -9,9 +9,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
-@Autonomous(name = "GyroRead", group = "Testing")
+@Autonomous(name = "GyroRead2", group = "Testing")
 //@Disabled
-public class GyroRead extends OpMode {
+public class GyroRead2 extends OpMode {
 
     Bot robot = new Bot(true);
     int command = 0;
@@ -33,7 +33,7 @@ public class GyroRead extends OpMode {
     public void start() {
         robot.start();
         timer.reset();
-        this.setTarget(420);
+        this.setTarget(-420);
     }
 
 

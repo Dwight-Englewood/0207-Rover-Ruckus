@@ -21,10 +21,10 @@ public class Silver extends OpMode {
     private final int gyroTurnBracket1 = 0; // turning towards crater
     private final int distance2LanderAvoid = 40; // moving towards crater
     private final int gyroTurnTowardsWall = 90; // turning towards wall
-    private final int distanceToWall = 60; // moving towards wall
-    private final int gyroParalellWall = 45; // turning towards depot
+    private final int distanceToWall = 100; // moving towards wall
+    private final int gyroParalellWall = 135; // turning towards depot
     private final int distanceDepot = 86+45; // moving into depot
-    private final int distanceToCraterBackwards = -420; // backing into crater
+    private final int distanceToCraterBackwards = -(86+45+60); // backing into crater
 
     @Override
     public void init() {
@@ -105,15 +105,24 @@ public class Silver extends OpMode {
                     robot.markerDeploy.drop();
                 }
                 break;
-            case 13:
-                this.setTarget(distanceToCraterBackwards);
+            case 13://align to wall
+                this.gyroCorrect(gyroParalellWall, 1, .05, .2);
                 break;
             case 14:
-                this.finishDrive();
+                this.setTarget(distanceToCraterBackwards);
                 break;
             case 15:
+                this.finishDrive();
+                break;
+            case 16:
                 robot.driveTrain.drivepow(0);
                 robot.markerDeploy.raise();
+                command++;
+                break;
+
+            case 17:
+                robot.stop();
+                command++;
                 break;
 
         }
