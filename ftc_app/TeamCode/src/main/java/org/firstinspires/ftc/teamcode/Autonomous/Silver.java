@@ -23,8 +23,9 @@ public class Silver extends OpMode {
     private final int gyroTurnTowardsWall = 90; // turning towards wall
     private final int distanceToWall = 100; // moving towards wall
     private final int gyroParalellWall = 135; // turning towards depot
-    private final int distanceDepot = 86+45; // moving into depot
-    private final int distanceToCraterBackwards = -(86+45+60); // backing into crater
+    private final int distanceDepot = 86+25; // moving into depot
+    private final int distanceToCraterBackwards = 86+45+60; // backing into crater
+    private int gyroParalellWallBack = -45;
 
     @Override
     public void init() {
@@ -106,7 +107,7 @@ public class Silver extends OpMode {
                 }
                 break;
             case 13://align to wall
-                this.gyroCorrect(gyroParalellWall, 1, .05, .2);
+                this.gyroCorrect(gyroParalellWallBack, 1, .05, .2);
                 break;
             case 14:
                 this.setTarget(distanceToCraterBackwards);
