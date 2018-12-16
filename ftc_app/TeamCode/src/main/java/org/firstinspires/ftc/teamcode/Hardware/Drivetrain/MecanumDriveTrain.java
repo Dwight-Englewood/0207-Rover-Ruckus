@@ -173,19 +173,31 @@ public class MecanumDriveTrain extends DriveTrain {
 
     public void setTarget(int targetDistance) {
         int target = this.distanceToRevsNRO20(targetDistance);
-        fl.setTargetPosition(fl.getCurrentPosition() + target);
+        /*fl.setTargetPosition(fl.getCurrentPosition() + target);
         fr.setTargetPosition(fr.getCurrentPosition() + target);
         bl.setTargetPosition(bl.getCurrentPosition() + target);
-        br.setTargetPosition(br.getCurrentPosition() + target);
+        br.setTargetPosition(br.getCurrentPosition() + target);*/
+        this.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fl.setTargetPosition(target);
+        fr.setTargetPosition(target);
+        bl.setTargetPosition(target);
+        br.setTargetPosition(target);
+        this.setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.originTick = Math.abs(fl.getCurrentPosition());
     }
 
     public void setStrafeTarget(int targetDistance) {
         int target = this.distanceToRevsNRO20(targetDistance);
-        fl.setTargetPosition(fl.getCurrentPosition() + target);
+        /*fl.setTargetPosition(fl.getCurrentPosition() + target);
         fr.setTargetPosition(fr.getCurrentPosition() - target);
         bl.setTargetPosition(bl.getCurrentPosition() - target);
-        br.setTargetPosition(br.getCurrentPosition() + target);
+        br.setTargetPosition(br.getCurrentPosition() + target);*/
+        this.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fl.setTargetPosition(target);
+        fr.setTargetPosition(-target);
+        bl.setTargetPosition(-target);
+        br.setTargetPosition(target);
+        this.setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.originTick = Math.abs(fl.getCurrentPosition());
     }
 
