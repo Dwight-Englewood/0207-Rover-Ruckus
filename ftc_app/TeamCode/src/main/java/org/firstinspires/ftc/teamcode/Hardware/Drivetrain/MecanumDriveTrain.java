@@ -183,7 +183,7 @@ public class MecanumDriveTrain extends DriveTrain {
         bl.setTargetPosition(target);
         br.setTargetPosition(target);
         this.setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.originTick = Math.abs(fl.getCurrentPosition());
+        this.originTick = fl.getCurrentPosition();
     }
 
     public void setStrafeTarget(int targetDistance) {
@@ -198,7 +198,7 @@ public class MecanumDriveTrain extends DriveTrain {
         bl.setTargetPosition(-target);
         br.setTargetPosition(target);
         this.setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.originTick = Math.abs(fl.getCurrentPosition());
+        this.originTick = fl.getCurrentPosition();
     }
 
     public void setRunMode(DcMotor.RunMode mode) {
@@ -238,16 +238,16 @@ public class MecanumDriveTrain extends DriveTrain {
         double power;
         int target = fl.getTargetPosition();
         int current = fl.getCurrentPosition();
-        int sign = target < 0 ? -1  : 1;
+        int sign = target < current ? -1  : 1;
         int diff = Math.abs(target - current);
         int originDiff = Math.abs(this.originTick - current);
 
-        if (diff < 200) {
-            power = 0;
-        } else if (originDiff < 100) {
+        if (originDiff < 75) {
             power = .1;
-        } else if (originDiff < 300) {
+        } else if (originDiff < 250) {
             power = .3;
+        } else if (originDiff < 400) {
+            power = .5;
         } else {
             power = 1;
         }
