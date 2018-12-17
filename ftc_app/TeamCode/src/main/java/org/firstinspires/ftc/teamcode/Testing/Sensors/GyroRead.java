@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Testing.Sensors;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
 @Autonomous(name = "GyroRead", group = "Testing")
-//@Disabled
+@Disabled
 public class GyroRead extends OpMode {
 
     Bot robot = new Bot(true);
