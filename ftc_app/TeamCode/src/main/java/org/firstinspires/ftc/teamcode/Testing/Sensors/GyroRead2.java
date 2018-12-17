@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Testing.Sensors;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -9,9 +10,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
-@Autonomous(name = "GyroRead", group = "Testing")
-//@Disabled
-public class GyroRead extends OpMode {
+@Autonomous(name = "GyroRead2", group = "Testing")
+@Disabled
+public class GyroRead2 extends OpMode {
 
     Bot robot = new Bot(true);
     int command = 0;
@@ -33,7 +34,7 @@ public class GyroRead extends OpMode {
     public void start() {
         robot.start();
         timer.reset();
-        this.setTarget(420);
+        this.setTarget(-420);
     }
 
 
