@@ -57,7 +57,7 @@ public class Dumper implements Subsystem {
     }
 
     public void close() {
-        wall.setPosition(.5);
+        wall.setPosition(.2);
     }
 
     public void open() {

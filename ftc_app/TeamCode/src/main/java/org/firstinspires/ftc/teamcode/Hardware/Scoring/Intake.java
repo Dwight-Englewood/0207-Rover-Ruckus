@@ -53,12 +53,12 @@ public class Intake implements Subsystem {
     }
 
     public void intake() {
-        motor.setPower(-1);
+        motor.setPower(-.7);
         state = intakeState.INTAKING;
     }
 
     public void outtake() {
-        motor.setPower(1);
+        motor.setPower(.7);
         state = intakeState.OUTTAKING;
     }
 
