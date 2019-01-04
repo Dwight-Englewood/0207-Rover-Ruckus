@@ -68,6 +68,7 @@ public class Telebop extends OpMode {
 
         telemetry.addData("Lift Ticks", robot.lift.getTicks());
         telemetry.addData("Slow?", slow);
+        telemetry.addData("isdown?", robot.dumper.isBottom());
         telemetry.update();
     }
 

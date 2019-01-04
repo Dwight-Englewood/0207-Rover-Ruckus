@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Hardware.Scoring;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -12,6 +13,7 @@ public class Dumper implements Subsystem {
 
     private Servo wall;
     private DcMotor spool;
+    private DigitalChannel magSwitch;
     private enum DumperState implements State {
         DUMPING("Dumping"),
         HOLDING("Holding");
@@ -33,6 +35,7 @@ public class Dumper implements Subsystem {
     public void init(HardwareMap hwMap) {
         wall = hwMap.get(Servo.class, "dump");
         spool = hwMap.get(DcMotor.class, "spool");
+        magSwitch = hwMap.get(DigitalChannel.class, "dumpmag");
         this.close();
     }
 
@@ -61,10 +64,15 @@ public class Dumper implements Subsystem {
     }
 
     public void open() {
-        wall.setPosition(1);
+        wall.setPosition(.8);
     }
 
     public void up() {spool.setPower(-.6);}
 
-    public void down() {spool.setPower(.6);}
+    public void down() {
+        if (isBottom()) this.stop();
+        else spool.setPower(.6);
+    }
+
+    public boolean isBottom() {return !magSwitch.getState();}
 }
