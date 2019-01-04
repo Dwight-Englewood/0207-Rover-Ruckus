@@ -42,7 +42,7 @@ public class Bot {
         for (Field f : fields) {
             try {
                 if (f.get(this) instanceof Subsystem) {
-                    if (!isAuton && f.get(this) instanceof TFWrapper) {
+                    if (!isAuton && f.get(this) instanceof TFWrapperDriveby) {
                         continue;
                     }
                     if (f.get(this) instanceof VumarkWrapper && vumarkOff) {
@@ -62,7 +62,7 @@ public class Bot {
         for (Field f : fields) {
             try {
                 if (f.get(this) instanceof Subsystem) {
-                    if (!isAuton && f.get(this) instanceof TFWrapper) {
+                    if (!isAuton && f.get(this) instanceof TFWrapperDriveby) {
                         continue;
                     }
 
@@ -83,7 +83,7 @@ public class Bot {
         for (Field f : fields) {
             try {
                 if (f.get(this) instanceof Subsystem) {
-                    if (!isAuton && f.get(this) instanceof TFWrapper) {
+                    if (!isAuton && f.get(this) instanceof TFWrapperDriveby) {
                         continue;
                     }
 
@@ -109,7 +109,7 @@ public class Bot {
         for (Field f : fields) {
             try {
                 if (f.get(this) instanceof Subsystem) {
-                    if (!isAuton && f.get(this) instanceof TFWrapper) {
+                    if (!isAuton && f.get(this) instanceof TFWrapperDriveby) {
                         continue;
                     }
 
