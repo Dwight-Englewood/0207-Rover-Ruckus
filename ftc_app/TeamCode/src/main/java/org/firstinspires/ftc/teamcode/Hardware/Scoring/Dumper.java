@@ -64,7 +64,7 @@ public class Dumper implements Subsystem {
         wall.setPosition(1);
     }
 
-    public void up() {spool.setPower(-.5);}
+    public void up() {spool.setPower(-.6);}
 
-    public void down() {spool.setPower(.5);}
+    public void down() {spool.setPower(.6);}
 }
