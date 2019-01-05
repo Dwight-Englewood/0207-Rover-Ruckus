@@ -173,10 +173,10 @@ public class MecanumDriveTrain extends DriveTrain {
 
     public void setTarget(int targetDistance) {
         int target = this.distanceToRevsNRO20(targetDistance);
-        /*fl.setTargetPosition(fl.getCurrentPosition() + target);
-        fr.setTargetPosition(fr.getCurrentPosition() + target);
-        bl.setTargetPosition(bl.getCurrentPosition() + target);
-        br.setTargetPosition(br.getCurrentPosition() + target);*/
+        //fl.setTargetPosition(fl.getCurrentPosition() + target);
+        //fr.setTargetPosition(fr.getCurrentPosition() + target);
+        //bl.setTargetPosition(bl.getCurrentPosition() + target);
+        //br.setTargetPosition(br.getCurrentPosition() + target);
         this.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         fl.setTargetPosition(target);
         fr.setTargetPosition(target);
@@ -188,10 +188,10 @@ public class MecanumDriveTrain extends DriveTrain {
 
     public void setStrafeTarget(int targetDistance) {
         int target = this.distanceToRevsNRO20(targetDistance);
-        /*fl.setTargetPosition(fl.getCurrentPosition() + target);
-        fr.setTargetPosition(fr.getCurrentPosition() - target);
-        bl.setTargetPosition(bl.getCurrentPosition() - target);
-        br.setTargetPosition(br.getCurrentPosition() + target);*/
+        //fl.setTargetPosition(fl.getCurrentPosition() + target);
+        //fr.setTargetPosition(fr.getCurrentPosition() - target);
+        //bl.setTargetPosition(bl.getCurrentPosition() - target);
+        //br.setTargetPosition(br.getCurrentPosition() + target);
         this.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         fl.setTargetPosition(target);
         fr.setTargetPosition(-target);
@@ -206,6 +206,7 @@ public class MecanumDriveTrain extends DriveTrain {
         fr.setMode(mode);
         bl.setMode(mode);
         br.setMode(mode);
+        //try {Thread.sleep(1000);} catch (Exception e) {}
     }
 
     /**

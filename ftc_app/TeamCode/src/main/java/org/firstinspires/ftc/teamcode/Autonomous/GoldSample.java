@@ -1,31 +1,23 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
+import org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapperDriveby;
 
 
-@Autonomous(name = "GoldSample", group = "AutonSample")
+@Autonomous(name = "GoldSample", group = "AutonOppositeCrater")
 //@Disabled
 public class GoldSample extends OpMode {
-
-    private final int distance1 = 12; // Distance for pulling out of the lander bracket
-    private final int distance2 = 86+45; // Distance for driving to depot
-    private final int distance3 = 42; // Distance for driving towards wall
-    private final int distance4 = 160; // Distance for driving into crater
-    private final int gyroTurn1 = 0; // Turning towards depot
-    private final int gyroTurn2 = 0; // Algining after depot movement for dropping the
-    private final int gyroTurn3 = -90; // Turning to move towards wall
-    private final int gyroTurn4 = -135; // Turning towards the crater
 
     Bot robot = new Bot(true);
     int command = 0;
     ElapsedTime timer = new ElapsedTime();
+    TFWrapperDriveby.TFStateDriveby state = TFWrapperDriveby.TFStateDriveby.NONE;
 
     @Override
     public void init() {
@@ -57,41 +49,35 @@ public class GoldSample extends OpMode {
                 break;
 
             case 1:
-                this.setTarget(distance1);
+                this.setTarget(12);
                 break;
             case 2:
                 this.finishDrive();
                 break;
             case 3:
-                //this.setStrafeTarget(20);
-                command++;
+                this.setStrafeTarget(50);
                 break;
             case 4:
-                //this.finishDrive();
-                command++;
+                this.finishDrive();
                 break;
-
             case 5:
-                this.gyroCorrect(gyroTurn1, 1, .05, .2);
+                this.gyroCorrect(90, 1,.1, .3);
                 break;
-
             case 6:
-                this.setTarget(45);
+                this.state = this.robot.tensorFlow.getState();
+                if (state == TFWrapperDriveby.TFStateDriveby.GOLD) {
+                    robot.driveTrain.stop();
+                    command++;
+                } else {
+                    robot.driveTrain.drivepow(-.2);
+                }
                 break;
 
             case 7:
-                this.finishDrive();
+                this.gyroCorrect(-180, 1, .05, .2);
                 break;
 
             case 8:
-                this.gyroCorrect(90, 1, .05, .2);
-                break;
-
-            case 9:
-                this.setTarget(-40);
-                break;
-
-            case 10:
 
                 break;
 
@@ -101,6 +87,7 @@ public class GoldSample extends OpMode {
         telemetry.addData("Command: ", command);
         telemetry.addData("Time: ", timer.milliseconds());
         telemetry.addData("lift ticks", robot.lift.getTicks());
+        telemetry.addData("bl target", robot.driveTrain.bl.getTargetPosition());
     }
 
     @Override
@@ -118,8 +105,10 @@ public class GoldSample extends OpMode {
             robot.driveTrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
             this.timer.reset();
             this.command++;
+        } else {
+            robot.driveTrain.scalePower();
+            //robot.driveTrain.drivepow(.2);
         }
-        robot.driveTrain.scalePower();
     }
 
     private int gyroCorrect(int gyroTarget, int gyroRange, double minSpeed, double addSpeed) {

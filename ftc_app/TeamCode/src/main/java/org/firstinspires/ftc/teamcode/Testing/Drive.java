@@ -38,10 +38,10 @@ public class Drive extends OpMode {
 
     @Override
     public void loop() {
-        fl.setPower(gamepad1.a ? 1 : 0);
-        bl.setPower(gamepad1.b ? 1 : 0);
-        fr.setPower(gamepad1.y ? 1 : 0);
-        br.setPower(gamepad1.x ? 1 : 0);
+        fl.setPower(gamepad1.a ? .1 : 0);
+        bl.setPower(gamepad1.b ? .1 : 0);
+        fr.setPower(gamepad1.y ? .1 : 0);
+        br.setPower(gamepad1.x ? .1 : 0);
         telemetry.addData("fl", "a");
         telemetry.addData("bl", "b");
         telemetry.addData("fr", "y");
