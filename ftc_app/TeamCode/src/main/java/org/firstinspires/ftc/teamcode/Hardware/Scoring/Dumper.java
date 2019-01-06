@@ -35,6 +35,7 @@ public class Dumper implements Subsystem {
     public void init(HardwareMap hwMap) {
         wall = hwMap.get(Servo.class, "dump");
         spool = hwMap.get(DcMotor.class, "spool");
+        spool.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         magSwitch = hwMap.get(DigitalChannel.class, "dumpmag");
         this.close();
     }
@@ -67,11 +68,11 @@ public class Dumper implements Subsystem {
         wall.setPosition(.8);
     }
 
-    public void up() {spool.setPower(-.6);}
+    public void up() {spool.setPower(-.8);}
 
     public void down() {
         if (isBottom()) this.stop();
-        else spool.setPower(.6);
+        else spool.setPower(.8);
     }
 
     public boolean isBottom() {return !magSwitch.getState();}
