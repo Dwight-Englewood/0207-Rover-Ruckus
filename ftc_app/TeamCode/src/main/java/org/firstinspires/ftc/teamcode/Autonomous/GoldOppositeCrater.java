@@ -146,8 +146,9 @@ public class GoldOppositeCrater extends OpMode {
             robot.driveTrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
             this.timer.reset();
             this.command++;
+        } else {
+            robot.driveTrain.scalePower();
         }
-        robot.driveTrain.scalePower();
     }
 
     private int gyroCorrect(int gyroTarget, int gyroRange, double minSpeed, double addSpeed) {

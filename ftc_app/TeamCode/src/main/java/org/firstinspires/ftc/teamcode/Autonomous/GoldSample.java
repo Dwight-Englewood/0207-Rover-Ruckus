@@ -14,14 +14,12 @@ import org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapperDriveby;
 //@Disabled
 public class GoldSample extends OpMode {
 
-    Bot robot = new Bot(true);
-    int command = 0;
-    ElapsedTime timer = new ElapsedTime();
+    AutonMethods auto = new AutonMethods();
     TFWrapperDriveby.TFStateDriveby state = TFWrapperDriveby.TFStateDriveby.NONE;
 
     @Override
     public void init() {
-        robot.init(hardwareMap);
+        auto.robot.init(hardwareMap);
         telemetry.addLine("ready");
         telemetry.update();
     }
@@ -33,104 +31,77 @@ public class GoldSample extends OpMode {
 
     @Override
     public void start() {
-        robot.start();
-        timer.reset();
+        auto.robot.start();
+        auto.timer.reset();
     }
 
     @Override
     public void loop() {
-        switch (command) {
+        switch(auto.command) {
             case 0:
-                if (robot.lift.newYears()) {
-                //if (true) {
-                    timer.reset();
-                    command++;
+                if (auto.robot.lift.newYears()) {
+                    auto.command++;
                 }
                 break;
 
             case 1:
-                this.setTarget(12);
+                auto.setTarget(12);
                 break;
+
             case 2:
-                this.finishDrive();
+                auto.finishDrive();
                 break;
+
             case 3:
-                this.setStrafeTarget(50);
+                auto.setStrafeTarget(30);
                 break;
+
             case 4:
-                this.finishDrive();
+                auto.finishDrive();
                 break;
+
             case 5:
-                this.gyroCorrect(90, 1,.1, .3);
+                auto.gyroCorrect(90, 1,.1, .3);
                 break;
+
             case 6:
-                this.state = this.robot.tensorFlow.getState();
+                this.state = auto.robot.tensorFlow.getState();
                 if (state == TFWrapperDriveby.TFStateDriveby.GOLD) {
-                    robot.driveTrain.stop();
-                    command++;
+                    auto.robot.driveTrain.stop();
+                    auto.command++;
                 } else {
-                    robot.driveTrain.drivepow(-.2);
+                    auto.robot.driveTrain.drivepow(-.2);
                 }
                 break;
 
             case 7:
-                this.gyroCorrect(-180, 1, .05, .2);
+                auto.gyroCorrect(-180, 1, .05, .2);
                 break;
 
             case 8:
-
+                auto.robot.intake.intake();
+                auto.setTarget(-20);
                 break;
 
+            case 9:
+                auto.finishDrive();
+                break;
 
+            case 10:
+                break;
         }
 
-        telemetry.addData("Command: ", command);
-        telemetry.addData("Time: ", timer.milliseconds());
-        telemetry.addData("lift ticks", robot.lift.getTicks());
-        telemetry.addData("bl target", robot.driveTrain.bl.getTargetPosition());
+        telemetry.addData("Command: ", auto.command);
+        telemetry.addData("lift ticks", auto.robot.lift.getTicks());
+        telemetry.addData("bl target", auto.robot.driveTrain.bl.getTargetPosition());
+        telemetry.addData("fl target", auto.robot.driveTrain.fl.getTargetPosition());
     }
 
     @Override
     public void stop() {
-        robot.driveTrain.drivepow(0);
-        robot.stop();
+        auto.robot.stop();
     }
 
-    private void finishDrive() {
-        if (Math.abs(robot.driveTrain.fl.getTargetPosition() - robot.driveTrain.fl.getCurrentPosition()) < 20 ||
-                Math.abs(robot.driveTrain.br.getTargetPosition() - robot.driveTrain.br.getCurrentPosition()) < 20 ||
-                Math.abs(robot.driveTrain.bl.getTargetPosition() - robot.driveTrain.bl.getCurrentPosition()) < 20 ||
-                Math.abs(robot.driveTrain.fr.getTargetPosition() - robot.driveTrain.fr.getCurrentPosition()) < 20) {
-            robot.driveTrain.stop();
-            robot.driveTrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            this.timer.reset();
-            this.command++;
-        } else {
-            robot.driveTrain.scalePower();
-            //robot.driveTrain.drivepow(.2);
-        }
-    }
 
-    private int gyroCorrect(int gyroTarget, int gyroRange, double minSpeed, double addSpeed) {
-        int gyroVal = (int) this.robot.sensorSystem.getGyroRotation(AngleUnit.DEGREES);
-        this.robot.driveTrain.gyroCorrect(gyroTarget, gyroRange, gyroVal, minSpeed, addSpeed);
-        if (this.robot.driveTrain.fl.getPower() == 0) {
-            this.timer.reset();
-            this.command++;
-        }
-        return gyroVal;
-    }
-
-    private void setTarget(int target) {
-        this.robot.driveTrain.setTarget(target);
-        this.timer.reset();
-        this.command++;
-    }
-
-    private void setStrafeTarget(int target) {
-        this.robot.driveTrain.setStrafeTarget(target);
-        this.timer.reset();
-        this.command++;
-    }
 }
 
