@@ -18,7 +18,6 @@ public class Dumper implements Subsystem {
         DUMPING("Dumping"),
         HOLDING("Holding");
 
-
         private String str;
         DumperState(String str) {
             this.str = str;
