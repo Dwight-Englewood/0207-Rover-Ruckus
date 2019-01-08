@@ -12,12 +12,12 @@ public class Dumper implements Subsystem {
     public Dumper() {}
 
     private Servo wall;
+    private Servo backWall;
     private DcMotor spool;
     private DigitalChannel magSwitch;
     private enum DumperState implements State {
         DUMPING("Dumping"),
         HOLDING("Holding");
-
 
         private String str;
         DumperState(String str) {
@@ -34,7 +34,9 @@ public class Dumper implements Subsystem {
     @Override
     public void init(HardwareMap hwMap) {
         wall = hwMap.get(Servo.class, "dump");
+        backWall = hwMap.get(Servo.class, "wall");
         spool = hwMap.get(DcMotor.class, "spool");
+        spool.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         spool.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         magSwitch = hwMap.get(DigitalChannel.class, "dumpmag");
         this.close();
