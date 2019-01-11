@@ -70,10 +70,13 @@ public class Dumper implements Subsystem {
         wall.setPosition(.8);
     }
 
-    public void up() {spool.setPower(-.8);}
+    public void up() {spool.setPower(-.8); backWall.setPosition(1);}
 
     public void down() {
-        if (isBottom()) this.stop();
+        if (isBottom()) {
+            this.stop();
+            backWall.setPosition(0);
+        }
         else spool.setPower(.8);
     }
 
