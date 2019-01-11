@@ -13,8 +13,8 @@ public class Rake implements Subsystem {
 
     @Override
     public void init(HardwareMap hwMap) {
-        bottom = hwMap.get(Servo.class, "bottom");
-        top = hwMap.get(Servo.class, "top");
+        bottom = hwMap.get(Servo.class, "rakebot");
+        top = hwMap.get(Servo.class, "raketop");
         this.up();
     }
 
