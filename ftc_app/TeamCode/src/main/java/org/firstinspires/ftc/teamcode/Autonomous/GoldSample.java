@@ -21,6 +21,19 @@ public class GoldSample extends OpMode {
     TFState sampleLocation;
     ElapsedTime timer = new ElapsedTime();
 
+    int distExitBracket = 12;
+    int distStrafeOut = 30;
+    int rotFaceSamplesAfterLander = 0;
+    int rotTurnParalellToSamples = 90;
+    int distToLeft = 12;
+    int distToCenter = -12;
+    int distToRight = -24;
+    int rotIntakeSample = -180;
+    int distSampleIntake = -24;
+    int distToWall = 50;
+    int rotParalellToWall = -45;
+    int distToDepot = -80;
+    int distToCrater = 200;
     @Override
     public void init() {
         auto.robot.init(hardwareMap);
@@ -49,7 +62,7 @@ public class GoldSample extends OpMode {
                 break;
 
             case 1:
-                auto.setTarget(12);
+                auto.setTarget(distExitBracket);
                 break;
 
             case 2:
@@ -57,7 +70,7 @@ public class GoldSample extends OpMode {
                 break;
 
             case 3:
-                auto.setStrafeTarget(30);
+                auto.setStrafeTarget(distStrafeOut);
                 break;
 
             case 4:
@@ -65,36 +78,36 @@ public class GoldSample extends OpMode {
                 break;
 
             case 5:
-                auto.gyroCorrect(0, 1,.1, .3);
+                auto.gyroCorrect(rotFaceSamplesAfterLander, 1,.1, .3);
                 break;
 
             case 6: // Get the Sample Location
-                this.state = auto.robot.tensorFlow.getState();
+                /*this.state = auto.robot.tensorFlow.getState();
                 if (state == TFWrapperDriveby.TFStateDriveby.GOLD) {
                     auto.robot.driveTrain.stop();
                     auto.command++;
                 } else {
                     auto.robot.driveTrain.drivepow(-.2);
                 }
-                break;
+                break;*/
 
             case 7:
-                auto.gyroCorrect(90, 1, .05, .2);
+                auto.gyroCorrect(rotTurnParalellToSamples, 1, .05, .2);
                 break;
 
             case 8:
                 switch(sampleLocation) {
                     case LEFT:
-                        auto.setTarget(12);
-                        break;
-                    case RIGHT:
-                        auto.setTarget(-12);
+                        auto.setTarget(distToLeft);
                         break;
                     case CENTER:
-                        auto.setTarget(-24);
+                        auto.setTarget(distToCenter);
+                        break;
+                    case RIGHT:
+                        auto.setTarget(distToRight);
                         break;
                     case NOTVISIBLE:
-                        auto.setTarget(12);
+                        auto.setTarget(distToLeft);
                         break;
                 }
                 break;
@@ -104,38 +117,38 @@ public class GoldSample extends OpMode {
                 break;
 
             case 10:
-                auto.gyroCorrect(-180, 1, .05, .2);
+                auto.gyroCorrect(rotIntakeSample, 1, .05, .2);
                 break;
             case 11:
-                auto.setTarget(-24);
+                auto.setTarget(distSampleIntake);
                 break;
             case 12:
                 auto.robot.intake.intake();
                 auto.finishDrive();
                 break;
             case 13:
-                auto.setTarget(24);
+                auto.setTarget(-distSampleIntake);
                 auto.robot.intake.stop();
                 break;
             case 14:
                 auto.finishDrive();
                 break;
             case 15:
-                auto.gyroCorrect(90, 1, .05, .2);
+                auto.gyroCorrect(rotTurnParalellToSamples, 1, .05, .2);
                 break;
             case 16:
                 switch(sampleLocation) {
                     case LEFT:
-                        auto.setTarget(0);
-                        break;
-                    case RIGHT:
-                        auto.setTarget(12);
+                        auto.setTarget(distToLeft - distToLeft);
                         break;
                     case CENTER:
-                        auto.setTarget(24);
+                        auto.setTarget(distToLeft - distToCenter);
+                        break;
+                    case RIGHT:
+                        auto.setTarget(distToLeft - distToRight);
                         break;
                     case NOTVISIBLE:
-                        auto.setTarget(0);
+                        auto.setTarget(distToLeft - distToLeft);
                         break;
                 }
                 break;
@@ -143,16 +156,16 @@ public class GoldSample extends OpMode {
                 auto.finishDrive();
                 break;
             case 18:
-                auto.setTarget(50);
+                auto.setTarget(distToWall);
                 break;
             case 19:
                 auto.finishDrive();
                 break;
             case 20:
-                auto.gyroCorrect(-45, 1, .05, .2);
+                auto.gyroCorrect(rotParalellToWall, 1, .05, .2);
                 break;
             case 21:
-                auto.setTarget(-160);
+                auto.setTarget(distToDepot);
                 break;
             case 22:
                 auto.finishDrive();
@@ -169,7 +182,7 @@ public class GoldSample extends OpMode {
                 }
                 break;
             case 24:
-                auto.setTarget(200);
+                auto.setTarget(distToCrater);
                 break;
             case 25:
                 auto.finishDrive();
