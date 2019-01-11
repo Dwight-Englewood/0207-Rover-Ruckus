@@ -7,20 +7,25 @@ import org.firstinspires.ftc.teamcode.Hardware.State;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
 public class Rake implements Subsystem {
-    private Servo rake;
+    private Servo bottom;
+    private Servo top;
+
 
     @Override
     public void init(HardwareMap hwMap) {
-        rake = hwMap.get(Servo.class, "rake");
+        bottom = hwMap.get(Servo.class, "bottom");
+        top = hwMap.get(Servo.class, "top");
         this.up();
     }
 
     public void up() {
-        rake.setPosition(0);
+        bottom.setPosition(0);
+        top.setPosition(0);
     }
 
     public void down() {
-        rake.setPosition(1);
+        bottom.setPosition(1);
+        top.setPosition(1);
     }
 
     @Override
