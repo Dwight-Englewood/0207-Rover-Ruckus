@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @TeleOp(name = "ServoValueFinder", group = "Teleop")
-@Disabled
+//@Disabled
 public class ServoValueFinder extends OpMode {
 
     final int cooldownTime = 100;
