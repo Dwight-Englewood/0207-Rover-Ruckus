@@ -21,7 +21,7 @@ public class VisionTest extends OpMode {
 
     @Override
     public void init() {
-        //boot.tensorFlow.init(hardwareMap);
+        boot.tensorFlow.init(hardwareMap);
         boot.vumarkWrapper.init(hardwareMap);
     }
 
@@ -39,8 +39,7 @@ public class VisionTest extends OpMode {
 
     @Override
     public void loop() {
-        //vmw.updateState();
-        //telemetry.addData("mineralSample", boot.tensorFlow.getState().getStateVal());
+        telemetry.addData("mineralSample", boot.tensorFlow.getState().getStateVal());
         telemetry.addData("vumark", boot.vumarkWrapper.getState().getStateVal());
         double[] pos = boot.vumarkWrapper.getPosition();
         telemetry.addData("posX", pos[0]);
