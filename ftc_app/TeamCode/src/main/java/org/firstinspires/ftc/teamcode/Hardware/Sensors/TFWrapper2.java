@@ -111,12 +111,15 @@ public class TFWrapper2 implements Subsystem {
                     }
                     if (gold != -1 || silver1 != -1) {
                         if (gold < silver1 && gold != -1) {
-                            this.state = TFState.LEFT;
+                            this.state = TFState.RIGHT ;
                         } else if (silver1 < gold) {
-                            this.state = TFState.CENTER;
-                        } else if (gold == -1) {
                             this.state = TFState.RIGHT;
+                        } else if (gold == -1) {
+                            this.state = TFState.LEFT;
+                        } else {
+                            this.state = TFState.NOTVISIBLE;
                         }
+
                     }
                 } else {
                     this.state = TFState.NOTVISIBLE;
