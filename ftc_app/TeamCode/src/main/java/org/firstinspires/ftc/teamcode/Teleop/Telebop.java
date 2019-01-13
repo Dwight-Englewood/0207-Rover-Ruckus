@@ -16,8 +16,6 @@ import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
 public class Telebop extends OpMode {
 
     Bot robot = new Bot(false);
-    BNO055IMU imu;
-    BNO055IMU.Parameters parameters;
 
     ElapsedTime slowTimer = new ElapsedTime();
     boolean slow = false;
