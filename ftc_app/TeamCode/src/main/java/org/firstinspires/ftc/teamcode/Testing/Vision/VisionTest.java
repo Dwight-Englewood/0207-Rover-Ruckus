@@ -6,8 +6,11 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 import org.firstinspires.ftc.teamcode.Hardware.Sensors.VumarkWrapper;
+
+import java.util.List;
 
 
 @TeleOp(name = "VumarkTest", group = "Teleop")
@@ -41,6 +44,15 @@ public class VisionTest extends OpMode {
     @Override
     public void loop() {
         telemetry.addData("mineralSample", boot.tensorFlow.getState().getStateVal());
+        List<Recognition> dab = boot.tensorFlow.badOOP();
+
+        telemetry.addData("number", dab);
+        for (int i = 0; i < dab.size(); i++) {
+            telemetry.addData("recognition", i);
+            telemetry.addData("recognition", (int) dab.get(i).getLeft());
+            telemetry.addData("recognition", dab.get(i).getLabel());
+
+        }
         /*telemetry.addData("vumark", boot.vumarkWrapper.getState().getStateVal());
         double[] pos = boot.vumarkWrapper.getPosition();
         telemetry.addData("posX", pos[0]);

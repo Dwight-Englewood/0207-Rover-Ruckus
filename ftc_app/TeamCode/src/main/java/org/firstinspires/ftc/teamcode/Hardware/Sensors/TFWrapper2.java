@@ -77,6 +77,35 @@ public class TFWrapper2 implements Subsystem {
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null) {
                 if (updatedRecognitions.size() == 3) {
+                    for (int i = 0; i < 3; i++) {
+                        if (updatedRecognitions.get(i).getWidth() - updatedRecognitions.get(i).getHeight() > 50) {
+                            updatedRecognitions.remove(i);
+                            break;
+                        }
+                    }
+                    int gold = -1;
+                    int silver1 = -1;
+                    // int silver2 = -1;
+                    for (Recognition recognition : updatedRecognitions) {
+                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                            gold = (int) recognition.getLeft();
+                        } else if (silver1 == -1) {
+                            silver1 = (int) recognition.getLeft();
+                        }
+                    }
+                    if (gold != -1 || silver1 != -1) {
+                        if (gold < silver1 && gold != -1) {
+                            this.state = TFState.LEFT ;
+                        } else if (silver1 < gold && gold != -1) {
+                            this.state = TFState.CENTER;
+                        } else if (gold == -1) {
+                            this.state = TFState.RIGHT;
+                        } else {
+                            this.state = TFState.NOTVISIBLE;
+                        }
+
+                    }
+                    /*
                     int goldMineralX = -1;
                     int silverMineral1X = -1;
                     int silverMineral2X = -1;
@@ -97,7 +126,7 @@ public class TFWrapper2 implements Subsystem {
                         } else {
                             this.state = TFState.CENTER;
                         }
-                    }
+                    }*/
                 } else if (updatedRecognitions.size() == 2) {
                     int gold = -1;
                     int silver1 = -1;
@@ -111,11 +140,11 @@ public class TFWrapper2 implements Subsystem {
                     }
                     if (gold != -1 || silver1 != -1) {
                         if (gold < silver1 && gold != -1) {
-                            this.state = TFState.RIGHT ;
-                        } else if (silver1 < gold) {
-                            this.state = TFState.RIGHT;
+                            this.state = TFState.LEFT ;
+                        } else if (silver1 < gold && gold != -1) {
+                            this.state = TFState.CENTER;
                         } else if (gold == -1) {
-                            this.state = TFState.LEFT;
+                            this.state = TFState.RIGHT;
                         } else {
                             this.state = TFState.NOTVISIBLE;
                         }
