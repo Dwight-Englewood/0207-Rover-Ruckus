@@ -69,8 +69,8 @@ public class GoldSample extends OpMode {
                 auto.timer.reset();
                 break;
             case 4:
+                this.sampleLocation = auto.robot.tensorFlow.getState();
                 if (auto.timer.milliseconds() > 1000) {
-                    this.sampleLocation = auto.robot.tensorFlow.getState();
                     auto.timer.reset();
                     auto.command++;
                 }
