@@ -39,7 +39,7 @@ public class Lift implements Subsystem {
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         state = liftState.STOPPED;
 
-        magSwitch = hwMap.get(DigitalChannel.class, "mag");
+        magSwitch = hwMap.get(DigitalChannel.class, "liftmag");
     }
 
     @Override
@@ -90,6 +90,18 @@ public class Lift implements Subsystem {
         return false;
     }
 
+    public boolean newYearsMag() {
+        if (motor.getMode() != DcMotor.RunMode.RUN_USING_ENCODER) {
+            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+        if (isAllTheWayUp()) {
+            motor.setPower(0);
+            return true;
+        }
+        motor.setPower(1);
+        return false;
+    }
+
     //TODO: Check if works
     public boolean oldYears() {
         // if the magnet is near the switch
@@ -108,6 +120,10 @@ public class Lift implements Subsystem {
 
     public int getTicks() {
         return motor.getCurrentPosition();
+    }
+
+    public boolean isAllTheWayUp() {
+        return !this.magSwitch.getState();
     }
 
 }

@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
 
@@ -64,9 +65,10 @@ public class Telebop extends OpMode {
         else if (gamepad1.left_bumper) robot.intake.outtake();
         else robot.intake.stop();
 
-        telemetry.addData("Lift Ticks", robot.lift.getTicks());
+        telemetry.addData("is all the way up?", robot.lift.isAllTheWayUp());
         telemetry.addData("Slow?", slow);
         telemetry.addData("isdown?", robot.dumper.isBottom());
+        telemetry.addData("istop?", robot.dumper.isTop());
         telemetry.update();
     }
 
