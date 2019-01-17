@@ -76,23 +76,34 @@ public class Dumper implements Subsystem {
     }
 
     public void up() {
+        //If the dumper is at its peak height, prevent despooling
         if (isTop()) {
             this.stop();
-        } else {
+        } else { //Else raise the dumper
             spool.setPower(-.8);
         }
+        //Set the backwall to close
         backWall.setPosition(1);
     }
 
     public void down() {
+        //If the dumper is bottomed out, prevent despooling
         if (isBottom()) {
             this.stop();
+            //set the backwall to open
             backWall.setPosition(0);
-        } else {
+
+        } else { //Else lower the dumper
             spool.setPower(.8);
         }
     }
 
-    public boolean isBottom() {return !magSwitch.getState();}
-    public boolean isTop() { return distanceSensor.getDistance(DistanceUnit.CM) > 50; }
+    public boolean isBottom() {
+        //Return true if the magnet is near the sensor
+        return !magSwitch.getState();
+    }
+    public boolean isTop() {
+        //Return true if the distance is greater than 50cm
+        return distanceSensor.getDistance(DistanceUnit.CM) > 50;
+    }
 }
