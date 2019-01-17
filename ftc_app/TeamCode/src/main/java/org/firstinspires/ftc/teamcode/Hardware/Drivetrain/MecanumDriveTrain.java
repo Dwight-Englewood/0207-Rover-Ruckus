@@ -126,11 +126,12 @@ public class MecanumDriveTrain extends DriveTrain {
         return new SimpleMatrix(new double[][]{{Math.cos(theta), Math.sin(theta), 0}, {-Math.sin(theta), Math.cos(theta), 0}, {0, 0, 1}});
     }
 
-    public void tankControl(Gamepad gamepad, boolean slowMode) {
-        double leftTrigger = gamepad.left_trigger;
-        double rightTrigger = gamepad.right_trigger;
-        double rightStick = gamepad.right_stick_y;
-        double leftStick = gamepad.left_stick_y;
+    public void tankControl(Gamepad gamepad, boolean slowMode, boolean reverseMode) {
+        //Reverse the controls if reverse mode is on
+        double leftTrigger = reverseMode ? gamepad.right_trigger : gamepad.left_trigger;
+        double rightTrigger = reverseMode ? gamepad.left_trigger : gamepad.right_trigger;
+        double rightStick = reverseMode ? -gamepad.left_stick_y : gamepad.right_stick_y;
+        double leftStick = reverseMode ? -gamepad.right_stick_y : gamepad.left_stick_y;
 
         if (leftTrigger>.15) {
             //scale left strafe for precision mode

@@ -21,6 +21,9 @@ public class Telebop extends OpMode {
     ElapsedTime slowTimer = new ElapsedTime();
     boolean slow = false;
 
+    ElapsedTime reverseTimer = new ElapsedTime();
+    boolean reverse = false;
+
     @Override
     public void init() {
         robot.init(hardwareMap);
@@ -36,6 +39,7 @@ public class Telebop extends OpMode {
     public void start() {
         robot.start();
         slowTimer.reset();
+        reverseTimer.reset();
     }
 
     @Override
@@ -45,7 +49,12 @@ public class Telebop extends OpMode {
             slowTimer.reset();
         }
 
-        robot.driveTrain.tankControl(gamepad1, slow);
+        if (gamepad1.back && reverseTimer.milliseconds() >= 750) {
+            reverse = !reverse;
+            reverseTimer.reset();
+        }
+
+        robot.driveTrain.tankControl(gamepad1, slow, reverse);
 
         if (gamepad1.dpad_up) robot.lift.drop();
         else if (gamepad1.dpad_down) robot.lift.lift();
