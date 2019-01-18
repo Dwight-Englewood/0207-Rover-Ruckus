@@ -45,7 +45,7 @@ public class Telebop2Person extends OpMode {
             slowTimer.reset();
         }
 
-        if (gamepad1.back && reverseTimer.milliseconds() >= 750) {
+        if (gamepad1.right_bumper && reverseTimer.milliseconds() >= 750) {
             reverse = !reverse;
             reverseTimer.reset();
         }
@@ -56,7 +56,7 @@ public class Telebop2Person extends OpMode {
         else if (gamepad1.dpad_down) robot.lift.lift();
         else robot.lift.stop();
 
-        if (gamepad1.b) robot.markerDeploy.drop();
+        if (gamepad2.b) robot.markerDeploy.drop();
         else robot.markerDeploy.raise();
 
         if (gamepad2.left_stick_y < -0.5) robot.dumper.up();
@@ -66,8 +66,8 @@ public class Telebop2Person extends OpMode {
         if (gamepad1.a) robot.dumper.open();
         else robot.dumper.close();
 
-        if (gamepad2.right_stick_y < -.5) robot.intake.intake();
-        else if (gamepad2.right_stick_y > .5) robot.intake.outtake();
+        if (gamepad2.right_trigger > .5) robot.intake.intake();
+        else if (gamepad2.left_trigger > .5) robot.intake.outtake();
         else robot.intake.stop();
 
         telemetry.addData("Lift Ticks", robot.lift.getTicks());
