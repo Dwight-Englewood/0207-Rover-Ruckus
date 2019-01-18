@@ -84,24 +84,33 @@ public class TFWrapper2 implements Subsystem {
                 }
                 if (updatedRecognitions.size() == 2) {
 
+                    //Initialize the x values to a recognizable value
                     int gold = -1;
                     int silver1 = -1;
-                    // int silver2 = -1;
+                    //For all detected minerals
                     for (Recognition recognition : updatedRecognitions) {
+                        //If we have the gold mineral
                         if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                            //Keep it's x position in the variable
                             gold = (int) recognition.getLeft();
+                        //Similarly for a silver mineral
                         } else if (silver1 == -1) {
                             silver1 = (int) recognition.getLeft();
                         }
                     }
+                    //If at least one value has been read
                     if (gold != -1 || silver1 != -1) {
+                        //If we have seen the gold element
                         if (gold != -1) {
                             if (gold < silver1) {
+                                //If the gold is located further left than the silver, it is on the left
                                 this.state = TFState.LEFT;
                             } else if (silver1 < gold) {
+                                //If the gold is located further right than the silver, it is in the center
                                 this.state = TFState.CENTER;
                             }
                         } else {
+                            //If the gold has not been seen, it must be on the right
                             this.state = TFState.RIGHT;
                         }
                     }
