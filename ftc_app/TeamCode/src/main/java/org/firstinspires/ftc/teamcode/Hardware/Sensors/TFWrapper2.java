@@ -82,7 +82,7 @@ public class TFWrapper2 implements Subsystem {
                         i--;
                     }
                 }
-                if (updatedRecognitions.size() == 3) {
+                if (updatedRecognitions.size() == 2) {
 
                     int gold = -1;
                     int silver1 = -1;
@@ -95,38 +95,15 @@ public class TFWrapper2 implements Subsystem {
                         }
                     }
                     if (gold != -1 || silver1 != -1) {
-                        if (gold < silver1 && gold != -1) {
-                            this.state = TFState.LEFT ;
-                        } else if (silver1 < gold && gold != -1) {
-                            this.state = TFState.CENTER;
-                        } else if (gold == -1) {
-                            this.state = TFState.RIGHT;
+                        if (gold != -1) {
+                            if (gold < silver1) {
+                                this.state = TFState.LEFT;
+                            } else if (silver1 < gold) {
+                                this.state = TFState.CENTER;
+                            }
                         } else {
-                            this.state = TFState.NOTVISIBLE;
-                        }
-
-                    }
-                } else if (updatedRecognitions.size() == 2) {
-                    int goldXValue = -1;                                                  //Initialize the x values to a recognizable value
-                    int silverXValue = -1;
-                    for (Recognition recognition : updatedRecognitions) {                 //For all detected minerals
-                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {          //If we have the gold mineral
-                            goldXValue = (int) recognition.getLeft();                     //Keep it's x position in the variable
-                        } else if (silverXValue == -1) {                                  //Similarly for a silver mineral
-                            silverXValue = (int) recognition.getLeft();
-                        }
-                    }
-                    if (goldXValue != -1 || silverXValue != -1) {                         //If at least one value has been read
-                        if (goldXValue < silverXValue && goldXValue != -1) {              //IF gold has been seen, and is further left than silver, it is located on the left
-                            this.state = TFState.LEFT ;
-                        } else if (silverXValue < goldXValue && goldXValue != -1) {       //If gold has been seen, and is further right than silevr, it is located in the center
-                            this.state = TFState.CENTER;
-                        } else if (goldXValue == -1) {                                    // If gold has not veen seen, it must be on the right
                             this.state = TFState.RIGHT;
-                        } else {
-                            this.state = TFState.NOTVISIBLE;
                         }
-
                     }
                 } else {
                     this.state = TFState.NOTVISIBLE;
