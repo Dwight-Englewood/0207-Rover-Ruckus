@@ -25,9 +25,9 @@ public class SilverSample extends OpMode {
     int distIntakeSampleAdd = -10;
     int distToWall = 45;
     int rotParalellToWall = 135;
-    int distStrafeWall = 50;
+    int distStrafeWall = 60;
     int distToDepot = 120;
-    int distToCrater = -185;
+    int distToCrater = -195;
     @Override
     public void init() {
         auto.robot.init(hardwareMap);
