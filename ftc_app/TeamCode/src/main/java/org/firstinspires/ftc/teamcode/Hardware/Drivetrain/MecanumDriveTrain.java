@@ -264,13 +264,6 @@ public class MecanumDriveTrain extends DriveTrain {
             power = .7;
         }
 
-        //This calculation unnecessary as run-to-position mode dictates direction of motor.
-        /*
-        fl.setPower(power * Math.signum(fl.getPower()));
-        fr.setPower(power * Math.signum(fr.getPower()));
-        bl.setPower(power * Math.signum(bl.getPower()));
-        br.setPower(power * Math.signum(br.getPower()));
-        */
         this.drivepow(sign * power);
     }
 
