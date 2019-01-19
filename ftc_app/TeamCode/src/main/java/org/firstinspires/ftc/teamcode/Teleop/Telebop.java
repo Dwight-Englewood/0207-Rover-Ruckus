@@ -60,6 +60,10 @@ public class Telebop extends OpMode {
         else if (gamepad1.dpad_down) robot.lift.lift();
         else robot.lift.stop();
 
+        if (gamepad1.dpad_left) robot.rake.up();
+        else if (gamepad1.dpad_right) robot.rake.down();
+
+
         if (gamepad1.b) robot.markerDeploy.drop();
         else robot.markerDeploy.raise();
 
@@ -75,6 +79,7 @@ public class Telebop extends OpMode {
         else robot.intake.stop();
 
         telemetry.addData("is all the way up?", robot.lift.isAllTheWayUp());
+        telemetry.addData("Lift Ticks", robot.lift.getTicks());
         telemetry.addData("Slow?", slow);
         telemetry.addData("isdown?", robot.dumper.isBottom());
         telemetry.addData("istop?", robot.dumper.isTop());

@@ -17,8 +17,8 @@ public class RakeTest extends OpMode {
 
     @Override
     public void init_loop() {
-        top.setPosition(.5);
-        bot.setPosition(.5);
+        top.setPosition(0);
+        bot.setPosition(.9);
     }
 
     @Override
@@ -28,8 +28,17 @@ public class RakeTest extends OpMode {
 
     @Override
     public void loop() {
-        top.setPosition(this.gamepad1.left_stick_y);
-        bot.setPosition(this.gamepad1.right_stick_y);
+        if (gamepad1.a) {
+            top.setPosition(.8);
+        } else if (gamepad1.b) {
+            top.setPosition(0);
+        } else if (gamepad1.x) {
+            bot.setPosition(.9);
+        } else if (gamepad1.y) {
+            bot.setPosition(0.6);
+
+
+        }
 
     }
 

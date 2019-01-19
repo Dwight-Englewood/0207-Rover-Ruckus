@@ -19,6 +19,8 @@ public class Telebop2Person extends OpMode {
     boolean slow = false;
     ElapsedTime reverseTimer = new ElapsedTime();
     boolean reverse = false;
+    ElapsedTime rakeTimer = new ElapsedTime();
+    boolean rakeDown = false;
 
     @Override
     public void init() {
@@ -48,6 +50,24 @@ public class Telebop2Person extends OpMode {
         if (gamepad1.right_bumper && reverseTimer.milliseconds() >= 750) {
             reverse = !reverse;
             reverseTimer.reset();
+        }
+
+        if (gamepad1.x) {
+            rakeDown = false;
+        } else if (gamepad1.y) {
+            rakeDown = true;
+            rakeTimer.reset();
+        }
+
+        if (rakeDown && rakeTimer.milliseconds() < 500) {
+            robot.rake.downfirst();
+        } else if (rakeDown) {
+            if (gamepad1.b) {
+                robot.rake.downButNotAsMuch();
+            }
+            robot.rake.down();
+        } else {
+            robot.rake.up();
         }
 
         robot.driveTrain.tankControl(gamepad1, slow, reverse);

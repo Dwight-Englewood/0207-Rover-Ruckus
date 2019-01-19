@@ -19,13 +19,22 @@ public class Rake implements Subsystem {
     }
 
     public void up() {
-        bottom.setPosition(0);
+        bottom.setPosition(1);
         top.setPosition(0);
     }
 
+    public void downfirst() {
+        top.setPosition(.8);
+    }
+
+    public void downButNotAsMuch() {
+        bottom.setPosition(.6);
+        top.setPosition(.5);
+    }
+
     public void down() {
-        bottom.setPosition(1);
-        top.setPosition(1);
+        bottom.setPosition(.6);
+        top.setPosition(.8);
     }
 
     @Override
