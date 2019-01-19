@@ -76,6 +76,11 @@ public class Dumper implements Subsystem {
     }
 
     public void up() {
+        spool.setPower(-.8);
+        backWall.setPosition(1);
+    }
+
+    public void upWithFailsafe() {
         //If the dumper is at its peak height, prevent despooling
         if (isTop()) {
             this.stop();
