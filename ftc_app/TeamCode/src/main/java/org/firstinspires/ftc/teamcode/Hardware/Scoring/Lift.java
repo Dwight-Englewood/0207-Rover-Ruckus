@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
 public class Lift implements Subsystem {
     public Lift() {}
-    private final int tickCount = 3500;
+    private final int tickCount = 9350;
 
     private DcMotor motor;
     private DigitalChannel magSwitch;
