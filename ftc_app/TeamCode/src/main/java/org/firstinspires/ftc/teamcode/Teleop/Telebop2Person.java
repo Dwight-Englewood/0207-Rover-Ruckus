@@ -59,13 +59,14 @@ public class Telebop2Person extends OpMode {
             rakeTimer.reset();
         }
 
-        if (rakeDown && rakeTimer.milliseconds() < 500) {
+        if (rakeDown && rakeTimer.milliseconds() < 250) {
             robot.rake.downfirst();
         } else if (rakeDown) {
             if (gamepad1.b) {
                 robot.rake.downButNotAsMuch();
+            } else {
+                robot.rake.down();
             }
-            robot.rake.down();
         } else {
             robot.rake.up();
         }
