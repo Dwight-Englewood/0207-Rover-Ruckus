@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Subsystem;
 
 public class Lift implements Subsystem {
     public Lift() {}
-    private final int tickCount = 9350;
+    private final int tickCount = -9340;
 
     private DcMotor motor;
     private DigitalChannel magSwitch;
@@ -65,18 +65,18 @@ public class Lift implements Subsystem {
     }
 
     public void lift() {
-        motor.setPower(-1);
+        motor.setPower(1);
         state = liftState.LIFTING;
     }
 
     public void drop() {
-        motor.setPower(1);
+        motor.setPower(-1);
         state = liftState.DROPPING;
     }
 
     public boolean newYears() {
-        if (motor.getCurrentPosition() >= tickCount) {
-            motor.setPower(0);
+        if (motor.getCurrentPosition() <= tickCount) {
+            this.stop();
             motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             return true;
         }
@@ -86,7 +86,7 @@ public class Lift implements Subsystem {
         if (motor.getTargetPosition() != tickCount) {
             motor.setTargetPosition(tickCount);
         }
-        motor.setPower(1);
+        this.drop();
         return false;
     }
 
@@ -95,10 +95,10 @@ public class Lift implements Subsystem {
             motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
         if (isAllTheWayUp()) {
-            motor.setPower(0);
+            this.stop();
             return true;
         }
-        motor.setPower(1);
+        this.drop();
         return false;
     }
 
@@ -114,7 +114,7 @@ public class Lift implements Subsystem {
             return true;
         }
         //otherwise continue pulling lift in
-        motor.setPower(-1);
+        this.lift();
         return false;
     }
 
