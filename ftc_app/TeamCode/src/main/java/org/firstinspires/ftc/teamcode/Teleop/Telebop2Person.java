@@ -80,7 +80,8 @@ public class Telebop2Person extends OpMode {
         if (gamepad2.b) robot.markerDeploy.drop();
         else robot.markerDeploy.raise();
 
-        if (gamepad2.left_stick_y < -0.5) robot.dumper.up();
+        if (gamepad2.left_stick_y < -0.5) robot.dumper.upWithFailsafe();
+        else if (gamepad2.x) robot.dumper.up();
         else if (gamepad2.left_stick_y > .5) robot.dumper.down();
         else robot.dumper.stop();
 
@@ -91,9 +92,8 @@ public class Telebop2Person extends OpMode {
         else if (gamepad2.left_trigger > .5) robot.intake.outtake();
         else robot.intake.stop();
 
-        telemetry.addData("Lift Ticks", robot.lift.getTicks());
         telemetry.addData("Slow?", slow);
-        telemetry.addData("isdown?", robot.dumper.isBottom());
+        telemetry.addData("Reverse?", reverse);
         telemetry.update();
     }
 
