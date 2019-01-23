@@ -68,9 +68,14 @@ public class GoldSample extends OpMode {
                 auto.gyroCorrect(rotParalellSample, 1, .1, .2);
                 auto.timer.reset();
                 break;
+
             case 4:
                 this.sampleLocation = auto.robot.tensorFlow.getState();
-                if (auto.timer.milliseconds() > 500) {
+                if (this.sampleLocation != TFState.NOTVISIBLE) {
+                    auto.timer.reset();
+                    auto.command++;
+                }
+                if (auto.timer.milliseconds() > 2000) {
                     auto.timer.reset();
                     auto.command++;
                 }
@@ -98,7 +103,7 @@ public class GoldSample extends OpMode {
                         auto.setTarget(distRightSample);
                         break;
                     case NOTVISIBLE:
-                        auto.setTarget(distRightSample);
+                        auto.setTarget(distLeftSample);
                         break;
                 }
                 break;
@@ -139,7 +144,7 @@ public class GoldSample extends OpMode {
                         auto.setTarget(distLeftSample - distRightSample + distToWall);
                         break;
                     case NOTVISIBLE:
-                        auto.setTarget(distLeftSample - distRightSample + distToWall);
+                        auto.setTarget(distLeftSample - distLeftSample + distToWall);
                         break;
                 }
                 break;

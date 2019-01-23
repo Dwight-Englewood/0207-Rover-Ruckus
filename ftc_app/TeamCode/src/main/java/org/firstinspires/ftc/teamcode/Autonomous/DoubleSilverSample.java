@@ -6,9 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import static org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapper2.TFState;
 
 
-@Autonomous(name = "SilverSample", group = "AutonOppositeCrater")
+@Autonomous(name = "DoubleSilverSample", group = "AutonOppositeCrater")
 //@Disabled
-public class SilverSample extends OpMode {
+public class DoubleSilverSample extends OpMode {
 
     AutonMethods auto = new AutonMethods();
     TFState sampleLocation;
@@ -16,18 +16,24 @@ public class SilverSample extends OpMode {
     int distExitBracket = 12;
     int distStrafeOut = 50;
     int rotFaceSample = 0;
-    int rotParalellSample = 90;
-    int distLeftSample = 12;
-    int distCenterSample = -30;
-    int distRightSample = -64;
+    int rotParalellSampleSilver = 90;
+    int distLeftSampleSilver = 12;
+    int distCenterSampleSilver = -30;
+    int distRightSampleSilver = -64;
     int rotFaceLander = -180;
-    int distIntakeSample = -40;
+    int distIntakeSampleSilver = -40;
     int distIntakeSampleAdd = -5;
     int distToWall = 45;
     int rotParalellToWall = 135;
     int distStrafeWall = 60;
     int distToDepot = 120;
     int distToCrater = -190;
+    int rotParalellSampleGold = 0;
+    int distLeftSampleGold = 60;
+    int distCenterSampleGold = 36;
+    int distRightSampleGold = 12;
+    int distIntakeSampleGold = -40;
+
     @Override
     public void init() {
         auto.robot.init(hardwareMap);
@@ -65,7 +71,7 @@ public class SilverSample extends OpMode {
                 break;
 
             case 3:
-                auto.gyroCorrect(rotParalellSample, 1, .1, .2);
+                auto.gyroCorrect(rotParalellSampleSilver, 1, .1, .2);
                 auto.timer.reset();
                 break;
             case 4:
@@ -89,22 +95,22 @@ public class SilverSample extends OpMode {
                 break;
 
             case 7:
-                auto.gyroCorrect(rotParalellSample, 1, .1, .2);
+                auto.gyroCorrect(rotParalellSampleSilver, 1, .1, .2);
                 break;
 
             case 8:
                 switch(sampleLocation) {
                     case LEFT:
-                        auto.setTarget(distLeftSample);
+                        auto.setTarget(distLeftSampleSilver);
                         break;
                     case CENTER:
-                        auto.setTarget(distCenterSample);
+                        auto.setTarget(distCenterSampleSilver);
                         break;
                     case RIGHT:
-                        auto.setTarget(distRightSample);
+                        auto.setTarget(distRightSampleSilver);
                         break;
                     case NOTVISIBLE:
-                        auto.setTarget(distLeftSample);
+                        auto.setTarget(distLeftSampleSilver);
                         break;
                 }
                 break;
@@ -119,7 +125,7 @@ public class SilverSample extends OpMode {
                 break;
 
             case 11:
-                auto.setStrafeTarget(-distIntakeSample);
+                auto.setStrafeTarget(-distIntakeSampleSilver);
                 //auto.setTarget(distIntakeSampleSilver);
                 break;
 
@@ -129,7 +135,7 @@ public class SilverSample extends OpMode {
                 break;
 
             case 13:
-                auto.setStrafeTarget((distIntakeSample + distIntakeSampleAdd));
+                auto.setStrafeTarget((distIntakeSampleSilver + distIntakeSampleAdd));
                 //auto.setTarget(-(distIntakeSampleSilver + distIntakeSampleAdd));
                 break;
             case 14:
@@ -137,21 +143,21 @@ public class SilverSample extends OpMode {
                 auto.finishDrive();
                 break;
             case 15:
-                auto.gyroCorrect(rotParalellSample, 1, .1, .5);
+                auto.gyroCorrect(rotParalellSampleSilver, 1, .1, .5);
                 break;
             case 16:
                 switch(sampleLocation) {
                     case LEFT:
-                        auto.setTarget(distLeftSample - distLeftSample + distToWall);
+                        auto.setTarget(distLeftSampleSilver - distLeftSampleSilver + distToWall);
                         break;
                     case CENTER:
-                        auto.setTarget(distLeftSample - distCenterSample + distToWall);
+                        auto.setTarget(distLeftSampleSilver - distCenterSampleSilver + distToWall);
                         break;
                     case RIGHT:
-                        auto.setTarget(distLeftSample - distRightSample + distToWall);
+                        auto.setTarget(distLeftSampleSilver - distRightSampleSilver + distToWall);
                         break;
                     case NOTVISIBLE:
-                        auto.setTarget(distLeftSample - distLeftSample + distToWall);
+                        auto.setTarget(distLeftSampleSilver - distLeftSampleSilver + distToWall);
                         break;
                 }
                 break;
@@ -188,26 +194,81 @@ public class SilverSample extends OpMode {
                     auto.robot.markerDeploy.drop();
                 }
                 break;
-
             case 24:
-                auto.gyroCorrect(rotParalellToWall, 1, .1, .2);
+                auto.gyroCorrect(rotParalellSampleGold, 1, .1, .2);
                 break;
-
             case 25:
-                auto.setTarget(distToCrater);
+                switch(sampleLocation) {
+                    case LEFT:
+                        auto.setTarget(distLeftSampleGold);
+                        break;
+                    case CENTER:
+                        auto.setTarget(distCenterSampleGold);
+                        break;
+                    case RIGHT:
+                        auto.setTarget(distRightSampleGold);
+                        break;
+                    case NOTVISIBLE:
+                        auto.setTarget(distRightSampleGold);
+                        break;
+                }
                 break;
-
             case 26:
-                auto.finishDrive();
+                auto.setStrafeTarget(distIntakeSampleGold);
+                //auto.setTarget(distIntakeSampleSilver);
                 break;
 
             case 27:
+                //auto.robot.intake.outtake();
+                auto.finishDrive();
+                break;
+
+            case 28:
+                auto.setStrafeTarget(-distIntakeSampleGold - distIntakeSampleAdd);
+                //auto.setTarget(-(distIntakeSampleSilver + distIntakeSampleAdd));
+                break;
+            case 29:
+                auto.robot.intake.stop();
+                auto.finishDrive();
+                break;
+            case 30:
+                switch(sampleLocation) {
+                    case LEFT:
+                        auto.setTarget(-distLeftSampleGold);
+                        break;
+                    case CENTER:
+                        auto.setTarget(-distCenterSampleGold);
+                        break;
+                    case RIGHT:
+                        auto.setTarget(-distRightSampleGold);
+                        break;
+                    case NOTVISIBLE:
+                        auto.setTarget(distRightSampleGold);
+                        break;
+                }
+            case 31:
+                auto.gyroCorrect(rotParalellToWall, 1, .1, .2);
+                break;
+            case 32:
+                auto.setStrafeTarget(distStrafeWall);
+                break;
+            case 33:
+                auto.finishDrive();
+            case 34:
+                auto.setTarget(distToCrater);
+                break;
+
+            case 35:
+                auto.finishDrive();
+                break;
+
+            case 36:
                 auto.robot.driveTrain.drivepow(0);
                 auto.robot.markerDeploy.raise();
                 auto.command++;
                 break;
 
-            case 28:
+            case 37:
                 auto.robot.stop();
                 auto.command++;
                 break;
