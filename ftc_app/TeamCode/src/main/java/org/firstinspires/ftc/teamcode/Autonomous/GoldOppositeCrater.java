@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 
 @Autonomous(name = "GoldOppositeCrater", group = "AutonOppositeCrater")
-//@Disabled
+@Disabled
 public class GoldOppositeCrater extends OpMode {
 
     private final int distance1 = 12; // Distance for pulling out of the lander bracket
