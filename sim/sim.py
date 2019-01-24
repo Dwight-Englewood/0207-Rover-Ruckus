@@ -5,6 +5,7 @@ from OpenGL.GLU import * # OpenGL
 #import cyglfw3 as glfw
 from pyglfw.libapi import *
 from math import *
+import numpy as np
 
 
 ye = False
@@ -13,13 +14,22 @@ buffers=None
 
 vertices=[.1]
 
+
+# Constants
+#botMass = 15
+#maxMotorForce = 2
+#friction = 1
+
 colors=[.1]
 botX = 0
 botY = 0
 botXV = 0
 botYV = 0
+botXF = 0
+botYF = 0
 botR = 0
 botRV = 0
+botRT = 0
 
 def initialize():
     glClearColor(0.125, 0.125, 0.125, 0) # set background color
@@ -28,13 +38,12 @@ def initialize():
     glEnable(GL_DEPTH_TEST) # enable the testing of depth 
 
 def draw():
-    global viewX, viewY, viewSize
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)      # Clears the screen
     glLoadIdentity()                                        # Loads the identity matrix for translation/scaling
     glPushMatrix()                                          # Sandboxes changes to the matrix
     #glScalef(1/viewSize, 1/viewSize, 1)                     # makes it not the entire screen
-    glTranslatef(botX/100000, botY/100000, 0)
-    glRotatef(botR/100, 0, 0, 1)
+    glTranslatef(botX/1000, botY/1000, 0)
+    glRotatef(botR, 0, 0, 1)
     #glScalef(1/viewSize, 1/viewSize, 1)                     # makes it not the entire screen
     #drawNewtons()                                           # draws the newtons fractal
     glColor3f(0.2, 0.2, 1.0)
@@ -97,55 +106,59 @@ def idle_func():
     global botX, botY, botXV, botYV, botR, botRV
     for i in range(0,100): # look im not dealing with integer roundoff error
         if (botXV > 0):
-            botXV = botXV - 1
+            botXV = botXV - .01
         elif (botXV < 0):
-            botXV = botXV + 1
+            botXV = botXV + .01
         if (botYV > 0):
-            botYV = botYV - 1
+            botYV = botYV - .01
         elif (botYV < 0):
-            botYV = botYV + 1
+            botYV = botYV + .01
     for i in range(0,20):
         if (botRV > 0):
-            botRV = botRV - 1
+            botRV = botRV - .01
         elif(botRV < 0):
-            botRV = botRV + 1
+            botRV = botRV + .01
     update_func()
 
 
 def fieldCentric(window):
     global botX, botY, botXV, botYV, botRV, botR
     if (glfwGetKey(window, GLFW_KEY_W ) == GLFW_PRESS):
-        botYV = botYV + 200
+        botYV = botYV + 1
     if (glfwGetKey(window, GLFW_KEY_S ) == GLFW_PRESS):
-        botYV = botYV - 200
+        botYV = botYV - 1
     if (glfwGetKey(window, GLFW_KEY_D ) == GLFW_PRESS):
-        botXV = botXV + 200
+        botXV = botXV + 1
     if (glfwGetKey(window, GLFW_KEY_A ) == GLFW_PRESS):
-        botXV = botXV - 200
+        botXV = botXV - 1
     if (glfwGetKey(window, GLFW_KEY_Q ) == GLFW_PRESS):
-        botRV = botRV + 200
+        botRV = botRV + 1
     if (glfwGetKey(window, GLFW_KEY_E ) == GLFW_PRESS):
-        botRV = botRV - 200
+        botRV = botRV - 1
 
-def fieldCentricJoystick(stickX, stickY, leftTrigger, rightTrigger):
-    global botXV, botYV, botRV
-    botXV = botXV + 2*stickX
-    botYV = botYV + 2*stickY
-    botRV = botRV + int(leftTrigger/3)
-    botRV = botRV - int(rightTrigger/3)
-
+def fieldCentricJoystick(stickX, stickY, rightStickX):
+    dab = velocityToWheel(stickX, stickY, rightStickX)
+    wheelToVelocity(dab[0], dab[1], dab[2], dab[3])
 
 def tankDrive(leftStickY, rightStickY, leftTrigger, rightTrigger):
+    print(leftTrigger)
+    if (leftTrigger > .5):
+        botRV = leftTrigger
+    elif (rightTrigger > .5):
+        botRV = -rightTrigger
+    else:
+        wheelToVelocity(leftStickY, rightStickY, rightStickY, leftStickY)
+def velocityToWheel(vx,vy,vr):
+    dab = np.matmul(np.array([[1,-1,-1],[1,1,1],[1,1,-1],[1,-1,1]]), np.array([vx,vy,vr]))
+    return dab
+
+
+def wheelToVelocity(w1, w2, w3, w4):
     global botXV, botYV, botRV
-    botRV = botRV + int(leftTrigger/3)
-    botRV = botRV - int(rightTrigger/3)
-
-    botYV = botYV + int((cos(radians(botR/100))*(leftStickY + rightStickY)) )
-    botXV = botXV + int((sin(radians(botR/100))*(leftStickY + rightStickY)))
-
-
-
-
+    dab = np.matmul(np.array([[1,1,1,1],[1,-1,-1,1],[-1,1,-1,1]]), np.array([w1,w2,w3,w4]))
+    botXV = dab[0]
+    botYV = dab[1]
+    botRV = dab[2]
 
 def main():
     global botX, botY, botXV, botYV, botRV, botR
@@ -178,31 +191,17 @@ def main():
         # 6 - dpad x
         # 7 dpad y (inverted)
 
-        leftStickX = int((100+deadzone)*joysticks[0])
-        leftStickY = -1*int((100+deadzone)*joysticks[1])
+        leftStickX = joysticks[0]
+        leftStickY = joysticks[1]
 
-        rightStickX = int((100+deadzone)*joysticks[3])
-        rightStickY = -1*int((100+deadzone)*joysticks[4])
+        rightStickX = joysticks[3]
+        rightStickY = -1*joysticks[4]
 
-        leftTrigger = int(50*(joysticks[2]+1))
-        rightTrigger = int(50*(joysticks[5]+1))
-        if (leftStickX < deadzone and leftStickX > -deadzone):
-            leftStickX = 0
-        else:
-            if (leftStickX > deadzone):
-                leftStickX = leftStickX - deadzone
-            else:
-                leftStickX = leftStickX + deadzone
-
-        if (leftStickY < deadzone and leftStickY > -deadzone):
-            leftStickY = 0
-        else:
-            if (leftStickY > deadzone):
-                leftStickY = leftStickY - deadzone
-            else:
-                leftStickY = leftStickY + deadzone
-        #fieldCentricJoystick(leftStickX, leftStickY, leftTrigger, rightTrigger)
+        leftTrigger = (joysticks[2]+1)
+        rightTrigger = (joysticks[5]+1)
+        #fieldCentricJoystick(leftStickX, leftStickY, rightStickX)
         tankDrive(leftStickY, rightStickY, leftTrigger, rightTrigger)
+        update_func()
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS):
             break
         if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS):
@@ -210,11 +209,13 @@ def main():
             botYV = 0
             botX = 0
             botY = 0
+            botR = 0
+            botRV = 0
         if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS):
             print(botXV)
             print(botYV)
-        idle_func()
         disp_func()
+        idle_func()
         # Swap front and back buffers
         glfwSwapBuffers(window)
 
