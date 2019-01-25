@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
+
 import static org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapper2.TFState;
 
 
@@ -26,13 +29,17 @@ public class DoubleSilverSample extends OpMode {
     int distToWall = 45;
     int rotParalellToWall = 135;
     int distStrafeWall = 60;
-    int distToDepot = 120;
-    int distToCrater = -190;
-    int rotParalellSampleGold = 0;
-    int distLeftSampleGold = 60;
-    int distCenterSampleGold = 36;
-    int distRightSampleGold = 12;
-    int distIntakeSampleGold = -40;
+    int distToDepot = 100;
+    int distStrafeAwayWall = -40;
+    int rotParalellSampleGold = 180;
+    int distLeftSampleGold = 40;
+    int distCenterSampleGold = 10;
+    int distRightSampleGold = -40;
+    int distIntakeSampleGold = -50;
+    int distToWallGold = 0;
+    int distToCrater = -150;
+    int distToCraterRightOnly = -170;
+
 
     @Override
     public void init() {
@@ -143,7 +150,7 @@ public class DoubleSilverSample extends OpMode {
                 auto.finishDrive();
                 break;
             case 15:
-                auto.gyroCorrect(rotParalellSampleSilver, 1, .1, .5);
+                auto.gyroCorrect(rotParalellSampleSilver, 1, .1, .2);
                 break;
             case 16:
                 switch(sampleLocation) {
@@ -165,13 +172,13 @@ public class DoubleSilverSample extends OpMode {
                 auto.finishDrive();
                 break;
             case 18:
-                auto.gyroCorrect(rotParalellToWall, 1, .1, .5);
+                auto.gyroCorrect(rotParalellToWall, 1, .1, .2);
                 break;
             case 19:
                 auto.setStrafeTarget(distStrafeWall);
                 break;
             case 20:
-                auto.finishDrive();
+                auto.germanFinishDrive();
                 break;
 
             case 21:
@@ -180,7 +187,6 @@ public class DoubleSilverSample extends OpMode {
 
             case 22:
                 auto.finishDrive();
-
                 break;
 
             case 23: // this might be deprecated
@@ -195,9 +201,15 @@ public class DoubleSilverSample extends OpMode {
                 }
                 break;
             case 24:
-                auto.gyroCorrect(rotParalellSampleGold, 1, .1, .2);
+                auto.setStrafeTarget(distStrafeAwayWall);
                 break;
             case 25:
+                auto.finishDrive();
+                break;
+            case 26:
+                auto.gyroCorrect(rotParalellSampleGold, 1, .1, .2);
+                break;
+            case 27:
                 switch(sampleLocation) {
                     case LEFT:
                         auto.setTarget(distLeftSampleGold);
@@ -213,62 +225,83 @@ public class DoubleSilverSample extends OpMode {
                         break;
                 }
                 break;
-            case 26:
+            case 28:
+                auto.finishDrive();
+                break;
+            case 29:
                 auto.setStrafeTarget(distIntakeSampleGold);
                 //auto.setTarget(distIntakeSampleSilver);
                 break;
 
-            case 27:
+            case 30:
                 //auto.robot.intake.outtake();
                 auto.finishDrive();
                 break;
 
-            case 28:
+            case 31:
                 auto.setStrafeTarget(-distIntakeSampleGold - distIntakeSampleAdd);
                 //auto.setTarget(-(distIntakeSampleSilver + distIntakeSampleAdd));
                 break;
-            case 29:
+            case 32:
                 auto.robot.intake.stop();
                 auto.finishDrive();
                 break;
-            case 30:
+            case 33:
                 switch(sampleLocation) {
                     case LEFT:
-                        auto.setTarget(-distLeftSampleGold);
+                        auto.setTarget(distRightSampleGold - distLeftSampleGold );
                         break;
                     case CENTER:
-                        auto.setTarget(-distCenterSampleGold);
+                        auto.setTarget(distRightSampleGold - distCenterSampleGold);
                         break;
                     case RIGHT:
-                        auto.setTarget(-distRightSampleGold);
+                        auto.setTarget(distRightSampleGold - distRightSampleGold);
                         break;
                     case NOTVISIBLE:
-                        auto.setTarget(distRightSampleGold);
+                        auto.setTarget(distRightSampleGold - distRightSampleGold );
                         break;
                 }
-            case 31:
-                auto.gyroCorrect(rotParalellToWall, 1, .1, .2);
                 break;
-            case 32:
+            case 34:
+                auto.finishDrive();
+            case 35:
+                auto.gyroCorrect(rotParalellToWall, 1, .1, .4);
+                break;
+            case 36:
                 auto.setStrafeTarget(distStrafeWall);
                 break;
-            case 33:
-                auto.finishDrive();
-            case 34:
-                auto.setTarget(distToCrater);
+            case 37:
+                auto.germanFinishDrive();
+                break;
+            case 38:
+                switch (sampleLocation) {
+                    case RIGHT:
+                        auto.setTarget(distToCraterRightOnly);
+                        break;
+                    default:
+                        auto.setTarget(distToCrater);
+                        break;
+
+                }
+
                 break;
 
-            case 35:
-                auto.finishDrive();
+            case 39:
+                auto.slightlyLesGgermanFinishDrive();
                 break;
 
-            case 36:
-                auto.robot.driveTrain.drivepow(0);
+            case 40:
+                //auto.robot.driveTrain.drivepow(0);
+
+                auto.robot.driveTrain.br.setPower(-.5);
+                auto.robot.driveTrain.bl.setPower(-.5);
+                auto.robot.driveTrain.fr.setPower(-.5);
+                auto.robot.driveTrain.fl.setPower(-.2);
                 auto.robot.markerDeploy.raise();
                 auto.command++;
                 break;
 
-            case 37:
+            case 41:
                 auto.robot.stop();
                 auto.command++;
                 break;

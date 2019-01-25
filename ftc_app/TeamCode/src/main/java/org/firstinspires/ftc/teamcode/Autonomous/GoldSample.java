@@ -27,7 +27,7 @@ public class GoldSample extends OpMode {
     int rotParalellToWall = 315;
     int distStrafeWall = -50;
     int distToDepot = 120;
-    int distToCrater = -185;
+    int distToCrater = -195;
     @Override
     public void init() {
         auto.robot.init(hardwareMap);

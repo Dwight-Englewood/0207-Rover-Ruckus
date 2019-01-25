@@ -31,6 +31,33 @@ public class AutonMethods {
         }
     }
 
+    public void germanFinishDrive() {
+        if (Math.abs(robot.driveTrain.fl.getTargetPosition() - robot.driveTrain.fl.getCurrentPosition()) < 20 ||
+                Math.abs(robot.driveTrain.br.getTargetPosition() - robot.driveTrain.br.getCurrentPosition()) < 20 ||
+                Math.abs(robot.driveTrain.bl.getTargetPosition() - robot.driveTrain.bl.getCurrentPosition()) < 20 ||
+                Math.abs(robot.driveTrain.fr.getTargetPosition() - robot.driveTrain.fr.getCurrentPosition()) < 20) {
+            robot.driveTrain.stop();
+            robot.driveTrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            this.timer.reset();
+            this.command++;
+        } else {
+            robot.driveTrain.germanScalePower();
+        }
+    }
+
+    public void slightlyLesGgermanFinishDrive() {
+        if (Math.abs(robot.driveTrain.fl.getTargetPosition() - robot.driveTrain.fl.getCurrentPosition()) < 20 ||
+                Math.abs(robot.driveTrain.br.getTargetPosition() - robot.driveTrain.br.getCurrentPosition()) < 20 ||
+                Math.abs(robot.driveTrain.bl.getTargetPosition() - robot.driveTrain.bl.getCurrentPosition()) < 20 ||
+                Math.abs(robot.driveTrain.fr.getTargetPosition() - robot.driveTrain.fr.getCurrentPosition()) < 20) {
+            robot.driveTrain.stop();
+            robot.driveTrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            this.timer.reset();
+            this.command++;
+        } else {
+            robot.driveTrain.slightlyLessGermanScalePower();
+        }
+    }
     public int gyroCorrect(int gyroTarget, int gyroRange, double minSpeed, double addSpeed) {
         int gyroVal = (int) this.robot.sensorSystem.getGyroRotation(AngleUnit.DEGREES);
         this.robot.driveTrain.gyroCorrect(gyroTarget, gyroRange, gyroVal, minSpeed, addSpeed);

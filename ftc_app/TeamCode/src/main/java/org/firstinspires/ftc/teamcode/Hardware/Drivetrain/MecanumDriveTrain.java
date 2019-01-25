@@ -266,7 +266,66 @@ public class MecanumDriveTrain extends DriveTrain {
 
         this.drivepow(sign * power);
     }
+    public void germanScalePower() {
+        double power;
+        int target = fl.getTargetPosition();
+        int current = fl.getCurrentPosition();
+        int sign = target < current ? -1  : 1;
+        int diff = Math.abs(target - current);
+        int originDiff = Math.abs(this.originTick - current);
 
+        if (originDiff < 75) {
+            power = .7;
+        } else if (originDiff < 250) {
+            power = .7;
+        } else if (originDiff < 400) {
+            power = .7;
+        } else {
+            power = 1;
+        }
+
+        if (diff < 100) {
+            power = .7;
+        } else if (diff < 300) {
+            power = .7;
+        } else if (diff < 500) {
+            power = .7;
+        } else if (diff < 750) {
+            power = .7;
+        }
+
+        this.drivepow(sign * power);
+    }
+    public void slightlyLessGermanScalePower() {
+        double power;
+        int target = fl.getTargetPosition();
+        int current = fl.getCurrentPosition();
+        int sign = target < current ? -1  : 1;
+        int diff = Math.abs(target - current);
+        int originDiff = Math.abs(this.originTick - current);
+
+        if (originDiff < 75) {
+            power = .7;
+        } else if (originDiff < 250) {
+            power = .7;
+        } else if (originDiff < 400) {
+            power = .7;
+        } else {
+            power = 1;
+        }
+
+        if (diff < 100) {
+            power = .1;
+        } else if (diff < 300) {
+            power = .3;
+        } else if (diff < 500) {
+            power = .7;
+        } else if (diff < 750) {
+            power = .7;
+        }
+
+        this.drivepow(sign * power);
+    }
     private int distanceToRevsNRO20(double distance) {
         final double wheelCirc = 31.9185813;
         final double gearMotorTickThing = 537.6; //neverrest orbital 20 = 537.6 counts per revolution

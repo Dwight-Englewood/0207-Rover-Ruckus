@@ -49,7 +49,9 @@ public class VisionTest extends OpMode {
         telemetry.addData("number", dab);
         for (int i = 0; i < dab.size(); i++) {
             telemetry.addData("recognition", i);
-            telemetry.addData("recognition", (int) dab.get(i).getLeft());
+            telemetry.addData("recognitionX", (int) dab.get(i).getLeft());
+            telemetry.addData("recognitionY", dab.get(i).getLeft()-(int)dab.get(i).getLeft());
+            telemetry.addData("area", dab.get(i).getWidth() * dab.get(i).getHeight());
             telemetry.addData("recognition", dab.get(i).getLabel());
 
         }

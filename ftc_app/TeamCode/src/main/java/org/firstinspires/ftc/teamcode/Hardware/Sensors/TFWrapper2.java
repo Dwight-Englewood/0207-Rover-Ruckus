@@ -76,7 +76,7 @@ public class TFWrapper2 implements Subsystem {
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null) {
                 for (int i = 0; i < updatedRecognitions.size(); i++) {
-                    if (updatedRecognitions.get(i).getWidth() - updatedRecognitions.get(i).getHeight() > 50) {
+                    if (updatedRecognitions.get(i).getWidth() * updatedRecognitions.get(i).getHeight() < 10000 || updatedRecognitions.get(i).getWidth() - updatedRecognitions.get(i).getHeight() > 50) {
                         //If the difference between height and width is larger than 50, it is unlikely to be a mineral
                         updatedRecognitions.remove(i); // Thus, we remove the recognition
                         i--;
