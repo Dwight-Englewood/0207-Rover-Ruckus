@@ -33,7 +33,7 @@ public class Rake implements Subsystem {
     }
 
     public void down() {
-        bottom.setPosition(.45);
+        bottom.setPosition(.40);
         top.setPosition(1);
     }
 

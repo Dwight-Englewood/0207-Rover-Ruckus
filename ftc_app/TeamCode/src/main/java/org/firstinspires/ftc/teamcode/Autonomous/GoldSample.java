@@ -21,8 +21,8 @@ public class GoldSample extends OpMode {
     int distCenterSample = -30;
     int distRightSample = -68;
     int rotFaceLander = -180;
-    int distIntakeSample = -30;
-    int distIntakeSampleAdd = -10;
+    int distIntakeSample = -40;
+    int distIntakeSampleAdd = -5;
     int distToWall = 45;
     int rotParalellToWall = 315;
     int distStrafeWall = -50;
@@ -111,19 +111,24 @@ public class GoldSample extends OpMode {
             case 9:
                 auto.finishDrive();
                 break;
-
             case 10:
-                auto.gyroCorrect(rotFaceLander, 1, .1, .2);
+                auto.command++;
+                //auto.gyroCorrect(rotFaceLander, 1, .1, .5);
                 break;
+
             case 11:
-                auto.setTarget(distIntakeSample);
+                auto.setStrafeTarget(-distIntakeSample);
+                //auto.setTarget(distIntakeSampleSilver);
                 break;
+
             case 12:
-                auto.robot.intake.outtake();
+                //auto.robot.intake.outtake();
                 auto.finishDrive();
                 break;
+
             case 13:
-                auto.setTarget(-(distIntakeSample + distIntakeSampleAdd));
+                auto.setStrafeTarget((distIntakeSample + distIntakeSampleAdd));
+                //auto.setTarget(-(distIntakeSampleSilver + distIntakeSampleAdd));
                 break;
             case 14:
                 auto.robot.intake.stop();
@@ -181,17 +186,33 @@ public class GoldSample extends OpMode {
                 auto.gyroCorrect(rotParalellToWall, 1, .1, .6);
                 break;
             case 25:
-                auto.setTarget(distToCrater);
+                auto.setStrafeTarget(-20);
                 break;
             case 26:
                 auto.finishDrive();
                 break;
             case 27:
+                auto.setStrafeTarget(9);
+                break;
+            case 28:
+                auto.finishDrive();
+                break;
+            case 29:
+                auto.setTarget(distToCrater);
+                break;
+            case 30:
+                auto.finishDrive();
+                break;
+            case 31:
                 auto.robot.driveTrain.drivepow(0);
+                //auto.robot.driveTrain.br.setPower(-.25);
+                //auto.robot.driveTrain.bl.setPower(-.25);
+                //auto.robot.driveTrain.fr.setPower(-.1);
+                //auto.robot.driveTrain.fl.setPower(-.);
                 auto.robot.markerDeploy.raise();
                 auto.command++;
                 break;
-            case 28:
+            case 32:
                 auto.robot.stop();
                 auto.command++;
                 break;
@@ -206,6 +227,10 @@ public class GoldSample extends OpMode {
 
     @Override
     public void stop() {
+        auto.robot.driveTrain.br.setPower(0);
+        auto.robot.driveTrain.bl.setPower(0);
+        auto.robot.driveTrain.fr.setPower(0);
+        auto.robot.driveTrain.fl.setPower(0);
         auto.robot.stop();
     }
 

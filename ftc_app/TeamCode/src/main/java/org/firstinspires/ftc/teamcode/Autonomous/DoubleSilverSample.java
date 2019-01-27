@@ -291,12 +291,12 @@ public class DoubleSilverSample extends OpMode {
                 break;
 
             case 40:
-                //auto.robot.driveTrain.drivepow(0);
+                auto.robot.driveTrain.drivepow(0);
 
-                auto.robot.driveTrain.br.setPower(-.5);
-                auto.robot.driveTrain.bl.setPower(-.5);
-                auto.robot.driveTrain.fr.setPower(-.5);
-                auto.robot.driveTrain.fl.setPower(-.2);
+                //auto.robot.driveTrain.br.setPower(-.25);
+                //auto.robot.driveTrain.bl.setPower(-.25);
+                //auto.robot.driveTrain.fr.setPower(-.25);
+                //auto.robot.driveTrain.fl.setPower(-.1);
                 auto.robot.markerDeploy.raise();
                 auto.command++;
                 break;
@@ -316,6 +316,10 @@ public class DoubleSilverSample extends OpMode {
 
     @Override
     public void stop() {
+        auto.robot.driveTrain.br.setPower(0);
+        auto.robot.driveTrain.bl.setPower(0);
+        auto.robot.driveTrain.fr.setPower(0);
+        auto.robot.driveTrain.fl.setPower(0);
         auto.robot.stop();
     }
 

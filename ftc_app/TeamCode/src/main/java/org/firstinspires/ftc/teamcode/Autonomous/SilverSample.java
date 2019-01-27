@@ -192,22 +192,37 @@ public class SilverSample extends OpMode {
             case 24:
                 auto.gyroCorrect(rotParalellToWall, 1, .1, .2);
                 break;
-
             case 25:
-                auto.setTarget(distToCrater);
+                auto.setStrafeTarget(20);
                 break;
-
             case 26:
                 auto.finishDrive();
                 break;
-
             case 27:
+                auto.setStrafeTarget(-3);
+                break;
+            case 28:
+                auto.finishDrive();
+                break;
+            case 29:
+                auto.setTarget(distToCrater);
+                break;
+
+            case 30:
+                auto.finishDrive();
+                break;
+
+            case 31:
                 auto.robot.driveTrain.drivepow(0);
+                //auto.robot.driveTrain.br.setPower(-.25);
+                //auto.robot.driveTrain.bl.setPower(-.25);
+                //auto.robot.driveTrain.fr.setPower(-.25);
+                //auto.robot.driveTrain.fl.setPower(-.1);
                 auto.robot.markerDeploy.raise();
                 auto.command++;
                 break;
 
-            case 28:
+            case 32:
                 auto.robot.stop();
                 auto.command++;
                 break;
@@ -222,6 +237,10 @@ public class SilverSample extends OpMode {
 
     @Override
     public void stop() {
+        auto.robot.driveTrain.br.setPower(0);
+        auto.robot.driveTrain.bl.setPower(0);
+        auto.robot.driveTrain.fr.setPower(0);
+        auto.robot.driveTrain.fl.setPower(0);
         auto.robot.stop();
     }
 
