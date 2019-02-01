@@ -115,6 +115,7 @@ public class TFWrapper2Mineral implements Subsystem {
                         }
                     }
                 } else {
+                    System.out.println("wtf");
                     this.state = TFState.NOTVISIBLE;
                 }
             }

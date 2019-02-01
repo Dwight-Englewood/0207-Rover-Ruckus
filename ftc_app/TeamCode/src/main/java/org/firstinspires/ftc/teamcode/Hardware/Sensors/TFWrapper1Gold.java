@@ -22,10 +22,7 @@ public class TFWrapper1Gold implements Subsystem {
     private TFObjectDetector tfod;
     private TFState state;
 
-    private boolean leftOrRightView;
-
-    public TFWrapper1Gold(boolean leftOrRightView) {
-        this.leftOrRightView = leftOrRightView;
+    public TFWrapper1Gold() {
     }
 
     @Override
@@ -85,39 +82,17 @@ public class TFWrapper1Gold implements Subsystem {
                         i--;
                     }
                 }
-                if (updatedRecognitions.size() == 2) {
-
-                    //Initialize the x values to a recognizable value
-                    int gold = -1;
-                    int silver1 = -1;
-                    //For all detected minerals
-                    for (Recognition recognition : updatedRecognitions) {
-                        //If we have the gold mineral
-                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                            //Keep it's x position in the variable
-                            gold = (int) recognition.getLeft();
-                        //Similarly for a silver mineral
-                        } else if (silver1 == -1) {
-                            silver1 = (int) recognition.getLeft();
-                        }
+                /*for (int i = 0; i < updatedRecognitions.size(); i++) {
+                    if (updatedRecognitions.get(i).getLabel().equals(LABEL_SILVER_MINERAL)){
+                        //If the difference between height and width is larger than 50, it is unlikely to be a mineral
+                        updatedRecognitions.remove(i); // Thus, we remove the recognition
+                        i--;
                     }
-                    //If at least one value has been read
-                    if (gold != -1 || silver1 != -1) {
-                        //If we have seen the gold element
-                        if (gold != -1) {
-                            if (gold < silver1) {
-                                //If the gold is located further left than the silver, it is on the left
-                                this.state = TFState.LEFT;
-                            } else if (silver1 < gold) {
-                                //If the gold is located further right than the silver, it is in the center
-                                this.state = TFState.CENTER;
-                            }
-                        } else {
-                            //If the gold has not been seen, it must be on the right
-                            this.state = TFState.RIGHT;
-                        }
-                    }
+                }*/
+                if (updatedRecognitions.size() == 0) {
+                    this.state = TFState.RIGHT;
                 } else {
+                    System.out.println("asd");
                     this.state = TFState.NOTVISIBLE;
                 }
             }
