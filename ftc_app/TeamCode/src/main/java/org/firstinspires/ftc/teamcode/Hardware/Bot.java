@@ -9,9 +9,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Scoring.Lift;
 import org.firstinspires.ftc.teamcode.Hardware.Scoring.MarkerDeploy;
 import org.firstinspires.ftc.teamcode.Hardware.Scoring.Rake;
 import org.firstinspires.ftc.teamcode.Hardware.Sensors.SensorSystem;
-import org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapper;
-import org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapper2;
-import org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapperDriveby;
+import org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapper2Mineral;
 import org.firstinspires.ftc.teamcode.Hardware.Sensors.VumarkWrapper;
 
 import java.lang.reflect.Field;
@@ -22,7 +20,7 @@ public class Bot {
     public Lift lift = new Lift();
     public MarkerDeploy markerDeploy = new MarkerDeploy();
     public SensorSystem sensorSystem = new SensorSystem();
-    public TFWrapper2 tensorFlow = new TFWrapper2();
+    public TFWrapper2Mineral tensorFlow = new TFWrapper2Mineral();
     public VumarkWrapper vumarkWrapper = new VumarkWrapper();
     public Dumper dumper = new Dumper();
     public Intake intake = new Intake();
@@ -45,7 +43,7 @@ public class Bot {
         for (Field f : fields) {
             try {
                 if (f.get(this) instanceof Subsystem) {
-                    if (!isAuton && f.get(this) instanceof TFWrapper2) {
+                    if (!isAuton && f.get(this) instanceof TFWrapper2Mineral) {
                         continue;
                     }
                     if (f.get(this) instanceof VumarkWrapper && vumarkOff) {
@@ -65,7 +63,7 @@ public class Bot {
         for (Field f : fields) {
             try {
                 if (f.get(this) instanceof Subsystem) {
-                    if (!isAuton && f.get(this) instanceof TFWrapper2) {
+                    if (!isAuton && f.get(this) instanceof TFWrapper2Mineral) {
                         continue;
                     }
 
@@ -86,7 +84,7 @@ public class Bot {
         for (Field f : fields) {
             try {
                 if (f.get(this) instanceof Subsystem) {
-                    if (!isAuton && f.get(this) instanceof TFWrapper2) {
+                    if (!isAuton && f.get(this) instanceof TFWrapper2Mineral) {
                         continue;
                     }
 
@@ -112,7 +110,7 @@ public class Bot {
         for (Field f : fields) {
             try {
                 if (f.get(this) instanceof Subsystem) {
-                    if (!isAuton && f.get(this) instanceof TFWrapper2) {
+                    if (!isAuton && f.get(this) instanceof TFWrapper2Mineral) {
                         continue;
                     }
 

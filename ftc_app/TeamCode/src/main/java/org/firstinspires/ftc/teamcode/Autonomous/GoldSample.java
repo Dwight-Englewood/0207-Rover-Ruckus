@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import static org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapper2.TFState;
+import static org.firstinspires.ftc.teamcode.Hardware.Sensors.TFWrapper2Mineral.TFState;
 
 
 @Autonomous(name = "GoldSample", group = "AutonOppositeCrater")
