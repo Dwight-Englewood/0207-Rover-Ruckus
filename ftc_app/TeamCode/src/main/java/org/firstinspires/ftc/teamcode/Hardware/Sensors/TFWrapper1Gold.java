@@ -82,17 +82,42 @@ public class TFWrapper1Gold implements Subsystem {
                         i--;
                     }
                 }
-                /*for (int i = 0; i < updatedRecognitions.size(); i++) {
-                    if (updatedRecognitions.get(i).getLabel().equals(LABEL_SILVER_MINERAL)){
+                boolean seesSilver = false;
+                for (int i = 0; i < updatedRecognitions.size(); i++) {
+                    if (updatedRecognitions.get(i).getLabel().equals(LABEL_SILVER_MINERAL)) {
                         //If the difference between height and width is larger than 50, it is unlikely to be a mineral
                         updatedRecognitions.remove(i); // Thus, we remove the recognition
+                        seesSilver = true;
                         i--;
                     }
-                }*/
-                if (updatedRecognitions.size() == 0) {
-                    this.state = TFState.RIGHT;
+                }
+                if (seesSilver) {
+                    System.out.println(updatedRecognitions.size());
+                    if (updatedRecognitions.size() == 0) {
+                        this.state = TFState.RIGHT;
+                    } else if (updatedRecognitions.size() == 1) {
+                        if (updatedRecognitions.get(0).getRight() < updatedRecognitions.get(0).getImageWidth() / 2) {
+                            this.state = TFState.CENTER;
+                        } else {
+                            this.state = TFState.LEFT;
+                        }
+                    } else {
+                        float maxCondifence = 0;
+                        int maxIndex = 0;
+                        for (int i = 0; i < updatedRecognitions.size(); i++) {
+                            if (updatedRecognitions.get(i).getConfidence() > maxCondifence) {
+                                maxCondifence = updatedRecognitions.get(i).getConfidence();
+                                maxIndex = i;
+                            }
+                        }
+                        if (updatedRecognitions.get(maxIndex).getRight() < updatedRecognitions.get(maxIndex).getImageWidth() / 2) {
+                            this.state = TFState.CENTER;
+                        } else {
+                            this.state = TFState.LEFT;
+                        }
+
+                    }
                 } else {
-                    System.out.println("asd");
                     this.state = TFState.NOTVISIBLE;
                 }
             }
