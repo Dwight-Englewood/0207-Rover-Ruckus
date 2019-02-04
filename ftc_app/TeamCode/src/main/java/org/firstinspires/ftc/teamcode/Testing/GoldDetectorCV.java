@@ -16,6 +16,8 @@ public class GoldDetectorCV extends OpMode {
 
     private GoldDetectorWrapper goldDetector;
 
+    private EditGroup currentEditGroup;
+
     @Override
     public void init() {
         goldDetector = new GoldDetectorWrapper();
@@ -39,30 +41,46 @@ public class GoldDetectorCV extends OpMode {
             goldDetector.imageView = GoldDetectorWrapper.ImageView.HULL;
         }
 
-        if (gamepad2.dpad_up && gamepad2.left_trigger < .5) {
-            goldDetector.grip.hsvHueLow = Math.abs(gamepad2.right_stick_y * 255);
-            telemetry.addData("hsvhueLow", goldDetector.grip.hsvHueLow);
-        } else if (gamepad2.dpad_up && gamepad2.left_trigger > .5) {
-            goldDetector.grip.hsvHueHigh = Math.abs(gamepad2.right_stick_y * 255);
-            telemetry.addData("hsvHueHigh", goldDetector.grip.hsvHueHigh);
-        } else if (gamepad2.dpad_left && gamepad2.left_trigger < .5) {
-            goldDetector.grip.hsvSatLow = Math.abs(gamepad2.right_stick_y * 255);
-            telemetry.addData("hsvSatLow", goldDetector.grip.hsvSatLow);
-        } else if (gamepad2.dpad_left && gamepad2.left_trigger > .5) {
-            goldDetector.grip.hsvSatHigh = Math.abs(gamepad2.right_stick_y * 255);
-            telemetry.addData("hsvSatHigh", goldDetector.grip.hsvSatHigh);
-        } else if (gamepad2.dpad_down && gamepad2.left_trigger < .5) {
-            goldDetector.grip.hsvValLow = Math.abs(gamepad2.right_stick_y * 255);
-            telemetry.addData("hsvValLow", goldDetector.grip.hsvValLow);
-        } else if (gamepad2.dpad_down && gamepad2.left_trigger > .5) {
-            goldDetector.grip.hsvValHigh = Math.abs(gamepad2.right_stick_y * 255);
-            telemetry.addData("hsvValHigh", goldDetector.grip.hsvValHigh);
-        } else if (gamepad2.dpad_right && gamepad2.left_trigger > .5) {
-            goldDetector.grip.blurRadius1 = Math.abs(gamepad2.right_stick_y * 100);
-            telemetry.addData("blurRadius1", goldDetector.grip.blurRadius1);
-        } else if (gamepad2.dpad_right && gamepad2.left_trigger < .5) {
-            goldDetector.grip.blurRadius2 = Math.abs(gamepad2.right_stick_y * 100);
-            telemetry.addData("blurRadius2", goldDetector.grip.blurRadius2);
+        if (gamepad2.dpad_left && gamepad2.left_bumper) {
+            currentEditGroup = EditGroup.NONE;
+        } else if (gamepad2.dpad_up) {
+            currentEditGroup = EditGroup.HUE;
+        } else if (gamepad2.dpad_left) {
+            currentEditGroup = EditGroup.SAT;
+        } else if (gamepad2.dpad_down) {
+            currentEditGroup = EditGroup.VAL;
+        } else if (gamepad2.dpad_right && gamepad2.left_bumper) {
+            currentEditGroup = EditGroup.BLUR1;
+        } else if (gamepad2.dpad_right && !gamepad2.left_bumper) {
+            currentEditGroup = EditGroup.BLUR2;
+        }
+        if (gamepad2.left_trigger < .5) {
+            switch (currentEditGroup) {
+                case NONE:
+                    break;
+                case HUE:
+                    goldDetector.grip.hsvHueLow = Math.abs(((gamepad2.left_stick_y + 1) / 2) * 255);
+                    telemetry.addData("hsvHueLow", goldDetector.grip.hsvHueLow);
+                    goldDetector.grip.hsvHueHigh = Math.abs(((gamepad2.right_stick_y + 1) / 2) * 255);
+                    telemetry.addData("hsvHueHigh", goldDetector.grip.hsvHueHigh);
+                case SAT:
+                    goldDetector.grip.hsvSatLow = Math.abs(((gamepad2.left_stick_y + 1) / 2) * 255);
+                    telemetry.addData("hsvSatLow", goldDetector.grip.hsvSatLow);
+                    goldDetector.grip.hsvSatHigh = Math.abs(((gamepad2.right_stick_y + 1) / 2) * 255);
+                    telemetry.addData("hsvSatHigh", goldDetector.grip.hsvSatHigh);
+                case VAL:
+                    goldDetector.grip.hsvValLow = Math.abs(((gamepad2.left_stick_y + 1) / 2) * 255);
+                    telemetry.addData("hsvValLow", goldDetector.grip.hsvValLow);
+                    goldDetector.grip.hsvValHigh = Math.abs(((gamepad2.right_stick_y + 1) / 2) * 255);
+                    telemetry.addData("hsvValHigh", goldDetector.grip.hsvValHigh);
+                case BLUR1:
+                    goldDetector.grip.blurRadius1 = Math.abs(gamepad2.right_stick_y * 100);
+                    telemetry.addData("blurRadius1", goldDetector.grip.blurRadius1);
+                case BLUR2:
+                    goldDetector.grip.blurRadius2 = Math.abs(gamepad2.right_stick_y * 100);
+                    telemetry.addData("blurRadius2", goldDetector.grip.blurRadius2);
+
+            }
         }
 
         if (gamepad1.left_trigger > .5) {
@@ -76,8 +94,6 @@ public class GoldDetectorCV extends OpMode {
             telemetry.addData("blurRadius2", goldDetector.grip.blurRadius2);
 
         }
-
-
 
 
         // update the settings of the vision pipeline
@@ -98,5 +114,9 @@ public class GoldDetectorCV extends OpMode {
     public void stop() {
         // stop the vision system
         goldDetector.disable();
+    }
+
+    public enum EditGroup {
+        HUE, SAT, VAL, BLUR1, BLUR2, NONE;
     }
 }

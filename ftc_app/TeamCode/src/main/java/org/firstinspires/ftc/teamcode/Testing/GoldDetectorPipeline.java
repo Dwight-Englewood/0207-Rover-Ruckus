@@ -15,7 +15,6 @@ import java.util.List;
 
 public class GoldDetectorPipeline {
 
-
     public double hsvHueLow = 5.4148261371348765;
     public double hsvHueHigh = 154.37361496345915;
     public double hsvSatLow = 0.4762732241349621;
