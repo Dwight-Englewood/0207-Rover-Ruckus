@@ -14,9 +14,9 @@ import java.util.Locale;
 @TeleOp(name = "GoldDetectorCV")
 public class GoldDetectorCV extends OpMode {
 
-    public static final int minSize = 1000;
-    public static final int minContourArea = minSize;
+    public static final int minContourArea = 1000;
     public static final int maxContourArea = 5000;
+
     private GoldDetectorWrapper goldDetector;
 
     @Override

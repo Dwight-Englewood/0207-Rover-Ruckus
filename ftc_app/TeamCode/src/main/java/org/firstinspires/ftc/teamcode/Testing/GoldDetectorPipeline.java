@@ -14,11 +14,15 @@ public class GoldDetectorPipeline {
 
     public static final double RESIZE_IMAGE_WIDTH = 320.0;
     public static final double RESIZE_IMAGE_HEIGHT = 240.0;
+
     public static final double BLUR_RADIUS = 8.108108108108109;
+
     public static final int hsvHueLow = 30;
     public static final int hsvHueHigh = 60;
+
     public static final int hsvSatLow = 150;
     public static final int hsvSatHigh = 255;
+
     public static final int hsvValLow = 100;
     public static final int hsvValHigh = 255;
     //Outputs

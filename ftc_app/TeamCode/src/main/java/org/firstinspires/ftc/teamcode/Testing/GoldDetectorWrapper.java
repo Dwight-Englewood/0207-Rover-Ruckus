@@ -39,8 +39,9 @@ public class GoldDetectorWrapper extends OpenCVPipeline {
             case THRESH:
                 return grip.hsvThresholdOutput();
             case CONTOUR:
-                Imgproc.drawContours(grip.resizeImageOutput(), grip.findContoursOutput(), -1, new Scalar(255, 255, 255), 8);
-                return grip.resizeImageOutput();
+                Mat contourImageOutput = grip.resizeImageOutput().clone();
+                Imgproc.drawContours(contourImageOutput, grip.findContoursOutput(), -1, new Scalar(255, 255, 255), 8);
+                return contourImageOutput;
             default:
                 return rgba;
         }
