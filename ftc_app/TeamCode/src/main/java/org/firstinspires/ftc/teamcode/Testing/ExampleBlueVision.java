@@ -11,38 +11,7 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by guinea on 10/5/17.
- * -------------------------------------------------------------------------------------
- * Copyright (c) 2018 FTC Team 5484 Enderbots
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- * 
- * 
- * By downloading, copying, installing or using the software you agree to this license.
- * If you do not agree to this license, do not download, install,
- * copy or use the software.
- * -------------------------------------------------------------------------------------
- * A nice demo class for using OpenCVPipeline. This one also demonstrates how to use OpenCV to threshold
- * for a certain color (blue) and find contours of objects of that color, which is very common in
- * robotics OpenCV applications.
- */
+
 
 public class ExampleBlueVision extends OpenCVPipeline {
     private boolean showContours = true;
@@ -69,7 +38,7 @@ public class ExampleBlueVision extends OpenCVPipeline {
         // Then, we threshold our hsv image so that we get a black/white binary image where white
         // is the blues listed in the specified range of values
         // you can use a program like WPILib GRIP to find these values, or just play around.
-        Core.inRange(hsv, new Scalar(10, 128, 183), new Scalar(88, 235, 254), thresholded);
+        Core.inRange(hsv, new Scalar(0, 12, 200), new Scalar(51, 216, 255), thresholded);
 
         // we blur the thresholded image to remove noise
         // there are other types of blur like box blur or gaussian which can be explored.
@@ -89,6 +58,6 @@ public class ExampleBlueVision extends OpenCVPipeline {
             Imgproc.drawContours(rgba, contours, -1, new Scalar(0, 255, 0), 2, 8);
         }
 
-        return rgba; // display the image seen by the camera
+        return thresholded; // display the image seen by the camera
     }
 }

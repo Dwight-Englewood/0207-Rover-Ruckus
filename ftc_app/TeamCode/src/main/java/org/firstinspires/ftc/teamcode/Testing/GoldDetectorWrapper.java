@@ -38,9 +38,6 @@ public class GoldDetectorWrapper extends OpenCVPipeline {
             case CONTOUR:
                 Imgproc.drawContours(grip.cvCvtcolorOutput(), grip.findContoursOutput(), -1, new Scalar(255, 255, 255), 8);
                 return grip.cvCvtcolorOutput();
-            case HULL:
-                Imgproc.drawContours(grip.cvCvtcolorOutput(), grip.convexHullsOutput(), -1, new Scalar(255, 255, 255), 8);
-                return grip.cvCvtcolorOutput();
             default:
                 return rgba;
         }
