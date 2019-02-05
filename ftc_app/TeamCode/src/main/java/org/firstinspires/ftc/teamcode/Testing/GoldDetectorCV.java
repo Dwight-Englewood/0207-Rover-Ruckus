@@ -11,8 +11,6 @@ import org.opencv.imgproc.Imgproc;
 import java.util.List;
 import java.util.Locale;
 
-import static java.lang.Math.sqrt;
-
 @TeleOp(name = "GoldDetectorCV")
 public class GoldDetectorCV extends OpMode {
 
@@ -32,9 +30,9 @@ public class GoldDetectorCV extends OpMode {
     @Override
     public void loop() {
         if (gamepad1.dpad_up) {
-            goldDetector.imageView = GoldDetectorWrapper.ImageView.RGB;
-        } else if (gamepad1.dpad_right) {
             goldDetector.imageView = GoldDetectorWrapper.ImageView.HSV;
+        } else if (gamepad1.dpad_right) {
+            goldDetector.imageView = GoldDetectorWrapper.ImageView.THRESH;
         } else if (gamepad1.dpad_down) {
             goldDetector.imageView = GoldDetectorWrapper.ImageView.BLUR;
         } else if (gamepad1.dpad_left) {
@@ -45,7 +43,7 @@ public class GoldDetectorCV extends OpMode {
             goldDetector.imageView = GoldDetectorWrapper.ImageView.DEFAULT;
         }
 
-        telemetry.addData("editGroup", currentEditGroup);
+        telemetry.addData("editGroup", goldDetector.imageView);
 
 
 
