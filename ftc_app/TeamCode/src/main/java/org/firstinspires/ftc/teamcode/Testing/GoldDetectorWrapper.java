@@ -28,16 +28,19 @@ public class GoldDetectorWrapper extends OpenCVPipeline {
     @Override
     public Mat processFrame(Mat rgba, Mat gray) {
         grip.process(rgba);
+        contours = grip.findContoursOutput();
         switch (imageView) {
+            case RESIZE:
+                return grip.resizeImageOutput();
             case HSV:
                 return grip.cvCvtcolorOutput();
-            case THRESH:
-                return grip.hsvThresholdOutput();
             case BLUR:
                 return grip.blurOutput();
+            case THRESH:
+                return grip.hsvThresholdOutput();
             case CONTOUR:
-                Imgproc.drawContours(grip.cvCvtcolorOutput(), grip.findContoursOutput(), -1, new Scalar(255, 255, 255), 8);
-                return grip.cvCvtcolorOutput();
+                Imgproc.drawContours(grip.resizeImageOutput(), grip.findContoursOutput(), -1, new Scalar(255, 255, 255), 8);
+                return grip.resizeImageOutput();
             default:
                 return rgba;
         }
@@ -45,6 +48,6 @@ public class GoldDetectorWrapper extends OpenCVPipeline {
     }
 
     public enum ImageView {
-        HSV, THRESH, BLUR, CONTOUR, HULL, DEFAULT
+        RESIZE, HSV, BLUR, THRESH, CONTOUR, DEFAULT;
     }
 }
