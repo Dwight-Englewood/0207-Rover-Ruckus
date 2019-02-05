@@ -66,13 +66,17 @@ public class GoldDetectorCV extends OpMode {
             if (contours.size() == 0) {
                 telemetry.addLine("Right");
             } else if (contours.size() == 1) {
-                Rect boundingRect = Imgproc.boundingRect(contours.get(0));
-                //telemetry.addData("x", boundingRect.x + boundingRect.width / 2);
-                //telemetry.addData("y", boundingRect.y + boundingRect.height / 2);
-                if (boundingRect.x + boundingRect.width / 2 > 160) {
-                    telemetry.addLine("Center");
-                } else {
-                    telemetry.addLine("Left");
+                try {
+                    Rect boundingRect = Imgproc.boundingRect(contours.get(0));
+                    //telemetry.addData("x", boundingRect.x + boundingRect.width / 2);
+                    //telemetry.addData("y", boundingRect.y + boundingRect.height / 2);
+                    if (boundingRect.x + boundingRect.width / 2 > 160) {
+                        telemetry.addLine("Center");
+                    } else {
+                        telemetry.addLine("Left");
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    telemetry.addLine("Out of Bounds");
                 }
             }
         }
