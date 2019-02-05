@@ -15,12 +15,12 @@ import java.util.List;
 
 public class GoldDetectorPipeline {
 
-    public double hsvHueLow = 5.4148261371348765;
-    public double hsvHueHigh = 154.37361496345915;
-    public double hsvSatLow = 0.4762732241349621;
-    public double hsvSatHigh = 160.96203741414104;
-    public double hsvValLow = 194.91651248723082;
-    public double hsvValHigh = 255.0;
+    public double hsvHueLow = 78;
+    public double hsvHueHigh = 117;
+    public double hsvSatLow = 149;
+    public double hsvSatHigh = 255;
+    public double hsvValLow = 211;
+    public double hsvValHigh = 255;
     public double blurRadius1 = 100.0;
     public double blurRadius2 = 0;
 

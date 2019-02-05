@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public class GoldDetectorWrapper extends OpenCVPipeline {
-    public ImageView imageView = ImageView.RGB;
+    public ImageView imageView = ImageView.CONTOUR;
     public GoldDetectorPipeline grip = new GoldDetectorPipeline();
     // To keep it such that we don't have to instantiate a new Mat every call to processFrame,
     // we declare the Mats up here and reuse them. This is easier on the garbage collector.
@@ -36,11 +36,11 @@ public class GoldDetectorWrapper extends OpenCVPipeline {
             case BLUR:
                 return grip.blurOutput();
             case CONTOUR:
-                Imgproc.drawContours(rgba, grip.findContoursOutput(), -1, new Scalar(255, 255, 255), 8);
-                return rgba;
+                Imgproc.drawContours(grip.cvCvtcolorOutput(), grip.findContoursOutput(), -1, new Scalar(255, 255, 255), 8);
+                return grip.cvCvtcolorOutput();
             case HULL:
-                Imgproc.drawContours(rgba, grip.convexHullsOutput(), -1, new Scalar(255, 255, 255), 8);
-                return rgba;
+                Imgproc.drawContours(grip.cvCvtcolorOutput(), grip.convexHullsOutput(), -1, new Scalar(255, 255, 255), 8);
+                return grip.cvCvtcolorOutput();
             default:
                 return rgba;
         }
@@ -48,6 +48,6 @@ public class GoldDetectorWrapper extends OpenCVPipeline {
     }
 
     public enum ImageView {
-        RGB, HSV, BLUR, CONTOUR, HULL
+        RGB, HSV, BLUR, CONTOUR, HULL, DEFAULT
     }
 }
