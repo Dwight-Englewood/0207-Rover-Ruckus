@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Testing;
+package org.firstinspires.ftc.teamcode.Hardware.Sensors;
 
 import org.corningrobotics.enderbots.endercv.OpenCVPipeline;
 import org.opencv.core.Mat;
@@ -11,6 +11,7 @@ import java.util.List;
 
 
 public class GoldDetectorWrapper extends OpenCVPipeline {
+
     public ImageView imageView = ImageView.THRESH;
     public GoldDetectorPipeline grip = new GoldDetectorPipeline();
     // To keep it such that we don't have to instantiate a new Mat every call to processFrame,
