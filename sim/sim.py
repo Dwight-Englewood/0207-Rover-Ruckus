@@ -6,6 +6,7 @@ from OpenGL.GLU import * # OpenGL
 from pyglfw.libapi import *
 from math import *
 import numpy as np
+import time
 
 
 ye = False
@@ -14,22 +15,7 @@ buffers=None
 
 vertices=[.1]
 
-
-# Constants
-#botMass = 15
-#maxMotorForce = 2
-#friction = 1
-
 colors=[.1]
-botX = 0
-botY = 0
-botXV = 0
-botYV = 0
-botXF = 0
-botYF = 0
-botR = 0
-botRV = 0
-botRT = 0
 
 def initialize():
     glClearColor(0.125, 0.125, 0.125, 0) # set background color
@@ -49,7 +35,7 @@ def draw():
     glColor3f(0.2, 0.2, 1.0)
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
     glBegin(GL_POLYGON)
-    boxHalfDim = .05
+    boxHalfDim = .1 # corresponds to 20cm 20cm
     glColor3f(0.2, 0.2, 1.0)
     glVertex2f(boxHalfDim,boxHalfDim)
     glVertex2f(-boxHalfDim,boxHalfDim)
@@ -96,72 +82,130 @@ def drawNewtons():
 def disp_func():
     draw()
 
-def update_func():
-    global botX, botY, botXV, botYV, botR, botRV
-    botX = botX + botXV
-    botY = botY + botYV
-    botR = botR + botRV
 
-def idle_func():
-    global botX, botY, botXV, botYV, botR, botRV
-    for i in range(0,100): # look im not dealing with integer roundoff error
-        if (botXV > 0):
-            botXV = botXV - .01
-        elif (botXV < 0):
-            botXV = botXV + .01
-        if (botYV > 0):
-            botYV = botYV - .01
-        elif (botYV < 0):
-            botYV = botYV + .01
-    for i in range(0,20):
-        if (botRV > 0):
-            botRV = botRV - .01
-        elif(botRV < 0):
-            botRV = botRV + .01
-    update_func()
+lasttime = time.time()
+
+botMass = 5
+friction = -20
+
+#i think this means my motors can supply 5000 newtons lol
+linearMotorScale = 5000
+rotationMotorScale = 3000
 
 
-def fieldCentric(window):
-    global botX, botY, botXV, botYV, botRV, botR
-    if (glfwGetKey(window, GLFW_KEY_W ) == GLFW_PRESS):
-        botYV = botYV + 1
-    if (glfwGetKey(window, GLFW_KEY_S ) == GLFW_PRESS):
-        botYV = botYV - 1
-    if (glfwGetKey(window, GLFW_KEY_D ) == GLFW_PRESS):
-        botXV = botXV + 1
-    if (glfwGetKey(window, GLFW_KEY_A ) == GLFW_PRESS):
-        botXV = botXV - 1
-    if (glfwGetKey(window, GLFW_KEY_Q ) == GLFW_PRESS):
-        botRV = botRV + 1
-    if (glfwGetKey(window, GLFW_KEY_E ) == GLFW_PRESS):
-        botRV = botRV - 1
+botX = 0
+botXD = 0
+botXDD = 0
+
+botY = 0
+botYD = 0
+botYDD = 0
+
+botR = 0
+botRD = 0
+botRDD = 0
+
+botXF = 0
+botYF = 0
+botRF = 0
+
+wheelRadius = 5
+
+wheelFR = 0
+wheelFL = 0
+wheelBL = 0
+wheelBR = 0
+
+def idle_func(window):
+    tankDrive(window)
+    updateForce()
+    forceToAcceleration()
+    simulateStep()
+    disp_func()
+
+def simulateStep():
+    global botX, botY, botR, botXD, botYD, botRD, botXDD, botYDD, botRDD, lasttime
+    deltaTime = time.time() - lasttime
+    botXD = botXD + botXDD * deltaTime
+    botYD = botYD + botYDD * deltaTime
+    botRD = botRD + botRDD * deltaTime
+    botX = botX + botXD * deltaTime
+    botY = botY + botYD * deltaTime
+    botR = botR + botRD * deltaTime
+    lasttime = time.time()
+
+def forceToAcceleration():
+    global botXF, botYF, botRF, botMass, botXDD, botYDD, botRDD
+    botXDD = botXF / botMass
+    botYDD = botYF / botMass
+    botRDD = botRF / botMass
+
+def updateForce():
+    global wheelFR, wheelFL, wheelBL, wheelBR, botXF, botYF, botRF, botXD, botYD, botRD
+    forces = wheelToForce(wheelFR, wheelFL, wheelBL, wheelBR)
+    botXF = linearMotorScale*forces[0] + friction*botXD
+    botYF = linearMotorScale*forces[1] + friction*botYD
+    botRF = rotationMotorScale*forces[2] + friction*botRD
 
 def fieldCentricJoystick(stickX, stickY, rightStickX):
     dab = velocityToWheel(stickX, stickY, rightStickX)
-    wheelToVelocity(dab[0], dab[1], dab[2], dab[3])
+    wheelToForce(dab[0], dab[1], dab[2], dab[3])
 
-def tankDrive(leftStickY, rightStickY, leftTrigger, rightTrigger):
-    print(leftTrigger)
-    if (leftTrigger > .5):
-        botRV = leftTrigger
-    elif (rightTrigger > .5):
-        botRV = -rightTrigger
+def tankDrive(window):
+    global wheelFR, wheelFL, wheelBL, wheelBR
+    if (glfwGetKey(window, GLFW_KEY_S ) == GLFW_PRESS):
+        wheelFR = 1
+        wheelFL = -1
+        wheelBL = -1
+        wheelBR = 1
+    elif (glfwGetKey(window, GLFW_KEY_W ) == GLFW_PRESS):
+        wheelFR = -1
+        wheelFL = 1
+        wheelBL = 1
+        wheelBR = -1
+    elif (glfwGetKey(window, GLFW_KEY_Q ) == GLFW_PRESS):
+        wheelFR = 1
+        wheelFL = -1
+        wheelBL = 1
+        wheelBR = -1
+    elif (glfwGetKey(window, GLFW_KEY_E ) == GLFW_PRESS):
+        wheelFR = -1
+        wheelFL = 1
+        wheelBL = -1
+        wheelBR = 1
+    elif (glfwGetKey(window, GLFW_KEY_A ) == GLFW_PRESS):
+        wheelFR = 1
+        wheelFL = 1
+        wheelBL = -1
+        wheelBR = -1
+    elif (glfwGetKey(window, GLFW_KEY_D ) == GLFW_PRESS):
+        wheelFR = -1
+        wheelFL = -1
+        wheelBL = 1
+        wheelBR = 1
     else:
-        wheelToVelocity(leftStickY, rightStickY, rightStickY, leftStickY)
+        wheelFR = 0
+        wheelFL = 0
+        wheelBL = 0
+        wheelBR = 0
+
+def getJ(t):
+    a = sqrt(2)/2
+    j = np.matmul(np.array([[a,a,-1],[a,-a,1],[-a,-a,-1],[-a,a,1]]),np.array([[cos(t),sin(t),0],[-sin(t),cos(t),0],[0,0,1]]))
+    return j
+
 def velocityToWheel(vx,vy,vr):
-    dab = np.matmul(np.array([[1,-1,-1],[1,1,1],[1,1,-1],[1,-1,1]]), np.array([vx,vy,vr]))
+    global botR, wheelRadius
+    dab = -(sqrt(2)/wheelRadius)*np.matmul(getJ(botR), np.array([vx,vy,vr]))
     return dab
 
-
-def wheelToVelocity(w1, w2, w3, w4):
-    global botXV, botYV, botRV
-    dab = np.matmul(np.array([[1,1,1,1],[1,-1,-1,1],[-1,1,-1,1]]), np.array([w1,w2,w3,w4]))
-    botXV = dab[0]
-    botYV = dab[1]
-    botRV = dab[2]
+def wheelToForce(w1, w2, w3, w4):
+    global botR, wheelRadius
+    dab = wheelRadius*(-sqrt(2)/2)*np.matmul(np.linalg.pinv(getJ(radians(botR))), np.array([w1,w2,w3,w4]))
+    return dab
 
 def main():
-    global botX, botY, botXV, botYV, botRV, botR
+    global botX, botY, botR, botXD, botYD, botRD, botXDD, botYDD, botRDD
     # Initialize the library
     if not glfwInit():
         return
@@ -179,8 +223,9 @@ def main():
     while not glfwWindowShouldClose(window):
         # Render here, e.g. using pyOpenGL
         deadzone = 0
-        fieldCentric(window)
-        joysticks = glfwGetJoystickAxes(GLFW_JOYSTICK_1)
+        #fieldCentric(window)
+        '''Once the modules are loaded, you should be able to find a new device: /dev/input/js0 and a file ending with -event-joystick in /dev/input/by-id directory. You can simply cat those devices to see if the joystick works - move the stick around, press all the buttons - you should see mojibake printed when you move the sticks or press buttons.'''
+        '''joysticks = glfwGetJoystickAxes(GLFW_JOYSTICK_1)
         # axes mapping
         # 0 - left stick x
         # 1 - left stick y (inverted)
@@ -200,22 +245,26 @@ def main():
         leftTrigger = (joysticks[2]+1)
         rightTrigger = (joysticks[5]+1)
         #fieldCentricJoystick(leftStickX, leftStickY, rightStickX)
-        tankDrive(leftStickY, rightStickY, leftTrigger, rightTrigger)
-        update_func()
+        tankDrive(leftStickY, rightStickY, leftTrigger, rightTrigger)'''
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS):
             break
-        if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS):
-            botXV = 0
-            botYV = 0
+        '''if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS):
             botX = 0
+            botXD = 0
+            botXDD = 0
             botY = 0
+            botYD = 0
+            botYDD = 0
             botR = 0
-            botRV = 0
+            botRD = 0
+            botRDD = 0'''
         if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS):
-            print(botXV)
-            print(botYV)
-        disp_func()
-        idle_func()
+            print(botXDD)
+            print(botYDD)
+            print(botRDD)
+
+        #disp_func()
+        idle_func(window)
         # Swap front and back buffers
         glfwSwapBuffers(window)
 
