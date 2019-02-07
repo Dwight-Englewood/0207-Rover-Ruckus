@@ -190,9 +190,9 @@ def fieldCentricKey(window):
     elif (glfwGetKey(window, GLFW_KEY_S ) == GLFW_PRESS):
         y = -1
     if (glfwGetKey(window, GLFW_KEY_Q ) == GLFW_PRESS):
-        r = -1
-    elif (glfwGetKey(window, GLFW_KEY_E ) == GLFW_PRESS):
         r = 1
+    elif (glfwGetKey(window, GLFW_KEY_E ) == GLFW_PRESS):
+        r = -1
     if (glfwGetKey(window, GLFW_KEY_A ) == GLFW_PRESS):
         x = -1
     elif (glfwGetKey(window, GLFW_KEY_D ) == GLFW_PRESS):
@@ -348,7 +348,7 @@ def wheelToForce(w1, w2, w3, w4):
 
 target = 700
 
-pidC = pid.PIDController(1,.0001,20,target)
+pidC = pid.PIDController(.6,0.00001,6,target)
 
 def pidLoop(window):
     global botX, wheelFL, wheelFR, wheelBR, wheelBL
