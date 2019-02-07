@@ -37,10 +37,13 @@ public class PIDController {
         this.lX = currentPosition;
     }
 
-
     public void setGoal(double goal) {
         this.goal = goal;
         this.reset();
+    }
+
+    public boolean goalReached(double resolution) {
+        return this.error < resolution;
     }
 
     public void reset() {
