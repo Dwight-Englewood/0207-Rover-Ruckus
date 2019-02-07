@@ -116,8 +116,8 @@ wheelFL = 0
 wheelBL = 0
 wheelBR = 0
 
-def idle_func(window):
-    tankDrive(window)
+def idle_func(window, drive):
+    drive(window)
     updateForce()
     forceToAcceleration()
     simulateStep()
@@ -142,46 +142,114 @@ def forceToAcceleration():
 
 def updateForce():
     global wheelFR, wheelFL, wheelBL, wheelBR, botXF, botYF, botRF, botXD, botYD, botRD
-    forces = wheelToForce(wheelFR, wheelFL, wheelBL, wheelBR)
-    botXF = linearMotorScale*forces[0] + friction*botXD
-    botYF = linearMotorScale*forces[1] + friction*botYD
+    forces = wheelToForce(wheelFL, wheelFR, wheelBL, wheelBR)
+    botXF = linearMotorScale*forces[1] + friction*botXD
+    botYF = linearMotorScale*forces[0] + friction*botYD
     botRF = rotationMotorScale*forces[2] + friction*botRD
 
 def fieldCentricJoystick(stickX, stickY, rightStickX):
     dab = velocityToWheel(stickX, stickY, rightStickX)
     wheelToForce(dab[0], dab[1], dab[2], dab[3])
 
-def tankDrive(window):
+def tankDriveJoy(window):
     global wheelFR, wheelFL, wheelBL, wheelBR
-    if (glfwGetKey(window, GLFW_KEY_S ) == GLFW_PRESS):
+    '''Once the modules are loaded, you should be able to find a new device: /dev/input/js0 and a file ending with -event-joystick in /dev/input/by-id directory. You can simply cat those devices to see if the joystick works - move the stick around, press all the buttons - you should see mojibake printed when you move the sticks or press buttons.'''
+    joysticks = glfwGetJoystickAxes(GLFW_JOYSTICK_1)
+    # axes mapping
+    # 0 - left stick x
+    # 1 - left stick y (inverted)
+    # 2 - left trigger (down is -1)
+    # 3 - right stick x
+    # 4 - right stick y (inverted)
+    # 5 - right trigger (down is -1)
+    # 6 - dpad x
+    # 7 dpad y (inverted)
+
+    leftStickX = joysticks[0]
+    leftStickY = -1*joysticks[1]
+
+    rightStickX = joysticks[3]
+    rightStickY = -1*joysticks[4]
+
+    leftTrigger = (joysticks[2]+1)
+    rightTrigger = (joysticks[5]+1)
+
+    deadzone = .3
+    if (leftStickY < deadzone and leftStickY > -deadzone):
+        leftStickY = 0
+    if (rightStickY < deadzone and rightStickY > -deadzone):
+        rightStickY = 0
+
+    wheelFL = leftStickY
+    wheelBL = leftStickY
+    wheelFR = rightStickY
+    wheelBR = rightStickY
+
+    if (leftTrigger > .5):
         wheelFR = 1
         wheelFL = -1
-        wheelBL = -1
-        wheelBR = 1
-    elif (glfwGetKey(window, GLFW_KEY_W ) == GLFW_PRESS):
+        wheelBL = 1
+        wheelBR = -1
+    if (rightTrigger > .5):
         wheelFR = -1
         wheelFL = 1
+        wheelBL = -1
+        wheelBR = 1
+
+
+def tankDriveKey(window):
+    global wheelFR, wheelFL, wheelBL, wheelBR
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS):
+        wheelFL = 1
         wheelBL = 1
+    elif (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS):
+        wheelFL = -1
+        wheelBL = -1
+    else:
+        wheelFL = 0
+        wheelBL = 0
+    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS):
+        wheelFR = 1
+        wheelBR = 1
+    elif (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS):
+        wheelFR = -1
+        wheelBR = -1
+    else:
+        wheelFR = 0
+        wheelBR = 0
+
+
+def compassDrive(window):
+    global wheelFR, wheelFL, wheelBL, wheelBR
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS):
+        wheelFR = 1
+        wheelFL = 1
+        wheelBL = 1
+        wheelBR = 1
+    elif (glfwGetKey(window, GLFW_KEY_S ) == GLFW_PRESS):
+        wheelFR = -1
+        wheelFL = -1
+        wheelBL = -1
         wheelBR = -1
     elif (glfwGetKey(window, GLFW_KEY_Q ) == GLFW_PRESS):
         wheelFR = 1
         wheelFL = -1
-        wheelBL = 1
-        wheelBR = -1
+        wheelBL = -1
+        wheelBR = 1
     elif (glfwGetKey(window, GLFW_KEY_E ) == GLFW_PRESS):
         wheelFR = -1
         wheelFL = 1
-        wheelBL = -1
-        wheelBR = 1
+        wheelBL = 1
+        wheelBR = -1
     elif (glfwGetKey(window, GLFW_KEY_A ) == GLFW_PRESS):
         wheelFR = 1
-        wheelFL = 1
-        wheelBL = -1
+        wheelFL = -1
+        wheelBL = 1
         wheelBR = -1
     elif (glfwGetKey(window, GLFW_KEY_D ) == GLFW_PRESS):
         wheelFR = -1
-        wheelFL = -1
-        wheelBL = 1
+        wheelFL = 1
+        wheelBL = -1
         wheelBR = 1
     else:
         wheelFR = 0
@@ -201,16 +269,24 @@ def velocityToWheel(vx,vy,vr):
 
 def wheelToForce(w1, w2, w3, w4):
     global botR, wheelRadius
-    dab = wheelRadius*(-sqrt(2)/2)*np.matmul(np.linalg.pinv(getJ(radians(botR))), np.array([w1,w2,w3,w4]))
+    t = radians(botR)
+    #dab = wheelRadius*(-sqrt(2)/2)*np.matmul(np.linalg.pinv(getJ(radians(botR))), np.array([w1,w2,w3,w4]))
+    merp = np.matmul(np.array([[cos(t),sin(t),0],[-sin(t),cos(t),0],[0,0,1]]), np.array([[1,1,1,1],[1,-1,-1,1],[-.5,.5,-.5,.5]]))
+    dab = np.matmul(merp, np.array([w1,w2,w3,w4]))
     return dab
 
 def main():
+    np.set_printoptions(5,suppress=True)
     global botX, botY, botR, botXD, botYD, botRD, botXDD, botYDD, botRDD
     # Initialize the library
     if not glfwInit():
         return
     # Create a windowed mode window and its OpenGL context
-    window = glfwCreateWindow(1000, 950, b'float', None, None)
+    #glfwWindowHint(GLFW_SAMPLES, 4);
+
+    window = glfwCreateWindow(1000, 1000, b'float', None, None)
+    #glEnable(GL_MULTISAMPLE)
+
 
     if not window:
         glfwTerminate()
@@ -218,37 +294,15 @@ def main():
 
     # Make the window's context current
     glfwMakeContextCurrent(window)
+    driveType = compassDrive
 
     # Loop until the user closes the window
     while not glfwWindowShouldClose(window):
         # Render here, e.g. using pyOpenGL
-        deadzone = 0
-        #fieldCentric(window)
-        '''Once the modules are loaded, you should be able to find a new device: /dev/input/js0 and a file ending with -event-joystick in /dev/input/by-id directory. You can simply cat those devices to see if the joystick works - move the stick around, press all the buttons - you should see mojibake printed when you move the sticks or press buttons.'''
-        '''joysticks = glfwGetJoystickAxes(GLFW_JOYSTICK_1)
-        # axes mapping
-        # 0 - left stick x
-        # 1 - left stick y (inverted)
-        # 2 - left trigger (down is -1)
-        # 3 - right stick x
-        # 4 - right stick y (inverted)
-        # 5 - right trigger (down is -1)
-        # 6 - dpad x
-        # 7 dpad y (inverted)
-
-        leftStickX = joysticks[0]
-        leftStickY = joysticks[1]
-
-        rightStickX = joysticks[3]
-        rightStickY = -1*joysticks[4]
-
-        leftTrigger = (joysticks[2]+1)
-        rightTrigger = (joysticks[5]+1)
         #fieldCentricJoystick(leftStickX, leftStickY, rightStickX)
-        tankDrive(leftStickY, rightStickY, leftTrigger, rightTrigger)'''
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS):
             break
-        '''if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS):
+        if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS):
             botX = 0
             botXD = 0
             botXDD = 0
@@ -257,14 +311,19 @@ def main():
             botYDD = 0
             botR = 0
             botRD = 0
-            botRDD = 0'''
+            botRDD = 0
         if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS):
             print(botXDD)
             print(botYDD)
             print(botRDD)
-
+        if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS):
+            driveType = compassDrive
+        if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS):
+            driveType = tankDriveKey
+        if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS):
+            driveType = tankDriveJoy
         #disp_func()
-        idle_func(window)
+        idle_func(window, driveType)
         # Swap front and back buffers
         glfwSwapBuffers(window)
 
