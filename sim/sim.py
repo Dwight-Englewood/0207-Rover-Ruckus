@@ -116,16 +116,11 @@ wheelFL = 0
 wheelBL = 0
 wheelBR = 0
 
-def idle_func(window, drive):
+def idle_func(window, powerFunction):
     global wheelFL, wheelFR, wheelBL, wheelBR
 
-    drive(window)
+    powerFunction(window)
     normWheel()
-    print(wheelFL)
-    print(wheelFR)
-    print(wheelBR)
-    print(wheelBL)
-    print("-----")
     updateForce()
     forceToAcceleration()
     simulateStep()
@@ -149,6 +144,14 @@ def simulateStep():
     botX = botX + botXD * deltaTime
     botY = botY + botYD * deltaTime
     botR = botR + botRD * deltaTime
+    if (botX > 1000):
+        botX = 1000
+    elif (botX < -1000):
+        botX = -1000
+    if (botY > 1000):
+        botY = 1000
+    elif (botY < -1000):
+        botY = -1000
     lasttime = time.time()
 
 def forceToAcceleration():
@@ -163,6 +166,30 @@ def updateForce():
     botXF = linearMotorScale*forces[1] + friction*botXD
     botYF = linearMotorScale*forces[0] + friction*botYD
     botRF = rotationMotorScale*forces[2] + friction*botRD
+
+def fieldCentricKey(window):
+    global wheelFR, wheelFL, wheelBL, wheelBR
+    x = 0
+    y = 0
+    r = 0
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS):
+        y = 1
+    elif (glfwGetKey(window, GLFW_KEY_S ) == GLFW_PRESS):
+        y = -1
+    if (glfwGetKey(window, GLFW_KEY_Q ) == GLFW_PRESS):
+        r = -1
+    elif (glfwGetKey(window, GLFW_KEY_E ) == GLFW_PRESS):
+        r = 1
+    if (glfwGetKey(window, GLFW_KEY_A ) == GLFW_PRESS):
+        x = -1
+    elif (glfwGetKey(window, GLFW_KEY_D ) == GLFW_PRESS):
+        x = 1
+
+    wheelV = velocityToWheel(y, x, r)
+    wheelFL = wheelV[0]
+    wheelBL = wheelV[2]
+    wheelFR = wheelV[1]
+    wheelBR = wheelV[3]
 
 def fieldCentricJoy(window):
     global wheelFR, wheelFL, wheelBL, wheelBR
@@ -324,7 +351,7 @@ def main():
 
     # Make the window's context current
     glfwMakeContextCurrent(window)
-    driveType = compassDrive
+    powerFunction = compassDrive
 
     # Loop until the user closes the window
     while not glfwWindowShouldClose(window):
@@ -346,15 +373,22 @@ def main():
             print(botYDD)
             print(botRDD)
         if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS):
-            driveType = compassDrive
+            powerFunction = compassDrive
+            print("Compass Drive")
         if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS):
-            driveType = tankDriveKey
+            powerFunction = tankDriveKey
+            print("Tank Drive - Keyboard")
         if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS):
-            driveType = tankDriveJoy
+            powerFunction = tankDriveJoy
+            print("Tank Drive - Joystick")
         if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS):
-            driveType = fieldCentricJoy
+            powerFunction = fieldCentricJoy
+            print("Field Centric Drive - Joystick")
+        if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS):
+            powerFunction = fieldCentricKey
+            print("Field Centric Drive - Keyboard")
 
-        idle_func(window, driveType)
+        idle_func(window, powerFunction)
 
         glfwSwapBuffers(window)
 
