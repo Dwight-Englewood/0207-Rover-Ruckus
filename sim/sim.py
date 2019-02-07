@@ -117,11 +117,28 @@ wheelBL = 0
 wheelBR = 0
 
 def idle_func(window, drive):
+    global wheelFL, wheelFR, wheelBL, wheelBR
+
     drive(window)
+    normWheel()
+    print(wheelFL)
+    print(wheelFR)
+    print(wheelBR)
+    print(wheelBL)
+    print("-----")
     updateForce()
     forceToAcceleration()
     simulateStep()
     disp_func()
+
+def normWheel():
+    global wheelFL, wheelFR, wheelBL, wheelBR
+    largest = max([abs(wheelFL), abs(wheelFR), abs(wheelBR), abs(wheelBL)])
+    if (largest != 0):
+        wheelFL = wheelFL / largest
+        wheelFR = wheelFR / largest
+        wheelBL = wheelBL / largest
+        wheelBR = wheelBR / largest
 
 def simulateStep():
     global botX, botY, botR, botXD, botYD, botRD, botXDD, botYDD, botRDD, lasttime
@@ -147,9 +164,30 @@ def updateForce():
     botYF = linearMotorScale*forces[0] + friction*botYD
     botRF = rotationMotorScale*forces[2] + friction*botRD
 
-def fieldCentricJoystick(stickX, stickY, rightStickX):
-    dab = velocityToWheel(stickX, stickY, rightStickX)
-    wheelToForce(dab[0], dab[1], dab[2], dab[3])
+def fieldCentricJoy(window):
+    global wheelFR, wheelFL, wheelBL, wheelBR
+    joysticks = glfwGetJoystickAxes(GLFW_JOYSTICK_1)
+
+    leftStickX = joysticks[0]
+    leftStickY = -1*joysticks[1]
+
+    rightStickX = -joysticks[3]
+    rightStickY = -1*joysticks[4]
+
+    deadzone = .3
+    if (leftStickY < deadzone and leftStickY > -deadzone):
+        leftStickY = 0
+    if (leftStickX < deadzone and leftStickX > -deadzone):
+        leftStickX = 0
+    if (rightStickX < deadzone and rightStickX > -deadzone):
+        rightStickX = 0
+
+    wheelV = velocityToWheel(leftStickY, leftStickX, rightStickX)
+
+    wheelFL = wheelV[0]
+    wheelBL = wheelV[2]
+    wheelFR = wheelV[1]
+    wheelBR = wheelV[3]
 
 def tankDriveJoy(window):
     global wheelFR, wheelFL, wheelBL, wheelBR
@@ -258,35 +296,27 @@ def compassDrive(window):
         wheelBR = 0
 
 def getJ(t):
-    a = sqrt(2)/2
-    j = np.matmul(np.array([[a,a,-1],[a,-a,1],[-a,-a,-1],[-a,a,1]]),np.array([[cos(t),sin(t),0],[-sin(t),cos(t),0],[0,0,1]]))
-    return j
+    return np.matmul(np.array([[cos(t),sin(t),0],[-sin(t),cos(t),0],[0,0,1]]), np.array([[1,1,1,1],[1,-1,-1,1],[-.5,.5,-.5,.5]]))
 
 def velocityToWheel(vx,vy,vr):
     global botR, wheelRadius
-    dab = -(sqrt(2)/wheelRadius)*np.matmul(getJ(botR), np.array([vx,vy,vr]))
-    return dab
+    return((1/wheelRadius)*4*np.matmul(np.linalg.pinv(getJ(radians(botR))), np.array([vx,vy,vr])))
 
 def wheelToForce(w1, w2, w3, w4):
     global botR, wheelRadius
-    t = radians(botR)
-    #dab = wheelRadius*(-sqrt(2)/2)*np.matmul(np.linalg.pinv(getJ(radians(botR))), np.array([w1,w2,w3,w4]))
-    merp = np.matmul(np.array([[cos(t),sin(t),0],[-sin(t),cos(t),0],[0,0,1]]), np.array([[1,1,1,1],[1,-1,-1,1],[-.5,.5,-.5,.5]]))
-    dab = np.matmul(merp, np.array([w1,w2,w3,w4]))
-    return dab
+    return (wheelRadius*0.25*np.matmul(getJ(radians(botR)), np.array([w1,w2,w3,w4])))
 
 def main():
     np.set_printoptions(5,suppress=True)
+
     global botX, botY, botR, botXD, botYD, botRD, botXDD, botYDD, botRDD
-    # Initialize the library
+
     if not glfwInit():
         return
-    # Create a windowed mode window and its OpenGL context
-    #glfwWindowHint(GLFW_SAMPLES, 4);
+    #glfwWindowHint(GLFW_SAMPLES, 4); # uncomment for AA, looks weird though
 
     window = glfwCreateWindow(1000, 1000, b'float', None, None)
-    #glEnable(GL_MULTISAMPLE)
-
+    #glEnable(GL_MULTISAMPLE) # uncomment for AA, looks weird though
 
     if not window:
         glfwTerminate()
@@ -299,7 +329,6 @@ def main():
     # Loop until the user closes the window
     while not glfwWindowShouldClose(window):
         # Render here, e.g. using pyOpenGL
-        #fieldCentricJoystick(leftStickX, leftStickY, rightStickX)
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS):
             break
         if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS):
@@ -322,12 +351,13 @@ def main():
             driveType = tankDriveKey
         if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS):
             driveType = tankDriveJoy
-        #disp_func()
+        if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS):
+            driveType = fieldCentricJoy
+
         idle_func(window, driveType)
-        # Swap front and back buffers
+
         glfwSwapBuffers(window)
 
-        # Poll for and process events
         glfwPollEvents()
 
     glfwTerminate()
