@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.Testing;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.corningrobotics.enderbots.endercv.CameraViewDisplay;
-import org.firstinspires.ftc.teamcode.Hardware.Sensors.GoldDetectorCV;
 import org.firstinspires.ftc.teamcode.Hardware.Sensors.GoldDetectorWrapper;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
@@ -19,8 +17,7 @@ public class GoldDetectorTeleop extends OpMode {
     public static final int minContourArea = 1000;
     public static final int maxContourArea = 5000;
 
-    private GoldDetectorCV goldDetector = new GoldDetectorCV();
-
+    private GoldDetectorWrapper goldDetector = new GoldDetectorWrapper();
 
     @Override
     public void init() {
@@ -28,25 +25,30 @@ public class GoldDetectorTeleop extends OpMode {
     }
 
     @Override
+    public void start() {
+        goldDetector.start();
+    }
+
+    @Override
     public void loop() {
         if (gamepad1.dpad_up) {
-            goldDetector.goldDetector.imageView = GoldDetectorWrapper.ImageView.RESIZE;
+            goldDetector.imageView = GoldDetectorWrapper.ImageView.RESIZE;
         } else if (gamepad1.dpad_right) {
-            goldDetector.goldDetector.imageView = GoldDetectorWrapper.ImageView.HSV;
+            goldDetector.imageView = GoldDetectorWrapper.ImageView.HSV;
         } else if (gamepad1.dpad_down) {
-            goldDetector.goldDetector.imageView = GoldDetectorWrapper.ImageView.BLUR;
+            goldDetector.imageView = GoldDetectorWrapper.ImageView.BLUR;
         } else if (gamepad1.dpad_left) {
-            goldDetector.goldDetector.imageView = GoldDetectorWrapper.ImageView.THRESH;
+            goldDetector.imageView = GoldDetectorWrapper.ImageView.THRESH;
         } else if (gamepad1.a) {
-            goldDetector.goldDetector.imageView = GoldDetectorWrapper.ImageView.CONTOUR;
+            goldDetector.imageView = GoldDetectorWrapper.ImageView.CONTOUR;
         } else if (gamepad1.b) {
-            goldDetector.goldDetector.imageView = GoldDetectorWrapper.ImageView.DEFAULT;
+            goldDetector.imageView = GoldDetectorWrapper.ImageView.DEFAULT;
         }
 
-        telemetry.addData("Current View", goldDetector.goldDetector.imageView);
+        telemetry.addData("Current View", goldDetector.imageView);
 
         // update the settings of the vision pipeline
-        List<MatOfPoint> contours = goldDetector.goldDetector.getContours();
+        List<MatOfPoint> contours = goldDetector.getContours();
 
 
         // get a list of contours from the vision system
