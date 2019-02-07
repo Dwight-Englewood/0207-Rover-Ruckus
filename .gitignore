@@ -1,6 +1,9 @@
 .idea/
 TODO.md
 
+__pycache__/
+
+
 autoLogStuff/outputForest.pdf
 autoLogStuff/outputLog.pdf
 

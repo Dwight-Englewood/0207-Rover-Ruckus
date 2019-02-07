@@ -7,6 +7,7 @@ from pyglfw.libapi import *
 from math import *
 import numpy as np
 import time
+import pid
 
 
 ye = False
@@ -24,6 +25,7 @@ def initialize():
     glEnable(GL_DEPTH_TEST) # enable the testing of depth 
 
 def draw():
+    global target
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)      # Clears the screen
     glLoadIdentity()                                        # Loads the identity matrix for translation/scaling
     glPushMatrix()                                          # Sandboxes changes to the matrix
@@ -43,8 +45,17 @@ def draw():
     glVertex2f(-boxHalfDim,-boxHalfDim)
     glVertex2f(boxHalfDim,-boxHalfDim)
     glEnd()
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glPopMatrix()                                           # resets matrix transforms
+    glPopMatrix()
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+    glBegin(GL_POLYGON)
+    glColor3f(1, 0.5, .5)
+    glVertex2f(0,target/1000)
+    glVertex2f(1,target/1000)
+    glVertex2f(1,(target+10)/1000)
+    glVertex2f(0,(target+10)/1000)
+    glEnd()
+
     glFlush()
 
 def create_vbo():
@@ -97,7 +108,7 @@ botX = 0
 botXD = 0
 botXDD = 0
 
-botY = 0
+botY = -800
 botYD = 0
 botYDD = 0
 
@@ -116,11 +127,12 @@ wheelFL = 0
 wheelBL = 0
 wheelBR = 0
 
-def idle_func(window, powerFunction):
-    global wheelFL, wheelFR, wheelBL, wheelBR
+bounded = False
+shouldNorm = True
 
+def idle_func(window, powerFunction, normFunction):
     powerFunction(window)
-    normWheel()
+    normFunction()
     updateForce()
     forceToAcceleration()
     simulateStep()
@@ -136,7 +148,7 @@ def normWheel():
         wheelBR = wheelBR / largest
 
 def simulateStep():
-    global botX, botY, botR, botXD, botYD, botRD, botXDD, botYDD, botRDD, lasttime
+    global botX, botY, botR, botXD, botYD, botRD, botXDD, botYDD, botRDD, lasttime, bounded
     deltaTime = time.time() - lasttime
     botXD = botXD + botXDD * deltaTime
     botYD = botYD + botYDD * deltaTime
@@ -144,14 +156,15 @@ def simulateStep():
     botX = botX + botXD * deltaTime
     botY = botY + botYD * deltaTime
     botR = botR + botRD * deltaTime
-    if (botX > 1000):
-        botX = 1000
-    elif (botX < -1000):
-        botX = -1000
-    if (botY > 1000):
-        botY = 1000
-    elif (botY < -1000):
-        botY = -1000
+    if (bounded):
+        if (botX > 1000):
+            botX = 1000
+        elif (botX < -1000):
+            botX = -1000
+        if (botY > 1000):
+            botY = 1000
+        elif (botY < -1000):
+            botY = -1000
     lasttime = time.time()
 
 def forceToAcceleration():
@@ -333,10 +346,43 @@ def wheelToForce(w1, w2, w3, w4):
     global botR, wheelRadius
     return (wheelRadius*0.25*np.matmul(getJ(radians(botR)), np.array([w1,w2,w3,w4])))
 
+target = 700
+
+pidC = pid.PIDController(1,.0001,20,target)
+
+def pidLoop(window):
+    global botX, wheelFL, wheelFR, wheelBR, wheelBL
+    pidC.updateError(botY)
+    print(pidC.error)
+    halp = pidC.correction()
+    wheels = velocityToWheel(halp,0, 0)
+    wheelFL = wheels[0]
+    wheelFR = wheels[1]
+    wheelBL = wheels[2]
+    wheelBR = wheels[3]
+
+def normPID():
+    global wheelBL, wheelBR, wheelFR, wheelFL
+    if (wheelBL > 1):
+        wheelBL = 1
+    elif (wheelBL < -1):
+        wheelBL = -1
+    if (wheelBR > 1):
+        wheelBR = 1
+    elif (wheelBR < -1):
+        wheelBR = -1
+    if (wheelFL > 1):
+        wheelFL = 1
+    elif (wheelFL < -1):
+        wheelFL = -1
+    if (wheelFR > 1):
+        wheelFR = 1
+    elif (wheelFR < -1):
+        wheelFR = -1
 def main():
     np.set_printoptions(5,suppress=True)
 
-    global botX, botY, botR, botXD, botYD, botRD, botXDD, botYDD, botRDD
+    global botX, botY, botR, botXD, botYD, botRD, botXDD, botYDD, botRDD, shouldNorm
 
     if not glfwInit():
         return
@@ -352,6 +398,7 @@ def main():
     # Make the window's context current
     glfwMakeContextCurrent(window)
     powerFunction = compassDrive
+    normFunction = normWheel
 
     # Loop until the user closes the window
     while not glfwWindowShouldClose(window):
@@ -362,33 +409,42 @@ def main():
             botX = 0
             botXD = 0
             botXDD = 0
-            botY = 0
+            botY = -800
             botYD = 0
             botYDD = 0
             botR = 0
             botRD = 0
             botRDD = 0
-        if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS):
-            print(botXDD)
-            print(botYDD)
-            print(botRDD)
+        #if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS):
+        #    print(botXDD)
+        #    print(botYDD)
+        #    print(botRDD)
         if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS):
             powerFunction = compassDrive
+            normFunction = normWheel
             print("Compass Drive")
         if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS):
             powerFunction = tankDriveKey
+            normFunction = normWheel
             print("Tank Drive - Keyboard")
         if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS):
             powerFunction = tankDriveJoy
+            normFunction = normWheel
             print("Tank Drive - Joystick")
         if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS):
             powerFunction = fieldCentricJoy
+            normFunction = normWheel
             print("Field Centric Drive - Joystick")
         if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS):
             powerFunction = fieldCentricKey
+            normFunction = normWheel
             print("Field Centric Drive - Keyboard")
+        if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS):
+            powerFunction = pidLoop
+            normFunction = normPID
+            print("PID")
 
-        idle_func(window, powerFunction)
+        idle_func(window, powerFunction, normFunction)
 
         glfwSwapBuffers(window)
 
