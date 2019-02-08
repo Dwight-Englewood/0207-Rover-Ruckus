@@ -11,8 +11,8 @@ import static java.util.Collections.max;
 public class RobotSimulator implements Simulator {
 
     float target = 0;
-    Body robot = new MecanumRobot(5, -20, 5000, 3000, 5, new MecanumDriveKey());
-    Body robot2 = new MecanumRobot(5, -20, 5000, 3000, 5, new TankDriveJoy());
+    Body robot = new MecanumRobot(5, -15f, 50,  5, new MecanumDriveKey());
+    Body robot2 = new MecanumRobot(5, -15f, 50, 5, new TankDriveJoy());
 
     Body[] bodies = {robot, robot2};
 

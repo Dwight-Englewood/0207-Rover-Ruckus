@@ -12,6 +12,7 @@ import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 import static java.lang.StrictMath.abs;
 import static java.util.Collections.max;
@@ -41,10 +42,9 @@ import static org.lwjgl.opengl.GL11.glVertex2f;
 
 public class MecanumRobot extends Body {
     public float botMass = 5;
-    public float friction = -20;
-    public float linearMotorScale = 5000;
-    public float rotationMotorScale = 3000;
-    public float wheelRadius = 5;
+    public float friction;
+    public float linearMotorScale;
+    public float wheelRadius;
     public float wheelFR = 0;
     public float wheelFL = 0;
     public float wheelBL = 0;
@@ -53,11 +53,10 @@ public class MecanumRobot extends Body {
 
     MecanumDriveMode drive = new MecanumDriveKey();
 
-    public MecanumRobot(float botMass, float friction, float linearMotorScale, float rotationMotorScale, float wheelRadius, MecanumDriveMode mdm) {
+    public MecanumRobot(float botMass, float friction, float linearMotorScale, float wheelRadius, MecanumDriveMode mdm) {
         this.botMass = botMass;
         this.friction = friction;
         this.linearMotorScale = linearMotorScale;
-        this.rotationMotorScale = rotationMotorScale;
         this.wheelRadius = wheelRadius;
         this.drive = mdm;
     }
@@ -74,35 +73,7 @@ public class MecanumRobot extends Body {
         SimpleMatrix forces = wheelToForce(wheelFL, wheelFR, wheelBL, wheelBR);
         this.botXF = (float) (linearMotorScale * forces.get(1, 0) + friction * this.botXD);
         this.botYF = (float) (linearMotorScale * forces.get(0, 0) + friction * this.botYD);
-        this.botRF = (float) (rotationMotorScale * forces.get(2, 0) + friction * this.botRD);
-    }
-
-    public void fieldCentricKey(long window) {
-        float x = 0;
-        float y = 0;
-        float r = 0;
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-            y = 1;
-        } else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-            y = -1;
-        }
-        if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-            r = 1;
-        } else if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-            r = -1;
-        }
-        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-            x = -1;
-        } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-            x = 1;
-        }
-
-        SimpleMatrix wheelV = velocityToWheel(y, x, r);
-        wheelFL = (float) wheelV.get(0, 0);
-        wheelBL = (float) wheelV.get(2, 0);
-        wheelFR = (float) wheelV.get(1, 0);
-        wheelBR = (float) wheelV.get(3, 0);
-
+        this.botRF = (float) (linearMotorScale * forces.get(2, 0) + friction * this.botRD);
     }
 
     public SimpleMatrix getJ(double t) {
@@ -113,12 +84,12 @@ public class MecanumRobot extends Body {
 
     public SimpleMatrix velocityToWheel(float vx, float vy, float vr) {
         SimpleMatrix velocity = new SimpleMatrix(new double[][]{{vx}, {vy}, {vr}});
-        SimpleMatrix inv = (getJ((float) toRadians(this.botR))).pseudoInverse();
+        SimpleMatrix inv = (getJ((float) (this.botR))).pseudoInverse();
         return inv.mult(velocity).scale((1 / wheelRadius) * 4);
     }
 
     public SimpleMatrix wheelToForce(float w1, float w2, float w3, float w4) {
-        SimpleMatrix j = getJ(toRadians(this.botR));
+        SimpleMatrix j = getJ((this.botR));
         SimpleMatrix w = new SimpleMatrix(new double[][]{{w1}, {w2}, {w3}, {w4}});
         return (j.mult(w).scale(wheelRadius * .25));
     }
@@ -149,8 +120,8 @@ public class MecanumRobot extends Body {
         glLoadIdentity();
         glPushMatrix();
         //glScalef(1 / viewSize, 1 / viewSize, 1);
-        glTranslatef(this.botX / 1000, this.botY / 1000, (float) 0);
-        glRotatef(this.botR, 0, 0, 1);
+        glTranslatef(this.botX / 10, this.botY / 10, (float) 0);
+        glRotatef((float) toDegrees(this.botR), 0, 0, 1);
         //glScalef(1 / viewSize, 1 / viewSize, 1);
         glColor3f(0.2f, 0.2f, 1.0f);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -168,10 +139,10 @@ public class MecanumRobot extends Body {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glBegin(GL_POLYGON);
         glColor3f(1f, 0.5f, .5f);
-        glVertex2f(0, target / 1000);
-        glVertex2f(1, target / 1000);
-        glVertex2f(1, (target + 10) / 1000);
-        glVertex2f(0, (target + 10) / 1000);
+        glVertex2f(0, target / 10);
+        glVertex2f(1, target / 10);
+        glVertex2f(1, (target + .1f) / 10);
+        glVertex2f(0, (target + .1f) / 10);
         glEnd();
 
         glFlush();
