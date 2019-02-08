@@ -15,13 +15,33 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 public class Sim {
 
+
     // The window handle
     private long window;
 
+    Simulator sim;
+
+    public Sim() {
+        this.sim = new RobotSimulator();
+    }
+
+    public static void main(String[] args) {
+        new Sim().run();
+    }
+
+    public void initialize() {
+        GL.createCapabilities();
+        glClearColor(0.125f, 0.125f, 0.125f, 0f);
+        glClearDepth(1.0);
+        glDepthFunc(GL_LESS);
+        glEnable(GL_DEPTH_TEST);
+    }
+
     public void run() {
-        System.out.println("Hello LWJGL " + Version.getVersion() + "!");
+        //System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
         init();
+        initialize();
         loop();
 
         // Free the window callbacks and destroy the window
@@ -39,7 +59,7 @@ public class Sim {
         GLFWErrorCallback.createPrint(System.err).set();
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
-        if ( !glfwInit() )
+        if (!glfwInit())
             throw new IllegalStateException("Unable to initialize GLFW");
 
         // Configure GLFW
@@ -48,18 +68,18 @@ public class Sim {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
         // Create the window
-        window = glfwCreateWindow(300, 300, "Hello World!", NULL, NULL);
-        if ( window == NULL )
+        window = glfwCreateWindow(1000, 1000, "float", NULL, NULL);
+        if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-            if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
                 glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
         });
 
         // Get the thread stack and push a new frame
-        try ( MemoryStack stack = stackPush() ) {
+        try (MemoryStack stack = stackPush()) {
             IntBuffer pWidth = stack.mallocInt(1); // int*
             IntBuffer pHeight = stack.mallocInt(1); // int*
 
@@ -95,12 +115,14 @@ public class Sim {
         GL.createCapabilities();
 
         // Set the clear color
-        glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+        //glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
-        while ( !glfwWindowShouldClose(window) ) {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+        while (!glfwWindowShouldClose(window)) {
+
+            //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+            sim.draw(window);
 
             glfwSwapBuffers(window); // swap the color buffers
 
@@ -108,10 +130,6 @@ public class Sim {
             // invoked during this call.
             glfwPollEvents();
         }
-    }
-
-    public static void main(String[] args) {
-        new Sim().run();
     }
 
 }
