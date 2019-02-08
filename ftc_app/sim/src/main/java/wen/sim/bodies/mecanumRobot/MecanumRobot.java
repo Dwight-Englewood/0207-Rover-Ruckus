@@ -9,21 +9,14 @@ import java.util.Arrays;
 import wen.sim.bodies.Body;
 import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveKey;
 import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
+import wen.sim.bodies.mecanumRobot.normFunction.DriveNorm;
+import wen.sim.bodies.mecanumRobot.normFunction.MecanumNormMode;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.toDegrees;
-import static java.lang.Math.toRadians;
 import static java.lang.StrictMath.abs;
 import static java.util.Collections.max;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.glfwGetKey;
 import static org.lwjgl.opengl.GL11.GL_FILL;
 import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
 import static org.lwjgl.opengl.GL11.GL_LINE;
@@ -51,14 +44,16 @@ public class MecanumRobot extends Body {
     public float wheelBR = 0;
     public float target = 700;
 
-    MecanumDriveMode drive = new MecanumDriveKey();
+    MecanumDriveMode drive;
+    MecanumNormMode norm;
 
-    public MecanumRobot(float botMass, float friction, float linearMotorScale, float wheelRadius, MecanumDriveMode mdm) {
+    public MecanumRobot(float botMass, float friction, float linearMotorScale, float wheelRadius, MecanumDriveMode mdm, MecanumNormMode mnm) {
         this.botMass = botMass;
         this.friction = friction;
         this.linearMotorScale = linearMotorScale;
         this.wheelRadius = wheelRadius;
         this.drive = mdm;
+        this.norm = mnm;
     }
 
     //move to body
@@ -94,21 +89,10 @@ public class MecanumRobot extends Body {
         return (j.mult(w).scale(wheelRadius * .25));
     }
 
-    public void normWheel() {
-        float largest = max(new ArrayList<Float>(Arrays.asList(abs(wheelFL), abs(wheelFR), abs(wheelBR), abs(wheelBL))));
-        if (largest != 0) {
-            wheelFL = wheelFL / largest;
-            wheelFR = wheelFR / largest;
-            wheelBL = wheelBL / largest;
-            wheelBR = wheelBR / largest;
-        }
-    }
-
-
     @Override
     public void update(long window) {
         drive.updateWheelPower(window, this);
-        normWheel();
+        norm.normWheelPower(this);
         updateForce();
         forceToAcceleration();
     }

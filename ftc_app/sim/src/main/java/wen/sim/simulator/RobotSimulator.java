@@ -1,30 +1,36 @@
 package wen.sim.simulator;
 
 
+import wen.sim.bodies.mecanumRobot.driveFunction.PIDDrive;
 import wen.sim.bodies.mecanumRobot.driveFunction.TankDriveJoy;
 import wen.sim.bodies.Body;
 import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveKey;
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
+import wen.sim.bodies.mecanumRobot.normFunction.DriveNorm;
+import wen.sim.bodies.mecanumRobot.normFunction.PIDNorm;
 
 import static java.util.Collections.max;
 
 public class RobotSimulator implements Simulator {
 
     float target = 0;
-    Body robot = new MecanumRobot(5, -15f, 50,  5, new MecanumDriveKey());
-    Body robot2 = new MecanumRobot(5, -15f, 50, 5, new TankDriveJoy());
+    Body robot1 = new MecanumRobot(5, -15f, 50,  5, new MecanumDriveKey(), new DriveNorm());
+    Body robot2 = new MecanumRobot(5, -15f, 50, 5, new TankDriveJoy(), new DriveNorm());
+    Body robot3 = new MecanumRobot(5, -15f, 50, 5, new PIDDrive(), new PIDNorm());
 
-    Body[] bodies = {robot, robot2};
+
+    Body[] bodies = {robot1};
 
     private long lasttime = System.currentTimeMillis();
     private boolean bounded = false;
     private boolean shouldNorm = true;
 
     public void updateSim(long window) {
+        simulateStep();
+
         for (Body a : bodies) {
             a.update(window);
         }
-        simulateStep();
     }
 
 
@@ -58,6 +64,9 @@ public class RobotSimulator implements Simulator {
         updateSim(window);
         for (Body a  : bodies) {
             a.draw(window);
+            System.out.println(a.botX);
+            System.out.println(a.botY);
+            System.out.println("---");
         }
 
     }

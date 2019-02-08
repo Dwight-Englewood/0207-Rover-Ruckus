@@ -4,31 +4,23 @@ package wen.sim.bodies.mecanumRobot.driveFunction;
 import org.ejml.simple.SimpleMatrix;
 
 import wen.control.PIDController;
+import wen.sim.bodies.mecanumRobot.MecanumRobot;
 
-/*public class PIDDrive implements VelocityContainer {
+public class PIDDrive implements MecanumDriveMode {
 
-    PIDController pid;
-
-    public pidLoop(long window) {}
-    PIDController pid;
-            pidC.updateError(botY);
-
-    print(pidC.error)
-
-    halp =pidC.correction()
-    wheels =
-
-    velocityToWheel(halp,0,0)
+    PIDController pid = new PIDController(.6,0.00001,6, 7);
 
     @Override
-    public SimpleMatrix returnVelocity(long window) {
-        return null;
+    public void updateWheelPower(long window, MecanumRobot bot) {
+        pid.updateError(bot.botY);
+        double halp = pid.correction();
+        SimpleMatrix wheelV = bot.velocityToWheel((float) halp, 0,0);
+
+        bot.wheelFL = (float) wheelV.get(0, 0);
+        bot.wheelBL = (float) wheelV.get(2, 0);
+        bot.wheelFR = (float) wheelV.get(1, 0);
+        bot.wheelBR = (float) wheelV.get(3, 0);
     }
 
-    wheelFL =wheels[0]
-    wheelFR =wheels[1]
-    wheelBL =wheels[2]
-    wheelBR =wheels[3]
 
-
-}*/
+}

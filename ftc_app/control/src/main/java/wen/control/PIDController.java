@@ -25,6 +25,13 @@ public class PIDController {
         this.dGain = dGain;
     }
 
+    public PIDController(double pGain, double iGain, double dGain, double goal) {
+        this.pGain = pGain;
+        this.iGain = iGain;
+        this.dGain = dGain;
+        this.goal = goal;
+    }
+
     public double correction() {
         return ((error * pGain) + (iError * iGain) - (dError * dGain));
     }
