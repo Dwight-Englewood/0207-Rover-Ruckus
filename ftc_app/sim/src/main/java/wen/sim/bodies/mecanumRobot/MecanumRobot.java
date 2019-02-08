@@ -1,10 +1,14 @@
-package wen.sim;
+package wen.sim.bodies.mecanumRobot;
 
 import org.ejml.simple.SimpleMatrix;
 import org.lwjgl.opengl.GL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import wen.sim.bodies.Body;
+import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveKey;
+import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -19,14 +23,11 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.glfwGetKey;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_FILL;
 import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
 import static org.lwjgl.opengl.GL11.GL_LINE;
 import static org.lwjgl.opengl.GL11.GL_POLYGON;
 import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glFlush;

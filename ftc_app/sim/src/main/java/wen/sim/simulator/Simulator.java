@@ -1,4 +1,4 @@
-package wen.sim;
+package wen.sim.simulator;
 
 public interface Simulator {
 

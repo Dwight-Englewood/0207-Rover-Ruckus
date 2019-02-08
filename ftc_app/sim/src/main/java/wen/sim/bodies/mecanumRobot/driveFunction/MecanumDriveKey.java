@@ -1,6 +1,8 @@
-package wen.sim;
+package wen.sim.bodies.mecanumRobot.driveFunction;
 
 import org.ejml.simple.SimpleMatrix;
+
+import wen.sim.bodies.mecanumRobot.MecanumRobot;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
@@ -11,7 +13,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.glfwGetKey;
 
-class MecanumDriveKey implements MecanumDriveMode {
+public class MecanumDriveKey implements MecanumDriveMode {
 
     public void updateWheelPower(long window, MecanumRobot bot) {
         float x = 0;

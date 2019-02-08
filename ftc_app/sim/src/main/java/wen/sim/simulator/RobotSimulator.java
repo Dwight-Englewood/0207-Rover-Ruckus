@@ -1,23 +1,19 @@
-package wen.sim;
+package wen.sim.simulator;
 
 
-import org.ejml.simple.SimpleMatrix;
-import org.lwjgl.opengl.GL;
+import wen.sim.bodies.mecanumRobot.driveFunction.TankDriveJoy;
+import wen.sim.bodies.Body;
+import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveKey;
+import wen.sim.bodies.mecanumRobot.MecanumRobot;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import static java.lang.Math.*;
 import static java.util.Collections.max;
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class RobotSimulator implements Simulator {
 
     float target = 0;
     Body robot = new MecanumRobot(5, -20, 5000, 3000, 5, new MecanumDriveKey());
-    Body robot2 = new MecanumRobot(5, -20, 5000, 3000, 5, new MecanumDriveJoy());
+    Body robot2 = new MecanumRobot(5, -20, 5000, 3000, 5, new TankDriveJoy());
+
     Body[] bodies = {robot, robot2};
 
     private long lasttime = System.currentTimeMillis();

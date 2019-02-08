@@ -1,21 +1,15 @@
-package wen.sim;
+package wen.sim.bodies.mecanumRobot.driveFunction;
 
 import org.ejml.simple.SimpleMatrix;
 
 import java.nio.FloatBuffer;
 
-import static org.lwjgl.glfw.GLFW.GLFW_JOYSTICK_1;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.glfwGetJoystickAxes;
-import static org.lwjgl.glfw.GLFW.glfwGetKey;
+import wen.sim.bodies.mecanumRobot.MecanumRobot;
 
-class MecanumDriveJoy implements MecanumDriveMode {
+import static org.lwjgl.glfw.GLFW.GLFW_JOYSTICK_1;
+import static org.lwjgl.glfw.GLFW.glfwGetJoystickAxes;
+
+public class MecanumDriveJoy implements MecanumDriveMode {
 
     public void updateWheelPower(long window, MecanumRobot bot) {
         FloatBuffer joysticks = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
@@ -43,11 +37,6 @@ class MecanumDriveJoy implements MecanumDriveMode {
         bot.wheelBL = (float) wheelV.get(2, 0);
         bot.wheelFR = (float) wheelV.get(1, 0);
         bot.wheelBR = (float) wheelV.get(3, 0);
-
-        System.out.println(bot.wheelFL);
-        System.out.println(bot.wheelFR);
-        System.out.println(bot.wheelBL);
-        System.out.println(bot.wheelBR);
 
     }
 

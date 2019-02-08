@@ -1,4 +1,6 @@
-package wen.sim;
+package wen.sim.bodies.mecanumRobot.driveFunction;
+
+import wen.sim.bodies.mecanumRobot.MecanumRobot;
 
 public interface MecanumDriveMode {
 

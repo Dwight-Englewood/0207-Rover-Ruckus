@@ -1,4 +1,4 @@
-package wen.sim;
+package wen.sim.bodies;
 
 public abstract class Body {
 
