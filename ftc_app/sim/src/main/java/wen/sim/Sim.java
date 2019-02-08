@@ -121,7 +121,7 @@ public class Sim {
         // the window or has pressed the ESCAPE key.
         while (!glfwWindowShouldClose(window)) {
 
-            //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
             sim.draw(window);
 
             glfwSwapBuffers(window); // swap the color buffers
