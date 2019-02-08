@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.teamcode.Hardware.PID;
+package wen.control;
 
-import com.qualcomm.robotcore.util.Range;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -69,7 +68,7 @@ public class PIDController {
         final double gravity = 9.8;
         dab.setGoal(0);
 
-        for (int i=0; i < 2000; i++) {
+        /*for (int i=0; i < 2000; i++) {
             dab.updateError(currentPosition);
             double force = Range.clip(dab.correction(), -1, 1)*5000;
             currentAcceleration = force/mass - ((10/mass) * currentVelocity)-gravity;
@@ -79,7 +78,7 @@ public class PIDController {
                 merp = 1;
             }
             System.out.println(df.format(currentPosition));
-        }
+        }*/
     }
 
 }

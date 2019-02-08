@@ -29,5 +29,6 @@ dependencies {
     implementation files('../../ftc_app/libs/ejml-zdense-0.36-sources.jar')
     implementation project(path: ':endercv')
     implementation project(path: ':openCVLibrary3')
+    compile project(path: ':control')
 }
     

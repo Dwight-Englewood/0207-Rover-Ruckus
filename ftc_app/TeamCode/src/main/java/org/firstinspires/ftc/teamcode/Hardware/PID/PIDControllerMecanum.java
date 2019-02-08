@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Hardware.PID;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
+import wen.control.PIDController;
+
 public class PIDControllerMecanum extends PIDController {
     DcMotor FL, FR, BL, BR;
 

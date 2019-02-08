@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Hardware.PID;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
+import wen.control.PIDController;
+
 public class PIDControllerMotor extends PIDController {
 
     DcMotor motor;

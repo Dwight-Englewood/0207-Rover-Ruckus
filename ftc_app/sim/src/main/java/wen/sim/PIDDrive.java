@@ -1,7 +1,13 @@
 package wen.sim;
 
 
-/*public class PIDDrive {
+import org.ejml.simple.SimpleMatrix;
+
+import wen.control.PIDController;
+
+/*public class PIDDrive implements VelocityContainer {
+
+    PIDController pid;
 
     public pidLoop(long window) {}
     PIDController pid;
@@ -13,6 +19,11 @@ package wen.sim;
     wheels =
 
     velocityToWheel(halp,0,0)
+
+    @Override
+    public SimpleMatrix returnVelocity(long window) {
+        return null;
+    }
 
     wheelFL =wheels[0]
     wheelFR =wheels[1]

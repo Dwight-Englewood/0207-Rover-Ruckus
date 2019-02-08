@@ -54,6 +54,7 @@ dependencies {
     implementation files('libs/ejml-simple-0.36-sources.jar')
     implementation files('libs/ejml-zdense-0.36.jar')
     implementation files('libs/ejml-zdense-0.36-sources.jar')
+    compile project(path: ':control')
 }
 
 sourceCompatibility = "8"
