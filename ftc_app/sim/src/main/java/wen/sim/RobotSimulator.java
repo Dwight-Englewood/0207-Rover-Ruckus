@@ -16,9 +16,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class RobotSimulator implements Simulator {
 
     float target = 0;
-    Body robot = new MecanumRobot(5, -20, 5000, 3000, 5);
-    //Body robot2 = new MecanumRobot(10, 0, 5000, 3000, 5);
-    Body[] bodies = {robot};
+    Body robot = new MecanumRobot(5, -20, 5000, 3000, 5, new MecanumDriveKey());
+    Body robot2 = new MecanumRobot(5, -20, 5000, 3000, 5, new MecanumDriveJoy());
+    Body[] bodies = {robot, robot2};
 
     private long lasttime = System.currentTimeMillis();
     private boolean bounded = false;

@@ -52,12 +52,13 @@ public class MecanumRobot extends Body {
 
     MecanumDriveMode drive = new MecanumDriveKey();
 
-    public MecanumRobot(float botMass, float friction, float linearMotorScale, float rotationMotorScale, float wheelRadius) {
+    public MecanumRobot(float botMass, float friction, float linearMotorScale, float rotationMotorScale, float wheelRadius, MecanumDriveMode mdm) {
         this.botMass = botMass;
         this.friction = friction;
         this.linearMotorScale = linearMotorScale;
         this.rotationMotorScale = rotationMotorScale;
         this.wheelRadius = wheelRadius;
+        this.drive = mdm;
     }
 
     //move to body
