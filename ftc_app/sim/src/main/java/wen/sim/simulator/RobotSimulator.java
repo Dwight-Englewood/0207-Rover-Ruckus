@@ -4,7 +4,6 @@ package wen.sim.simulator;
 import wen.sim.bodies.Body;
 
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
-import wen.sim.bodies.mecanumRobot.driveFunction.auton.MotionProfile;
 import wen.sim.bodies.mecanumRobot.driveFunction.auton.PID1Drive;
 import wen.sim.bodies.mecanumRobot.driveFunction.auton.PID2Drive;
 import wen.sim.bodies.mecanumRobot.driveFunction.teleop.MecanumDriveJoy;
@@ -76,10 +75,21 @@ public class RobotSimulator implements Simulator {
 
     }
 
-    public void draw(long window) {
+    public void drawState(long window) {
         updateSim(window);
         for (Body a : bodies) {
-            a.draw(window);
+            a.drawState(window);
+            /*System.out.println(a.botX);
+            System.out.println(a.botY);
+            System.out.println("---");*/
+        }
+
+    }
+
+    @Override
+    public void drawData(long window) {
+        for (Body a : bodies) {
+            a.drawData(window);
             /*System.out.println(a.botX);
             System.out.println(a.botY);
             System.out.println("---");*/

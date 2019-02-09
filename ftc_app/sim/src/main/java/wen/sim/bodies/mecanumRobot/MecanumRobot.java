@@ -41,7 +41,6 @@ public class MecanumRobot extends Body {
     public float wheelFL = 0;
     public float wheelBL = 0;
     public float wheelBR = 0;
-    public float target = 700;
 
     MecanumDriveMode drive;
     MecanumNormMode norm;
@@ -113,7 +112,7 @@ public class MecanumRobot extends Body {
     }
 
 
-    public void draw(long window) {
+    public void drawState(long window) {
         GL.createCapabilities();
         //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
@@ -134,16 +133,34 @@ public class MecanumRobot extends Body {
         glVertex2f(boxHalfDim, -boxHalfDim);
         glEnd();
         glPopMatrix();
+        glFlush();
+    }
 
+    @Override
+    public void drawData(long window) {
+        GL.createCapabilities();
+        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+        glPushMatrix();
+        //glScalef(1 / viewSize, 1 / viewSize, 1);
+        glTranslatef(this.botX / 10, this.botY / 10, (float) 0);
+        glRotatef((float) toDegrees(this.botR), 0, 0, 1);
+        //glScalef(1 / viewSize, 1 / viewSize, 1);
+        glColor3f(0.8f, 0.2f, 1.0f);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glBegin(GL_POLYGON);
-        glColor3f(1f, 0.5f, .5f);
-        glVertex2f(0, target / 10);
-        glVertex2f(1, target / 10);
-        glVertex2f(1, (target + .1f) / 10);
-        glVertex2f(0, (target + .1f) / 10);
+        float boxHalfDim = .1f;
+        glColor3f(0.2f, 0.2f, 1.0f);
+        glVertex2f(boxHalfDim, boxHalfDim);
+        glVertex2f(-boxHalfDim, boxHalfDim);
+        glColor3f(0.2f, 0.8f, 1.0f);
+        glVertex2f(-boxHalfDim, -boxHalfDim);
+        glVertex2f(boxHalfDim, -boxHalfDim);
         glEnd();
+        glPopMatrix();
+
 
         glFlush();
+
     }
 }

@@ -17,7 +17,9 @@ public abstract class Body {
 
     public abstract void update(long window);
 
-    public abstract void draw(long window);
+    public abstract void drawState(long window);
+
+    public abstract void drawData(long window);
 
     public void reset() {
         botX = 0;

@@ -90,7 +90,7 @@ public class PID2Drive extends Body implements MecanumDriveMode {
     }
 
     @Override
-    public void draw(long window) {
+    public void drawState(long window) {
         GL.createCapabilities();
         //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
@@ -110,6 +110,11 @@ public class PID2Drive extends Body implements MecanumDriveMode {
 
 
         glFlush();
+
+    }
+
+    @Override
+    public void drawData(long window) {
 
     }
 
