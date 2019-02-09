@@ -229,7 +229,7 @@ public class MecanumDriveTrain extends DriveTrain {
             this.turn(0.0);
         }
     }
-    private void turn(double sPower) {
+    public void turn(double sPower) {
         fl.setPower(-sPower);
         fr.setPower(sPower);
         bl.setPower(-sPower);

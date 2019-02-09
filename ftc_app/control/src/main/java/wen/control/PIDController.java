@@ -32,11 +32,11 @@ public class PIDController {
         this.goal = goal;
     }
 
-    public double correction() {
+    protected double correction() {
         return ((error * pGain) + (iError * iGain) - (dError * dGain));
     }
 
-    public void updateError(double currentPosition) {
+    protected void updateError(double currentPosition) {
         this.error = goal - currentPosition;
         this.iError = this.iError + this.error;
         this.dError = currentPosition - this.lX;
@@ -52,7 +52,7 @@ public class PIDController {
         return this.error < resolution;
     }
 
-    public void reset() {
+    protected void reset() {
         this.goal = 0;
         this.error = 0;
         this.lX = 0;

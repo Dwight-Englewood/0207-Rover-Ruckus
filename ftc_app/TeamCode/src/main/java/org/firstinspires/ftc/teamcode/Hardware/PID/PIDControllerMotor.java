@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Hardware.PID;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
-
 import wen.control.PIDController;
 
 public class PIDControllerMotor extends PIDController {
@@ -14,12 +13,19 @@ public class PIDControllerMotor extends PIDController {
         this.motor = motor;
     }
 
+    public void executePID() {
+        if (motor.getMode() != DcMotor.RunMode.RUN_USING_ENCODER) {
+            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+        this.motor.setPower(this.getPower());
+    }
+
     @Override
-    public double correction() {
+    protected double correction() {
         return Range.clip(super.correction(), -1, 1);
     }
 
-    public double getPower() {
+    private double getPower() {
         this.updateError(motor.getCurrentPosition());
         return this.correction();
     }
@@ -27,13 +33,12 @@ public class PIDControllerMotor extends PIDController {
     @Override
     public void setGoal(double goal) { //please only ever pass an int in to this, like really
         super.setGoal(goal);
-        motor.setTargetPosition((int) goal);
-        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.reset();
     }
 
     @Override
-    public void reset() {
-        super.reset();
+    protected void reset() {
+        //super.reset();
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
