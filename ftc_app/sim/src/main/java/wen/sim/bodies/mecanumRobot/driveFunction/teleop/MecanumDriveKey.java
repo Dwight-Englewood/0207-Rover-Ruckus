@@ -36,7 +36,7 @@ public class MecanumDriveKey implements MecanumDriveMode {
             x = 1;
         }
 
-        SimpleMatrix wheelV = bot.velocityToWheel(y, x, r);
+        SimpleMatrix wheelV = bot.velocityToWheel(x, y, r);
         bot.wheelFL = (float) wheelV.get(0, 0);
         bot.wheelBL = (float) wheelV.get(2, 0);
         bot.wheelFR = (float) wheelV.get(1, 0);

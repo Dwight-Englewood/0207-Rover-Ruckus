@@ -29,7 +29,7 @@ public class RobotSimulator implements Simulator {
     Body robotPID2 = new MecanumRobot(5, -15f, 50, 5, target, new PIDNorm());
 
 
-    Body[] bodies = {robotPID2, target};
+    Body[] bodies = {robotTankJoy};
 
     private long lasttime = System.currentTimeMillis();
     private boolean bounded = false;
