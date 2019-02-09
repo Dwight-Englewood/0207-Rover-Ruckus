@@ -5,7 +5,8 @@ import wen.sim.bodies.Body;
 
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
 import wen.sim.bodies.mecanumRobot.driveFunction.auton.MotionProfile;
-import wen.sim.bodies.mecanumRobot.driveFunction.auton.PIDDrive;
+import wen.sim.bodies.mecanumRobot.driveFunction.auton.PID1Drive;
+import wen.sim.bodies.mecanumRobot.driveFunction.auton.PID2Drive;
 import wen.sim.bodies.mecanumRobot.driveFunction.teleop.MecanumDriveJoy;
 import wen.sim.bodies.mecanumRobot.driveFunction.teleop.MecanumDriveKey;
 import wen.sim.bodies.mecanumRobot.driveFunction.teleop.TankDriveJoy;
@@ -13,22 +14,22 @@ import wen.sim.bodies.mecanumRobot.normFunction.DriveNorm;
 import wen.sim.bodies.mecanumRobot.normFunction.PIDNorm;
 
 import static java.util.Collections.max;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.glfwGetKey;
 
 public class RobotSimulator implements Simulator {
 
-    float target = 0;
+    PID2Drive target = new PID2Drive(5,4);
+
     Body robotMecKey = new MecanumRobot(5, -15f, 50, 5, new MecanumDriveKey(), new DriveNorm());
     Body robotTankJoy = new MecanumRobot(5, -15f, 50, 5, new TankDriveJoy(), new DriveNorm());
     Body robotMecJoy = new MecanumRobot(5, -15f, 50, 5, new MecanumDriveJoy(), new DriveNorm());
-    Body robotPID = new MecanumRobot(5, -15f, 50, 5, new PIDDrive(), new PIDNorm());
-    Body robotMP = new MecanumRobot(5, -15f, 50, 5, new MotionProfile(), new PIDNorm());
+    Body robotPID1 = new MecanumRobot(5, -15f, 50, 5, new PID1Drive(), new PIDNorm());
+    Body robotPID2 = new MecanumRobot(5, -15f, 50, 5, target, new PIDNorm());
 
 
-    Body[] bodies = {robotMP};
+    Body[] bodies = {robotPID2, target};
 
     private long lasttime = System.currentTimeMillis();
     private boolean bounded = false;

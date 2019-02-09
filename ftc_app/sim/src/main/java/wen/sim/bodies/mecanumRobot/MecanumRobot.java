@@ -83,7 +83,7 @@ public class MecanumRobot extends Body {
     }
 
     public SimpleMatrix velocityToWheel(float vx, float vy, float vr) {
-        SimpleMatrix velocity = new SimpleMatrix(new double[][]{{vx}, {vy}, {vr}});
+        SimpleMatrix velocity = new SimpleMatrix(new double[][]{{vy}, {vx}, {vr}});
         SimpleMatrix inv = (getJ((float) (this.botR))).pseudoInverse();
         return inv.mult(velocity).scale((1 / wheelRadius) * 4);
     }

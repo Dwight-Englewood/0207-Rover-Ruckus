@@ -23,5 +23,9 @@ public class PIDControllerBadOOP extends PIDController {
         return super.correction();
     }
 
+    public void setGoalNoReset(double goal) {
+        super.setGoalNoReset(goal);
+    }
+
 
 }

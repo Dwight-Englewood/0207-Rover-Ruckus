@@ -48,8 +48,12 @@ public class PIDController {
         this.reset();
     }
 
+    protected void setGoalNoReset(double goal) {
+        this.goal = goal;
+    }
+
     public boolean goalReached(double resolution) {
-        return this.error < resolution;
+        return Math.abs(this.error) < resolution;
     }
 
     protected void reset() {

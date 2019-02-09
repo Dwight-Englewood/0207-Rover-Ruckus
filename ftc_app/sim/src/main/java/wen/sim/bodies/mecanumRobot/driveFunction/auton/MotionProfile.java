@@ -30,27 +30,12 @@ public class MotionProfile implements MecanumDriveMode {
     }
 
     public double leftAccelerationCurve(long elapsedTime) {
-        System.out.println(elapsedTime);
-        if (elapsedTime < 500) {
-            return .5+elapsedTime/(float)100*.1;
-        } else if (elapsedTime < 700) {
-            return 1;
-        } else if (elapsedTime < 3000) {
-            return .5;
-        } else {
-            return 0;
-        }
+        return 1/(float)30;
+
     }
 
     public double rightAccelerationCurve(long elapsedTime) {
-        if (elapsedTime < 500) {
-            return .5+elapsedTime/(float)100*-.1;
-        } else if (elapsedTime < 700) {
-            return 0;
-        } else if (elapsedTime < 3000) {
-            return .5;
-        } else {
-            return 0;
-        }
+        return (1/(float)30 * elapsedTime/(float)1000);
+
     }
 }

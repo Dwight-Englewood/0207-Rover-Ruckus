@@ -4,16 +4,17 @@ package wen.sim.bodies.mecanumRobot.driveFunction.auton;
 import org.ejml.simple.SimpleMatrix;
 
 import wen.control.PIDController;
+import wen.control.PIDControllerBadOOP;
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
 import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
 
-public class PIDDrive implements MecanumDriveMode {
+public class PID1Drive implements MecanumDriveMode {
 
-    PIDController pid = new PIDController(.6,0.00001,6, 7);
+    PIDControllerBadOOP pid = new PIDControllerBadOOP(.6,0.00001,6, 7);
 
     @Override
     public void updateWheelPower(long window, MecanumRobot bot) {
-        pid.updateError(bot.botY);
+        pid.updateError(bot.botX);
         double halp = pid.correction();
         SimpleMatrix wheelV = bot.velocityToWheel((float) halp, 0,0);
 

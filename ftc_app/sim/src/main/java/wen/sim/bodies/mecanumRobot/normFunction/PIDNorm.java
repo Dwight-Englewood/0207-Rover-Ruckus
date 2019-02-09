@@ -3,27 +3,30 @@ package wen.sim.bodies.mecanumRobot.normFunction;
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
 
 public class PIDNorm implements MecanumNormMode{
+    
+    public final float max = 1f;
+    public final float min = -1f;
     @Override
     public void normWheelPower(MecanumRobot bot) {
-        if (bot.wheelFL > 1) {
-            bot.wheelFL = 1;
-        } else if (bot.wheelFL < -1) {
-            bot.wheelFL = -1;
+        if (bot.wheelFL > max) {
+            bot.wheelFL = max;
+        } else if (bot.wheelFL < min) {
+            bot.wheelFL = min;
         }
-        if (bot.wheelFR > 1) {
-            bot.wheelFR = 1;
-        } else if (bot.wheelFR < -1) {
-            bot.wheelFR = -1;
+        if (bot.wheelFR > max) {
+            bot.wheelFR = max;
+        } else if (bot.wheelFR < min) {
+            bot.wheelFR = min;
         }
-        if (bot.wheelBL > 1) {
-            bot.wheelBL = 1;
-        } else if (bot.wheelBL < -1) {
-            bot.wheelBL = -1;
+        if (bot.wheelBL > max) {
+            bot.wheelBL = max;
+        } else if (bot.wheelBL < min) {
+            bot.wheelBL = min;
         }
-        if (bot.wheelBR > 1) {
-            bot.wheelBR = 1;
-        } else if (bot.wheelBR < -1) {
-            bot.wheelBR = -1;
+        if (bot.wheelBR > max) {
+            bot.wheelBR = max;
+        } else if (bot.wheelBR < min) {
+            bot.wheelBR = min;
         }
 
     }
