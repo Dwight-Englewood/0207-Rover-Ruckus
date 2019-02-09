@@ -18,5 +18,20 @@ public abstract class Body {
     public abstract void update(long window);
 
     public abstract void draw(long window);
+
+    public void reset() {
+        botX = 0;
+        botXD = 0;
+        botXDD = 0;
+        botY = 0;
+        botYD = 0;
+        botYDD = 0;
+        botR = 0;
+        botRD = 0;
+        botRDD = 0;
+        botXF = 0;
+        botYF = 0;
+        botRF = 0;
+    }
 }
 

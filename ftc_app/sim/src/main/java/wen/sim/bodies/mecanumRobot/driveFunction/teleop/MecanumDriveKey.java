@@ -1,8 +1,9 @@
-package wen.sim.bodies.mecanumRobot.driveFunction;
+package wen.sim.bodies.mecanumRobot.driveFunction.teleop;
 
 import org.ejml.simple.SimpleMatrix;
 
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
+import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
@@ -40,6 +41,11 @@ public class MecanumDriveKey implements MecanumDriveMode {
         bot.wheelBL = (float) wheelV.get(2, 0);
         bot.wheelFR = (float) wheelV.get(1, 0);
         bot.wheelBR = (float) wheelV.get(3, 0);
+
+    }
+
+    @Override
+    public void reset() {
 
     }
 

@@ -1,10 +1,11 @@
-package wen.sim.bodies.mecanumRobot.driveFunction;
+package wen.sim.bodies.mecanumRobot.driveFunction.auton;
 
 
 import org.ejml.simple.SimpleMatrix;
 
 import wen.control.PIDController;
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
+import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
 
 public class PIDDrive implements MecanumDriveMode {
 
@@ -20,6 +21,11 @@ public class PIDDrive implements MecanumDriveMode {
         bot.wheelBL = (float) wheelV.get(2, 0);
         bot.wheelFR = (float) wheelV.get(1, 0);
         bot.wheelBR = (float) wheelV.get(3, 0);
+    }
+
+    @Override
+    public void reset() {
+
     }
 
 

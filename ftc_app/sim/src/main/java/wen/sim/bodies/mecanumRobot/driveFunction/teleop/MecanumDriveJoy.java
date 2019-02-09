@@ -1,10 +1,11 @@
-package wen.sim.bodies.mecanumRobot.driveFunction;
+package wen.sim.bodies.mecanumRobot.driveFunction.teleop;
 
 import org.ejml.simple.SimpleMatrix;
 
 import java.nio.FloatBuffer;
 
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
+import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
 
 import static org.lwjgl.glfw.GLFW.GLFW_JOYSTICK_1;
 import static org.lwjgl.glfw.GLFW.glfwGetJoystickAxes;
@@ -37,6 +38,11 @@ public class MecanumDriveJoy implements MecanumDriveMode {
         bot.wheelBL = (float) wheelV.get(2, 0);
         bot.wheelFR = (float) wheelV.get(1, 0);
         bot.wheelBR = (float) wheelV.get(3, 0);
+
+    }
+
+    @Override
+    public void reset() {
 
     }
 

@@ -1,31 +1,46 @@
 package wen.sim.simulator;
 
 
-import wen.sim.bodies.mecanumRobot.driveFunction.PIDDrive;
-import wen.sim.bodies.mecanumRobot.driveFunction.TankDriveJoy;
 import wen.sim.bodies.Body;
-import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveKey;
+
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
+import wen.sim.bodies.mecanumRobot.driveFunction.auton.MotionProfile;
+import wen.sim.bodies.mecanumRobot.driveFunction.auton.PIDDrive;
+import wen.sim.bodies.mecanumRobot.driveFunction.teleop.MecanumDriveJoy;
+import wen.sim.bodies.mecanumRobot.driveFunction.teleop.MecanumDriveKey;
+import wen.sim.bodies.mecanumRobot.driveFunction.teleop.TankDriveJoy;
 import wen.sim.bodies.mecanumRobot.normFunction.DriveNorm;
 import wen.sim.bodies.mecanumRobot.normFunction.PIDNorm;
 
 import static java.util.Collections.max;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+import static org.lwjgl.glfw.GLFW.glfwGetKey;
 
 public class RobotSimulator implements Simulator {
 
     float target = 0;
-    Body robot1 = new MecanumRobot(5, -15f, 50,  5, new MecanumDriveKey(), new DriveNorm());
-    Body robot2 = new MecanumRobot(5, -15f, 50, 5, new TankDriveJoy(), new DriveNorm());
-    Body robot3 = new MecanumRobot(5, -15f, 50, 5, new PIDDrive(), new PIDNorm());
+    Body robotMecKey = new MecanumRobot(5, -15f, 50, 5, new MecanumDriveKey(), new DriveNorm());
+    Body robotTankJoy = new MecanumRobot(5, -15f, 50, 5, new TankDriveJoy(), new DriveNorm());
+    Body robotMecJoy = new MecanumRobot(5, -15f, 50, 5, new MecanumDriveJoy(), new DriveNorm());
+    Body robotPID = new MecanumRobot(5, -15f, 50, 5, new PIDDrive(), new PIDNorm());
+    Body robotMP = new MecanumRobot(5, -15f, 50, 5, new MotionProfile(), new PIDNorm());
 
 
-    Body[] bodies = {robot1};
+    Body[] bodies = {robotMP};
 
     private long lasttime = System.currentTimeMillis();
     private boolean bounded = false;
     private boolean shouldNorm = true;
 
     public void updateSim(long window) {
+        if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
+            for (Body a : bodies) {
+                a.reset();
+            }
+        }
+
         simulateStep();
 
         for (Body a : bodies) {
@@ -62,11 +77,11 @@ public class RobotSimulator implements Simulator {
 
     public void draw(long window) {
         updateSim(window);
-        for (Body a  : bodies) {
+        for (Body a : bodies) {
             a.draw(window);
-            System.out.println(a.botX);
+            /*System.out.println(a.botX);
             System.out.println(a.botY);
-            System.out.println("---");
+            System.out.println("---");*/
         }
 
     }

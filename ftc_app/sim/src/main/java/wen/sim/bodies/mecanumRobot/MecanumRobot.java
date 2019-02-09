@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import wen.sim.bodies.Body;
-import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveKey;
 import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
 import wen.sim.bodies.mecanumRobot.normFunction.DriveNorm;
 import wen.sim.bodies.mecanumRobot.normFunction.MecanumNormMode;
@@ -54,6 +53,12 @@ public class MecanumRobot extends Body {
         this.wheelRadius = wheelRadius;
         this.drive = mdm;
         this.norm = mnm;
+    }
+
+    @Override
+    public void reset() {
+        drive.reset();
+        super.reset();
     }
 
     //move to body

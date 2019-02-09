@@ -1,9 +1,10 @@
-package wen.sim.bodies.mecanumRobot.driveFunction;
+package wen.sim.bodies.mecanumRobot.driveFunction.teleop;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
+import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
 
 import static org.lwjgl.glfw.GLFW.GLFW_JOYSTICK_1;
 import static org.lwjgl.glfw.GLFW.glfwGetJoystickAxes;
@@ -43,6 +44,11 @@ public class TankDriveJoy implements MecanumDriveMode {
             bot.wheelFR = 1;
             bot.wheelBR = -1;
         }
+
+    }
+
+    @Override
+    public void reset() {
 
     }
 
