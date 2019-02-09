@@ -33,17 +33,23 @@ import static org.lwjgl.opengl.GL11.glVertex2f;
 
 public class PID2Drive extends Body implements MecanumDriveMode {
 
-    PIDControllerBadOOP pidMove = new PIDControllerBadOOP(-.1, -0.00001, -.2, 0);
+    PIDControllerBadOOP pidMove = new PIDControllerBadOOP(-.05, -.0001, -.05, 0);
     PIDControllerBadOOP pidRot = new PIDControllerBadOOP(.3, 0, 0, 0);
+
+    Trajectory targets;
 
     float targetX;
     float targetY;
 
     boolean shouldGo = false;
 
-    public PID2Drive(float targetX, float targetY) {
-        this.targetX = targetX;
-        this.targetY = targetY;
+    int point = 0;
+    private boolean shouldAdvance = true;
+
+    public PID2Drive(float[] targetX, float[] targetY) {
+        targets = new Trajectory(targetX, targetY);
+        this.targetX = targets.xCoords[point];
+        this.targetY = targets.yCoords[point];
     }
 
     @Override
@@ -61,11 +67,14 @@ public class PID2Drive extends Body implements MecanumDriveMode {
         pidRot.updateError(toRadians(toDegrees(bot.botR)));
         double planarCorrection = pidMove.correction();
         double rotationalCorrection = pidRot.correction();
-        if (pidMove.goalReached(1)) {
+        if (pidMove.goalReached(1) && shouldAdvance) {
             pidMove.setGoal(0);
             pidRot.setGoal(0);
-            this.targetX = -5;
-            this.targetY = 2;
+            if (point + 1 < targets.xCoords.length) {
+                point++;
+            }
+            this.targetX = targets.xCoords[point];
+            this.targetY = targets.yCoords[point];
         }
         SimpleMatrix wheelV = bot.velocityToWheel((float) planarCorrection * (targetX - bot.botX), (float) planarCorrection * (targetY - bot.botY), (float) rotationalCorrection);
 

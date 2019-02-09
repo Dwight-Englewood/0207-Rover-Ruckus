@@ -54,6 +54,16 @@ public class MecanumRobot extends Body {
         this.drive = mdm;
         this.norm = mnm;
     }
+    public MecanumRobot(float x, float y, float botMass, float friction, float linearMotorScale, float wheelRadius, MecanumDriveMode mdm, MecanumNormMode mnm) {
+        this.botMass = botMass;
+        this.friction = friction;
+        this.linearMotorScale = linearMotorScale;
+        this.wheelRadius = wheelRadius;
+        this.drive = mdm;
+        this.norm = mnm;
+        super.botX = x;
+        super.botY = y;
+    }
 
     @Override
     public void reset() {

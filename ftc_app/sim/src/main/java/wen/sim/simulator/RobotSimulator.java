@@ -20,16 +20,16 @@ import static org.lwjgl.glfw.GLFW.glfwGetKey;
 
 public class RobotSimulator implements Simulator {
 
-    PID2Drive target = new PID2Drive(5,4);
+    PID2Drive target = new PID2Drive(new float[]{0, 1, 2, 3, 4}, new float[]{0, .5f, 1, 1.25f, 1.5f});
 
     Body robotMecKey = new MecanumRobot(5, -15f, 50, 5, new MecanumDriveKey(), new DriveNorm());
     Body robotTankJoy = new MecanumRobot(5, -15f, 50, 5, new TankDriveJoy(), new DriveNorm());
     Body robotMecJoy = new MecanumRobot(5, -15f, 50, 5, new MecanumDriveJoy(), new DriveNorm());
     Body robotPID1 = new MecanumRobot(5, -15f, 50, 5, new PID1Drive(), new PIDNorm());
-    Body robotPID2 = new MecanumRobot(5, -15f, 50, 5, target, new PIDNorm());
+    Body robotPID2 = new MecanumRobot(-9, -9, 5, -15f, 50, 5, target, new PIDNorm());
 
 
-    Body[] bodies = {robotTankJoy};
+    Body[] bodies = {robotPID2, target};
 
     private long lasttime = System.currentTimeMillis();
     private boolean bounded = false;

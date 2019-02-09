@@ -10,4 +10,6 @@ public class Trajectory {
         this.yCoords = yCoords;
     }
 
+
+
 }
