@@ -9,18 +9,28 @@ import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
 
 import static org.lwjgl.glfw.GLFW.GLFW_JOYSTICK_1;
 import static org.lwjgl.glfw.GLFW.glfwGetJoystickAxes;
+import static org.lwjgl.glfw.GLFW.glfwGetJoystickName;
 
 public class MecanumDriveJoy implements MecanumDriveMode {
 
     public void updateWheelPower(long window, MecanumRobot bot) {
         FloatBuffer joysticks = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
+        System.out.println(glfwGetJoystickName(GLFW_JOYSTICK_1));
+        //Microsoft X-Box 360 pad
+        //Logitech Logitech Dual Action
+        float leftStickX = 0, leftStickY = 0, rightStickX = 0;
+        if (glfwGetJoystickName(GLFW_JOYSTICK_1).equals("Logitech Logitech Dual Action")) {
+            leftStickX = joysticks.get(0);
+            leftStickY = -1 * joysticks.get(1);
 
-        float leftStickX = joysticks.get(0);
-        float leftStickY = -1 * joysticks.get(1);
+            rightStickX = -joysticks.get(2);
 
-        float rightStickX = -joysticks.get(2);
-        float rightStickY = -1 * joysticks.get(3);
+        } else if (glfwGetJoystickName(GLFW_JOYSTICK_1).equals("Microsoft X-Box 360 pad")) {
+            leftStickX = joysticks.get(0);
+            leftStickY = -1 * joysticks.get(1);
 
+            rightStickX = -joysticks.get(3);
+        }
         float deadzone = .3f;
         if (leftStickY < deadzone && leftStickY > -deadzone) {
             leftStickY = 0;
@@ -31,7 +41,6 @@ public class MecanumDriveJoy implements MecanumDriveMode {
         if (rightStickX < deadzone && rightStickX > -deadzone) {
             rightStickX = 0;
         }
-
         SimpleMatrix wheelV = bot.velocityToWheel(leftStickX, leftStickY, rightStickX);
 
         bot.wheelFL = (float) wheelV.get(0, 0);
