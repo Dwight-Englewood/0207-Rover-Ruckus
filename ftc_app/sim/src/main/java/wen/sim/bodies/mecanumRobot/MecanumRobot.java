@@ -46,6 +46,7 @@ public class MecanumRobot extends Body {
     public float wheelFL = 0;
     public float wheelBL = 0;
     public float wheelBR = 0;
+    public boolean drawPos = false;
 
     MecanumDriveMode drive;
     MecanumNormMode norm;
@@ -159,50 +160,52 @@ public class MecanumRobot extends Body {
 
     @Override
     public void drawData(long window) {
-        GL.createCapabilities();
-        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glLoadIdentity();
-        glBegin(GL_LINES);
-        for (int i = 0; i < path.size(); i++) {
-            Coordinate e = path.get(i);
-            glColor3f(200f/255 , Math.abs(200- i % 400)/255f, Math.abs(200- i % 400)/255f);
-            glVertex3f(e.x / 10, e.y / 10, 0);
-            try {
-                e = path.get(i + 1);
+        if (drawPos) {
+            GL.createCapabilities();
+            //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glLoadIdentity();
+            glBegin(GL_LINES);
+            for (int i = 0; i < path.size(); i++) {
+                Coordinate e = path.get(i);
+                glColor3f(200f / 255, Math.abs(200 - i % 400) / 255f, Math.abs(200 - i % 400) / 255f);
                 glVertex3f(e.x / 10, e.y / 10, 0);
-            } catch (IndexOutOfBoundsException error) {
+                try {
+                    e = path.get(i + 1);
+                    glVertex3f(e.x / 10, e.y / 10, 0);
+                } catch (IndexOutOfBoundsException error) {
+                }
+
             }
+            glEnd();
 
-        }
-        glEnd();
+            glBegin(GL_LINES);
 
-        glBegin(GL_LINES);
-
-        int start =0;
-        if (rot.size() > 300) {
-            start = rot.size() - 300;
-        }
-        int j = 0;
-        for (int i = start; i < rot.size(); i++) {
-            Coordinate e = rot.get(i);
-            glColor3f(Math.abs(225- i % 450)/255f , 100f, Math.abs(225- i % 450)/255f);
-            double y = (e.y + Math.PI);
-            double fixedRotation = (y % (Math.PI*2)) < 0 ? Math.PI*2+ (y % (Math.PI*2)) : (y % (Math.PI*2));
-            glVertex3f(j/200f-1f, (float) (fixedRotation/(Math.PI*2))/2f-1, 0);
-            try {
-                e = rot.get(i + 1);
-                 y = (e.y + Math.PI);
-                fixedRotation = (y % (Math.PI*2)) < 0 ? Math.PI*2+ (y % (Math.PI*2)) : (y % (Math.PI*2));
-
-                glVertex3f((j+1)/200f-1f, (float) (fixedRotation/(Math.PI*2))/2f - 1 , 0);
-            } catch (IndexOutOfBoundsException error) {
+            int start = 0;
+            if (rot.size() > 300) {
+                start = rot.size() - 300;
             }
-            j++;
+            int j = 0;
+            for (int i = start; i < rot.size(); i++) {
+                Coordinate e = rot.get(i);
+                glColor3f(Math.abs(225 - i % 450) / 255f, 100f, Math.abs(225 - i % 450) / 255f);
+                double y = (e.y + Math.PI);
+                double fixedRotation = (y % (Math.PI * 2)) < 0 ? Math.PI * 2 + (y % (Math.PI * 2)) : (y % (Math.PI * 2));
+                glVertex3f(j / 200f - 1f, (float) (fixedRotation / (Math.PI * 2)) / 2f - 1, 0);
+                try {
+                    e = rot.get(i + 1);
+                    y = (e.y + Math.PI);
+                    fixedRotation = (y % (Math.PI * 2)) < 0 ? Math.PI * 2 + (y % (Math.PI * 2)) : (y % (Math.PI * 2));
+
+                    glVertex3f((j + 1) / 200f - 1f, (float) (fixedRotation / (Math.PI * 2)) / 2f - 1, 0);
+                } catch (IndexOutOfBoundsException error) {
+                }
+                j++;
+            }
+            glEnd();
+
+
+            glFlush();
         }
-        glEnd();
-
-
-        glFlush();
     }
 
 }
