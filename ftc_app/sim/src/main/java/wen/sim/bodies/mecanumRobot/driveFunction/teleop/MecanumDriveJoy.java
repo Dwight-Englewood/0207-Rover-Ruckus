@@ -15,7 +15,6 @@ public class MecanumDriveJoy implements MecanumDriveMode {
 
     public void updateWheelPower(long window, MecanumRobot bot) {
         FloatBuffer joysticks = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
-        System.out.println(glfwGetJoystickName(GLFW_JOYSTICK_1));
         //Microsoft X-Box 360 pad
         //Logitech Logitech Dual Action
         float leftStickX = 0, leftStickY = 0, rightStickX = 0;

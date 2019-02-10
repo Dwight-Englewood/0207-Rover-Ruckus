@@ -11,6 +11,11 @@ public class Trajectory {
     public ArrayList<Float> xCoords = new ArrayList<>();
     public ArrayList<Float> yCoords = new ArrayList<>();
 
+    public ArrayList<Float> xAcceleration = new ArrayList<>();
+    public ArrayList<Float> yAcceleration = new ArrayList<>();
+
+    public float length;
+
     public Trajectory(Float[] xCoords, Float[] yCoords) {
         this.xCoords = new ArrayList<>(Arrays.asList(xCoords));
         this.yCoords = new ArrayList<>(Arrays.asList(yCoords));
@@ -21,7 +26,7 @@ public class Trajectory {
 
 
     public Trajectory(PathFunction pf) {
-        for (float i = pf.xMin; i < pf.xMax; i = i + 1 / (float) 100) {
+        for (float i = pf.xMin; i < pf.xMax; i = i + 1 / (float) 1000) {
             xCoords.add(i);
             yCoords.add(pf.function(i));
         }

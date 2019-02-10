@@ -186,11 +186,13 @@ public class MecanumRobot extends Body {
         for (int i = start; i < rot.size(); i++) {
             Coordinate e = rot.get(i);
             glColor3f(Math.abs(225- i % 450)/255f , 100f, Math.abs(225- i % 450)/255f);
-            double fixedRotation = (e.y % (Math.PI*2)) < 0 ? Math.PI*2+ (e.y % (Math.PI*2)) : (e.y % (Math.PI*2));
+            double y = (e.y + Math.PI);
+            double fixedRotation = (y % (Math.PI*2)) < 0 ? Math.PI*2+ (y % (Math.PI*2)) : (y % (Math.PI*2));
             glVertex3f(j/200f-1f, (float) (fixedRotation/(Math.PI*2))/2f-1, 0);
             try {
                 e = rot.get(i + 1);
-                fixedRotation = (e.y % (Math.PI*2)) < 0 ? Math.PI*2+ (e.y % (Math.PI*2)) : (e.y % (Math.PI*2));
+                 y = (e.y + Math.PI);
+                fixedRotation = (y % (Math.PI*2)) < 0 ? Math.PI*2+ (y % (Math.PI*2)) : (y % (Math.PI*2));
 
                 glVertex3f((j+1)/200f-1f, (float) (fixedRotation/(Math.PI*2))/2f - 1 , 0);
             } catch (IndexOutOfBoundsException error) {
