@@ -4,8 +4,8 @@ package wen.sim.bodies.mecanumRobot.driveFunction.auton;
 import org.ejml.simple.SimpleMatrix;
 import org.lwjgl.opengl.GL;
 
-import wen.control.PIDController;
 import wen.control.PIDControllerBadOOP;
+import wen.control.Trajectory;
 import wen.sim.bodies.Body;
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
 import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
@@ -17,7 +17,6 @@ import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.glfwGetKey;
 import static org.lwjgl.opengl.GL11.GL_FILL;
 import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
-import static org.lwjgl.opengl.GL11.GL_LINE;
 import static org.lwjgl.opengl.GL11.GL_POLYGON;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glColor3f;
@@ -27,14 +26,16 @@ import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glPolygonMode;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 
 public class PID2Drive extends Body implements MecanumDriveMode {
 
+    //PIDControllerBadOOP pidMove = new PIDControllerBadOOP(-.1, -.02, -.5, 0);
     PIDControllerBadOOP pidMove = new PIDControllerBadOOP(-.05, -.0001, -.05, 0);
+
+    //PIDControllerBadOOP pidRot = new PIDControllerBadOOP(.3, 2, .1, 0);
     PIDControllerBadOOP pidRot = new PIDControllerBadOOP(.3, 0, 0, 0);
+
 
     Trajectory targets;
 
@@ -46,10 +47,10 @@ public class PID2Drive extends Body implements MecanumDriveMode {
     int point = 0;
     private boolean shouldAdvance = true;
 
-    public PID2Drive(float[] targetX, float[] targetY) {
+    public PID2Drive(Float[] targetX, Float[] targetY) {
         targets = new Trajectory(targetX, targetY);
-        this.targetX = targets.xCoords[point];
-        this.targetY = targets.yCoords[point];
+        this.targetX = targets.xCoords.get(point);
+        this.targetY = targets.yCoords.get(point);
     }
 
     @Override
@@ -70,11 +71,11 @@ public class PID2Drive extends Body implements MecanumDriveMode {
         if (pidMove.goalReached(1) && shouldAdvance) {
             pidMove.setGoal(0);
             pidRot.setGoal(0);
-            if (point + 1 < targets.xCoords.length) {
+            if (point + 1 < targets.xCoords.size()) {
                 point++;
             }
-            this.targetX = targets.xCoords[point];
-            this.targetY = targets.yCoords[point];
+            this.targetX = targets.xCoords.get(point);
+            this.targetY = targets.yCoords.get(point);
         }
         SimpleMatrix wheelV = bot.velocityToWheel((float) planarCorrection * (targetX - bot.botX), (float) planarCorrection * (targetY - bot.botY), (float) rotationalCorrection);
 
@@ -120,8 +121,10 @@ public class PID2Drive extends Body implements MecanumDriveMode {
 
     @Override
     public void reset() {
-        this.targetY = 4;
-        this.targetX = 5;
+        this.point = 0;
+        this.targetX = this.targets.xCoords.get(point);
+        this.targetY = this.targets.yCoords.get(point);
+
         pidMove.setGoal(0);
         pidRot.setGoal(0);
         this.shouldGo = false;

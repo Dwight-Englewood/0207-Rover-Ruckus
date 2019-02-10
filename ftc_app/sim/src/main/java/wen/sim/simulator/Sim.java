@@ -9,6 +9,7 @@ import java.nio.*;
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
@@ -41,7 +42,6 @@ public class Sim {
         //System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
         init();
-        initialize();
         loop();
 
         // Free the windowState callbacks and destroy the windowState
@@ -68,42 +68,7 @@ public class Sim {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the windowState will be resizable
 
         // Create the windowState
-        windowState = glfwCreateWindow(1000, 1000, "float", NULL, NULL);
-        if (windowState == NULL)
-            throw new RuntimeException("Failed to create the GLFW windowState");
-
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        glfwSetKeyCallback(windowState, (window, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-        });
-
-        // Get the thread stack and push a new frame
-        try (MemoryStack stack = stackPush()) {
-            IntBuffer pWidth = stack.mallocInt(1); // int*
-            IntBuffer pHeight = stack.mallocInt(1); // int*
-
-            // Get the windowState size passed to glfwCreateWindow
-            glfwGetWindowSize(windowState, pWidth, pHeight);
-
-            // Get the resolution of the primary monitor
-            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-            // Center the windowState
-            glfwSetWindowPos(
-                    windowState,
-                    1000,
-                    0
-            );
-        } // the stack frame is popped automatically
-
-        // Make the OpenGL context current
-        glfwMakeContextCurrent(windowState);
-        // Enable v-sync
-        glfwSwapInterval(1);
-
-        // Make the windowData visible
-        glfwShowWindow(windowState);
+        //glfwWindowHint(GLFW_SAMPLES, 4);
 
         windowData = glfwCreateWindow(1000, 1000, "float", NULL, NULL);
         if (windowData == NULL)
@@ -136,11 +101,59 @@ public class Sim {
 
         // Make the OpenGL context current
         glfwMakeContextCurrent(windowData);
+        initialize();
+
+        //glEnable(GL_MULTISAMPLE);
+
         // Enable v-sync
         glfwSwapInterval(1);
 
         // Make the windowData visible
         glfwShowWindow(windowData);
+        //glfwWindowHint(GLFW_SAMPLES, 4);
+        windowState = glfwCreateWindow(1000, 1000, "float", NULL, NULL);
+        if (windowState == NULL)
+            throw new RuntimeException("Failed to create the GLFW windowState");
+
+        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
+        glfwSetKeyCallback(windowState, (window, key, scancode, action, mods) -> {
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+        });
+
+        // Get the thread stack and push a new frame
+        try (MemoryStack stack = stackPush()) {
+            IntBuffer pWidth = stack.mallocInt(1); // int*
+            IntBuffer pHeight = stack.mallocInt(1); // int*
+
+            // Get the windowState size passed to glfwCreateWindow
+            glfwGetWindowSize(windowState, pWidth, pHeight);
+
+            // Get the resolution of the primary monitor
+            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+            // Center the windowState
+            glfwSetWindowPos(
+                    windowState,
+                    1000,
+                    0
+            );
+        } // the stack frame is popped automatically
+
+        // Make the OpenGL context current
+        glfwMakeContextCurrent(windowState);
+        initialize();
+
+        //glEnable(GL_MULTISAMPLE);
+        // Enable v-sync
+        glfwSwapInterval(1);
+
+        // Make the windowData visible
+        glfwShowWindow(windowState);
+        initialize();
+
+
+
     }
 
     private void loop() {
@@ -156,7 +169,7 @@ public class Sim {
 
         // Run the rendering loop until the user has attempted to close
         // the windowState or has pressed the ESCAPE key.
-        while (!glfwWindowShouldClose(windowState)) {
+        while (!glfwWindowShouldClose(windowState) && !glfwWindowShouldClose(windowData)) {
             glfwMakeContextCurrent(windowState);
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
