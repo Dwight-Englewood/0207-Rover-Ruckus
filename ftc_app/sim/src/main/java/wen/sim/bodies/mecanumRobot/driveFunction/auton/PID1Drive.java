@@ -98,8 +98,8 @@ public class PID1Drive implements MecanumDriveMode, Drawable {
         glLoadIdentity();
         glBegin(GL_LINES);
         glColor3f(1, 1, 1);
-        glVertex3f(-1, target/10f, 0);
-        glVertex3f(1, target/10f, 0);
+        glVertex3f(-1, target / 10f, 0);
+        glVertex3f(1, target / 10f, 0);
         glEnd();
 
         glBegin(GL_LINES);

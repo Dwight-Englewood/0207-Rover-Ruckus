@@ -24,7 +24,7 @@ public class RobotSimulator implements Simulator {
 
     PID2Drive target = new PID2Drive(new Float[]{0f, 1f, 2f, 3f, 4f}, new Float[]{0f, .5f, 1f, 1.25f, 1.5f});
     PID1Drive straightPID1 = new PID1Drive(.6,0.00001,6, 5, 5, 1, 0, 0);
-    PID1Drive straightPID2 = new PID1Drive(3, 0, 0, 5, 0, 0, 1, 0);
+    PID1Drive straightPID2 = new PID1Drive(1, 0, 0, 5, 0, 0, 1, 0);
     PID1Drive straightPID3 = new PID1Drive(.5, .001, .3, 5, -5, 0, 0, 1);
 
 

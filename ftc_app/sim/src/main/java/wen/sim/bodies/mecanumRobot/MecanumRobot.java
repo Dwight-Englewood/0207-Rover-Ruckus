@@ -4,12 +4,10 @@ import org.ejml.simple.SimpleMatrix;
 import org.lwjgl.opengl.GL;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import wen.control.Coordinate;
 import wen.sim.bodies.Body;
 import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
-import wen.sim.bodies.mecanumRobot.normFunction.DriveNorm;
 import wen.sim.bodies.mecanumRobot.normFunction.MecanumNormMode;
 
 import static java.lang.Math.cos;
@@ -17,17 +15,14 @@ import static java.lang.Math.sin;
 import static java.lang.Math.toDegrees;
 import static java.lang.StrictMath.abs;
 import static java.util.Collections.max;
-import static org.lwjgl.opengl.GL11.GL_FILL;
 import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
 import static org.lwjgl.opengl.GL11.GL_LINE;
 import static org.lwjgl.opengl.GL11.GL_LINES;
-import static org.lwjgl.opengl.GL11.GL_POINTS;
 import static org.lwjgl.opengl.GL11.GL_POLYGON;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glFlush;
-import static org.lwjgl.opengl.GL11.glLineWidth;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glPolygonMode;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
@@ -39,7 +34,7 @@ import static org.lwjgl.opengl.GL11.glVertex3f;
 
 public class MecanumRobot extends Body {
     public float botMass = 5;
-    public float friction;
+    public float drag;
     public float linearMotorScale;
     public float wheelRadius;
     public float wheelFR = 0;
@@ -54,18 +49,18 @@ public class MecanumRobot extends Body {
     ArrayList<Coordinate> path = new ArrayList<>();
     ArrayList<Coordinate> rot = new ArrayList<>();
 
-    public MecanumRobot(float botMass, float friction, float linearMotorScale, float wheelRadius, MecanumDriveMode mdm, MecanumNormMode mnm) {
+    public MecanumRobot(float botMass, float drag, float linearMotorScale, float wheelRadius, MecanumDriveMode mdm, MecanumNormMode mnm) {
         this.botMass = botMass;
-        this.friction = friction;
+        this.drag = drag;
         this.linearMotorScale = linearMotorScale;
         this.wheelRadius = wheelRadius;
         this.drive = mdm;
         this.norm = mnm;
     }
 
-    public MecanumRobot(float x, float y, float r, float botMass, float friction, float linearMotorScale, float wheelRadius, MecanumDriveMode mdm, MecanumNormMode mnm) {
+    public MecanumRobot(float x, float y, float r, float botMass, float drag, float linearMotorScale, float wheelRadius, MecanumDriveMode mdm, MecanumNormMode mnm) {
         this.botMass = botMass;
-        this.friction = friction;
+        this.drag = drag;
         this.linearMotorScale = linearMotorScale;
         this.wheelRadius = wheelRadius;
         this.drive = mdm;
@@ -100,9 +95,9 @@ public class MecanumRobot extends Body {
     //move to body
     public void updateForce() {
         SimpleMatrix forces = wheelToForce(wheelFL, wheelFR, wheelBL, wheelBR);
-        this.botXF = (float) (linearMotorScale * forces.get(1, 0) + friction * this.botXD);
-        this.botYF = (float) (linearMotorScale * forces.get(0, 0) + friction * this.botYD);
-        this.botRF = (float) (linearMotorScale * forces.get(2, 0) + friction * this.botRD);
+        this.botXF = (float) (linearMotorScale * forces.get(1, 0) + drag * this.botXD);
+        this.botYF = (float) (linearMotorScale * forces.get(0, 0) + drag * this.botYD);
+        this.botRF = (float) (linearMotorScale * forces.get(2, 0) + drag * this.botRD);
     }
 
     public SimpleMatrix getJ(double t) {
