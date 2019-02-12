@@ -39,7 +39,7 @@ public class MecanumRobot extends Body {
     public double wheelFL = 0;
     public double wheelBL = 0;
     public double wheelBR = 0;
-    public boolean drawPos = false;
+    public boolean drawPos = true;
 
     MecanumDriveMode drive;
     MecanumNormMode norm;
