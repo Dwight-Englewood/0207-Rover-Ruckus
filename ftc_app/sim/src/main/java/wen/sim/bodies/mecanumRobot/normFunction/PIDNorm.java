@@ -2,10 +2,11 @@ package wen.sim.bodies.mecanumRobot.normFunction;
 
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
 
-public class PIDNorm implements MecanumNormMode{
-    
-    public final float max = 1f;
-    public final float min = -1f;
+public class PIDNorm implements MecanumNormMode {
+
+    public final double max = 1f;
+    public final double min = -1f;
+
     @Override
     public void normWheelPower(MecanumRobot bot) {
         if (bot.wheelFL > max) {

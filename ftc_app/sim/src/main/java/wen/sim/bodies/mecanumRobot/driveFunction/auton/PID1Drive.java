@@ -6,10 +6,7 @@ import org.lwjgl.opengl.GL;
 
 import java.util.ArrayList;
 
-import wen.control.Coordinate;
-import wen.control.PIDController;
 import wen.control.PIDControllerBadOOP;
-import wen.sim.bodies.Body;
 import wen.sim.bodies.Drawable;
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
 import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
@@ -19,25 +16,26 @@ import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
 import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_POLYGON;
 import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glFlush;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glPolygonMode;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glVertex2f;
-import static org.lwjgl.opengl.GL11.glVertex3f;
+import static wen.sim.openglfix.OpenGLFix.glColor3f;
+import static wen.sim.openglfix.OpenGLFix.glVertex2f;
+import static wen.sim.openglfix.OpenGLFix.glVertex3f;
+
 
 public class PID1Drive implements MecanumDriveMode, Drawable {
 
     int target = 5;
     PIDControllerBadOOP pid;
-    float height;
+    double height;
     ArrayList<Double> error = new ArrayList<>();
-    float r, g, b;
+    double r, g, b;
 
-    public PID1Drive(double kp, double ki, double kd, float target, float height, float r, float g, float b) {
+    public PID1Drive(double kp, double ki, double kd, double target, double height, double r, double g, double b) {
         this.pid = new PIDControllerBadOOP(kp, ki, kd, target);
         this.height = height;
         this.r = r;
@@ -50,12 +48,12 @@ public class PID1Drive implements MecanumDriveMode, Drawable {
         pid.updateError(bot.botX);
         double halp = pid.correction();
         this.error.add((double) bot.botX);
-        SimpleMatrix wheelV = bot.velocityToWheel((float) halp, 0, 0);
+        SimpleMatrix wheelV = bot.velocityToWheel((double) halp, 0, 0);
 
-        bot.wheelFL = (float) wheelV.get(0, 0);
-        bot.wheelBL = (float) wheelV.get(2, 0);
-        bot.wheelFR = (float) wheelV.get(1, 0);
-        bot.wheelBR = (float) wheelV.get(3, 0);
+        bot.wheelFL = (double) wheelV.get(0, 0);
+        bot.wheelBL = (double) wheelV.get(2, 0);
+        bot.wheelFR = (double) wheelV.get(1, 0);
+        bot.wheelBR = (double) wheelV.get(3, 0);
     }
 
     @Override
@@ -76,7 +74,7 @@ public class PID1Drive implements MecanumDriveMode, Drawable {
         glColor3f(1f, 0.5f, .5f);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glBegin(GL_POLYGON);
-        float boxHalfDim = .05f;
+        double boxHalfDim = .05f;
         glVertex2f((target - boxHalfDim) / 10, (height - boxHalfDim) / 10);
         glVertex2f((target - boxHalfDim) / 10, (height + boxHalfDim) / 10);
         glVertex2f((target + boxHalfDim) / 10, (height + boxHalfDim) / 10);
@@ -113,10 +111,10 @@ public class PID1Drive implements MecanumDriveMode, Drawable {
 
         for (int i = start; i < error.size(); i++) {
             double e = error.get(i);
-            glVertex3f(j / 200f - 1f, (float) e / 10, 0);
+            glVertex3f(j / 200f - 1f, (double) e / 10, 0);
             try {
                 e = error.get(i + 1);
-                glVertex3f((j + 1) / 200f - 1f, (float) e / 10, 0);
+                glVertex3f((j + 1) / 200f - 1f, (double) e / 10, 0);
             } catch (IndexOutOfBoundsException error) {
             }
             j++;

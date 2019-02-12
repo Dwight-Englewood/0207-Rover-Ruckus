@@ -1,11 +1,9 @@
 package wen.sim.simulator;
 
 
-import wen.control.Coordinate;
-import wen.control.Quintic.QuinticHermiteBasis;
-import wen.control.Quintic.QuinticHermiteSpline;
+import wen.control.function.Quintic.Coordinate;
+import wen.control.function.Quintic.QuinticHermiteSpline;
 import wen.sim.bodies.Body;
-
 import wen.sim.bodies.Cubic;
 import wen.sim.bodies.Drawable;
 import wen.sim.bodies.FunctionGrapher;
@@ -19,15 +17,14 @@ import wen.sim.bodies.mecanumRobot.driveFunction.teleop.TankDriveJoy;
 import wen.sim.bodies.mecanumRobot.normFunction.DriveNorm;
 import wen.sim.bodies.mecanumRobot.normFunction.PIDNorm;
 
-import static java.util.Collections.max;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.glfwGetKey;
 
 public class RobotSimulator implements Simulator {
 
-    PID2Drive target = new PID2Drive(new Float[]{0f, 1f, 2f, 3f, 4f}, new Float[]{0f, .5f, 1f, 1.25f, 1.5f});
-    PID1Drive straightPID1 = new PID1Drive(.6,0.00001,6, 5, 5, 1, 0, 0);
+    PID2Drive target = new PID2Drive(new Double[]{0d, 1d, 2d, 3d, 4d}, new Double[]{0d, .5d, 1d, 1.25d, 1.5d});
+    PID1Drive straightPID1 = new PID1Drive(.6, 0.00001, 6, 5, 5, 1, 0, 0);
     PID1Drive straightPID2 = new PID1Drive(1, 0, 0, 5, 0, 0, 1, 0);
     PID1Drive straightPID3 = new PID1Drive(.5, .001, .3, 5, -5, 0, 0, 1);
 
@@ -35,10 +32,9 @@ public class RobotSimulator implements Simulator {
     Body robotMecKey = new MecanumRobot(5, -15f, 30, 5, new MecanumDriveKey(), new DriveNorm());
     Body robotTankJoy = new MecanumRobot(5, -15f, 30, 5, new TankDriveJoy(), new DriveNorm());
     Body robotMecJoy = new MecanumRobot(5, -20f, 50, 5, new MecanumDriveJoy(), new DriveNorm());
-    Body robotPID11 = new MecanumRobot(-5, 5,0, 5, -15f, 30, 5, straightPID1, new PIDNorm());
-    Body robotPID12 = new MecanumRobot(-5, 0,0, 5, -15f, 30, 5, straightPID2, new PIDNorm());
-    Body robotPID13 = new MecanumRobot(-5, -5,0, 5, -15f, 30, 5, straightPID3, new PIDNorm());
-
+    Body robotPID11 = new MecanumRobot(-5, 5, 0, 5, -15f, 30, 5, straightPID1, new PIDNorm());
+    Body robotPID12 = new MecanumRobot(-5, 0, 0, 5, -15f, 30, 5, straightPID2, new PIDNorm());
+    Body robotPID13 = new MecanumRobot(-5, -5, 0, 5, -15f, 30, 5, straightPID3, new PIDNorm());
     Body robotPID2 = new MecanumRobot(-9, -9, 0, 5, -15f, 30, 5, target, new PIDNorm());
 
     TrajectorySim cubic = new TrajectorySim(new Cubic());
@@ -47,7 +43,7 @@ public class RobotSimulator implements Simulator {
     //Drawable[] drawables = {robotPID11, robotPID12, robotPID13, straightPID1,straightPID2,straightPID3};
     //Drawable[] drawables = {robotMecJoy};
     //Drawable[] drawables = {new FunctionGrapher(QuinticHermiteBasis.h0,1,0,0),new FunctionGrapher(QuinticHermiteBasis.h1,0,1,0),new FunctionGrapher(QuinticHermiteBasis.h2,0,0,1),new FunctionGrapher(QuinticHermiteBasis.h3,1,1,0),new FunctionGrapher(QuinticHermiteBasis.h4,0,1,1),new FunctionGrapher(QuinticHermiteBasis.h5,1,0,1)};
-    Drawable[] drawables = {new FunctionGrapher(new QuinticHermiteSpline(new Coordinate(-.5,-.5), new Coordinate(0,.5),new Coordinate(0,0),new Coordinate(.5,.5), new Coordinate(0,.5),new Coordinate(0,0)),1,1,1)};
+    Drawable[] drawables = {new FunctionGrapher(new QuinticHermiteSpline(new Coordinate(-.5, -.5), new Coordinate(0, .5), new Coordinate(0, 0), new Coordinate(.5, .5), new Coordinate(0, .5), new Coordinate(0, 0)), 1, 1, 1)};
 
     private long lasttime = System.currentTimeMillis();
     private boolean bounded = false;
@@ -69,7 +65,7 @@ public class RobotSimulator implements Simulator {
 
 
     public void simulateStep(long window) {
-        float deltaTime = (System.currentTimeMillis() - lasttime) / (float) 1000;
+        double deltaTime = (System.currentTimeMillis() - lasttime) / (double) 1000;
         for (Drawable a : drawables) {
             if (a instanceof Body) {
                 Body b = (Body) a;

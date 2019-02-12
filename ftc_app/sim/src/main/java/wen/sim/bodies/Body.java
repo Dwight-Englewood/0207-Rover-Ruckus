@@ -2,22 +2,22 @@ package wen.sim.bodies;
 
 public abstract class Body implements Drawable {
 
-    public float botX = 0;
-    public float botXD = 0;
-    public float botXDD = 0;
-    public float botY = 0;
-    public float botYD = 0;
-    public float botYDD = 0;
-    public float botR = 0;
-    public float botRD = 0;
-    public float botRDD = 0;
-    public float botXF = 0;
-    public float botYF = 0;
-    public float botRF = 0;
+    public double botX = 0;
+    public double botXD = 0;
+    public double botXDD = 0;
+    public double botY = 0;
+    public double botYD = 0;
+    public double botYDD = 0;
+    public double botR = 0;
+    public double botRD = 0;
+    public double botRDD = 0;
+    public double botXF = 0;
+    public double botYF = 0;
+    public double botRF = 0;
 
-    public float defaultX = 0;
-    public float defaultY = 0;
-    public float defaultR = 0;
+    public double defaultX = 0;
+    public double defaultY = 0;
+    public double defaultR = 0;
 
     private long lasttime;
 
@@ -28,7 +28,7 @@ public abstract class Body implements Drawable {
     public abstract void drawData(long window);
 
     public void simulateStep(long window) {
-        float deltaTime = (System.currentTimeMillis() - lasttime) / (float) 1000;
+        double deltaTime = (System.currentTimeMillis() - lasttime) / (double) 1000;
         this.botXD = this.botXD + this.botXDD * deltaTime;
         this.botYD = this.botYD + this.botYDD * deltaTime;
         this.botRD = this.botRD + this.botRDD * deltaTime;

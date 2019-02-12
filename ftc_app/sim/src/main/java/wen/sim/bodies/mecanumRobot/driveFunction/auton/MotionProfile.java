@@ -18,10 +18,10 @@ public class MotionProfile implements MecanumDriveMode {
             this.startTime = System.currentTimeMillis();
             unset = false;
         }
-        bot.wheelFL = (float) leftAccelerationCurve(System.currentTimeMillis() - this.startTime);
-        bot.wheelBL = (float) leftAccelerationCurve(System.currentTimeMillis() - this.startTime);
-        bot.wheelFR = (float) rightAccelerationCurve(System.currentTimeMillis() - this.startTime);
-        bot.wheelBR = (float) rightAccelerationCurve(System.currentTimeMillis() - this.startTime);
+        bot.wheelFL = (double) leftAccelerationCurve(System.currentTimeMillis() - this.startTime);
+        bot.wheelBL = (double) leftAccelerationCurve(System.currentTimeMillis() - this.startTime);
+        bot.wheelFR = (double) rightAccelerationCurve(System.currentTimeMillis() - this.startTime);
+        bot.wheelBR = (double) rightAccelerationCurve(System.currentTimeMillis() - this.startTime);
     }
 
     @Override
@@ -30,12 +30,12 @@ public class MotionProfile implements MecanumDriveMode {
     }
 
     public double leftAccelerationCurve(long elapsedTime) {
-        return 1/(float)30;
+        return 1 / (double) 30;
 
     }
 
     public double rightAccelerationCurve(long elapsedTime) {
-        return (1/(float)30 * elapsedTime/(float)1000);
+        return (1 / (double) 30 * elapsedTime / (double) 1000);
 
     }
 }

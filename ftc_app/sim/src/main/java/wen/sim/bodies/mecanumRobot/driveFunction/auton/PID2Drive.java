@@ -19,14 +19,14 @@ import static org.lwjgl.opengl.GL11.GL_FILL;
 import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
 import static org.lwjgl.opengl.GL11.GL_POLYGON;
 import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glFlush;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glPolygonMode;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glVertex2f;
+import static wen.sim.openglfix.OpenGLFix.glColor3f;
+import static wen.sim.openglfix.OpenGLFix.glVertex2f;
 
 public class PID2Drive extends Body implements MecanumDriveMode {
 
@@ -39,15 +39,15 @@ public class PID2Drive extends Body implements MecanumDriveMode {
 
     Trajectory targets;
 
-    float targetX;
-    float targetY;
+    double targetX;
+    double targetY;
 
     boolean shouldGo = false;
 
     int point = 0;
     private boolean shouldAdvance = true;
 
-    public PID2Drive(Float[] targetX, Float[] targetY) {
+    public PID2Drive(Double[] targetX, Double[] targetY) {
         targets = new Trajectory(targetX, targetY);
         this.targetX = targets.xCoords.get(point);
         this.targetY = targets.yCoords.get(point);
@@ -99,7 +99,7 @@ public class PID2Drive extends Body implements MecanumDriveMode {
         glColor3f(1f, 0.5f, .5f);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glBegin(GL_POLYGON);
-        float boxHalfDim = .05f;
+        double boxHalfDim = .05f;
         glVertex2f((targetX - boxHalfDim) / 10, (targetY - boxHalfDim) / 10);
         glVertex2f((targetX - boxHalfDim) / 10, (targetY + boxHalfDim) / 10);
         glVertex2f((targetX + boxHalfDim) / 10, (targetY + boxHalfDim) / 10);

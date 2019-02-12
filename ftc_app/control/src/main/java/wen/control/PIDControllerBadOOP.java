@@ -1,9 +1,6 @@
 package wen.control;
 
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-
 public class PIDControllerBadOOP extends PIDController {
 
 
@@ -24,7 +21,8 @@ public class PIDControllerBadOOP extends PIDController {
     }
 
     public void setGoalNoReset(double goal) {
-        super.setGoalNoReset(goal);
+        super.setGoalNoReset(goal
+        );
     }
 
 

@@ -9,7 +9,7 @@ public class Cubic extends PathFunction {
     }
 
     @Override
-    public float function(float x) {
-        return (float) (.9*Math.pow(x,3));
+    public double function(double x) {
+        return (double) (.9 * Math.pow(x, 3));
     }
 }

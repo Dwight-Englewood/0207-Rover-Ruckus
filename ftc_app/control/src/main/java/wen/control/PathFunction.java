@@ -2,8 +2,8 @@ package wen.control;
 
 public abstract class PathFunction {
 
-    public float xMin;
-    public float xMax;
+    public double xMin;
+    public double xMax;
 
-    public abstract float function(float x);
+    public abstract double function(double x);
 }

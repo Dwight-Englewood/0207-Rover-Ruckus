@@ -1,4 +1,4 @@
-package wen.control;
+package wen.control.function.Quintic;
 
 public abstract class ParamatricFunction {
 

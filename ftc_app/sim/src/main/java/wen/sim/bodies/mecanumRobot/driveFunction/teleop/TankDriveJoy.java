@@ -16,11 +16,11 @@ public class TankDriveJoy implements MecanumDriveMode {
         FloatBuffer joysticks = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
         ByteBuffer buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1);
 
-        float leftStickY = -1 * joysticks.get(1);
+        double leftStickY = -1 * joysticks.get(1);
 
-        float rightStickY = -1 * joysticks.get(3);
+        double rightStickY = -1 * joysticks.get(3);
 
-        float deadzone = .3f;
+        double deadzone = .3f;
         if (leftStickY < deadzone && leftStickY > -deadzone) {
             leftStickY = 0;
         }

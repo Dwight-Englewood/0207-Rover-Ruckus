@@ -17,9 +17,9 @@ import static org.lwjgl.glfw.GLFW.glfwGetKey;
 public class MecanumDriveKey implements MecanumDriveMode {
 
     public void updateWheelPower(long window, MecanumRobot bot) {
-        float x = 0;
-        float y = 0;
-        float r = 0;
+        double x = 0;
+        double y = 0;
+        double r = 0;
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
             y = 1;
         } else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
@@ -37,10 +37,10 @@ public class MecanumDriveKey implements MecanumDriveMode {
         }
 
         SimpleMatrix wheelV = bot.velocityToWheel(x, y, r);
-        bot.wheelFL = (float) wheelV.get(0, 0);
-        bot.wheelBL = (float) wheelV.get(2, 0);
-        bot.wheelFR = (float) wheelV.get(1, 0);
-        bot.wheelBR = (float) wheelV.get(3, 0);
+        bot.wheelFL = (double) wheelV.get(0, 0);
+        bot.wheelBL = (double) wheelV.get(2, 0);
+        bot.wheelFR = (double) wheelV.get(1, 0);
+        bot.wheelBR = (double) wheelV.get(3, 0);
 
     }
 

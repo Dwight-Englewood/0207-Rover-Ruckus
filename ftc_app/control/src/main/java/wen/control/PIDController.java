@@ -32,6 +32,34 @@ public class PIDController {
         this.goal = goal;
     }
 
+    public static void main(String[] args) {
+        int merp = 0;
+        DecimalFormat df = new DecimalFormat("#.####");
+        df.setRoundingMode(RoundingMode.CEILING);
+        PIDController dab = new PIDController(.3, 0, 0);
+        //PIDController dab = new PIDController(.6, 0, 2.5);
+        //PIDController dab = new PIDController(.4, .001, 6.5);
+
+        double currentPosition = 10;
+        double currentVelocity = 0;
+        double currentAcceleration = 0;
+        final double mass = 100;
+        final double gravity = 9.8;
+        dab.setGoal(0);
+
+        /*for (int i=0; i < 2000; i++) {
+            dab.updateError(currentPosition);
+            double force = Range.clip(dab.correction(), -1, 1)*5000;
+            currentAcceleration = force/mass - ((10/mass) * currentVelocity)-gravity;
+            currentVelocity = (currentVelocity + currentAcceleration / 100);
+            currentPosition = (currentPosition + currentVelocity / 100);
+            if (i == 150) {
+                merp = 1;
+            }
+            System.out.println(df.format(currentPosition));
+        }*/
+    }
+
     protected double correction() {
         return ((error * pGain) + (iError * iGain) - (dError * dGain));
     }
@@ -62,34 +90,6 @@ public class PIDController {
         this.lX = 0;
         this.dError = 0;
         this.iError = 0;
-    }
-
-    public static void main(String[] args) {
-        int merp = 0;
-        DecimalFormat df = new DecimalFormat("#.####");
-        df.setRoundingMode(RoundingMode.CEILING);
-        PIDController dab = new PIDController(.3, 0, 0);
-        //PIDController dab = new PIDController(.6, 0, 2.5);
-        //PIDController dab = new PIDController(.4, .001, 6.5);
-
-        double currentPosition = 10;
-        double currentVelocity = 0;
-        double currentAcceleration = 0;
-        final double mass = 100;
-        final double gravity = 9.8;
-        dab.setGoal(0);
-
-        /*for (int i=0; i < 2000; i++) {
-            dab.updateError(currentPosition);
-            double force = Range.clip(dab.correction(), -1, 1)*5000;
-            currentAcceleration = force/mass - ((10/mass) * currentVelocity)-gravity;
-            currentVelocity = (currentVelocity + currentAcceleration / 100);
-            currentPosition = (currentPosition + currentVelocity / 100);
-            if (i == 150) {
-                merp = 1;
-            }
-            System.out.println(df.format(currentPosition));
-        }*/
     }
 
 }

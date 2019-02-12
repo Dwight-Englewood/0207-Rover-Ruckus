@@ -2,25 +2,25 @@ package wen.sim.bodies;
 
 import org.lwjgl.opengl.GL;
 
-import wen.control.Coordinate;
-import wen.control.ParamatricFunction;
+import wen.control.function.Quintic.Coordinate;
+import wen.control.function.Quintic.ParamatricFunction;
 
 import static org.lwjgl.opengl.GL11.GL_POINTS;
 import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glFlush;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glVertex3f;
+import static wen.sim.openglfix.OpenGLFix.glColor3f;
+import static wen.sim.openglfix.OpenGLFix.glVertex3f;
 
 public class FunctionGrapher implements Drawable {
 
+    public double r;
+    public double g;
+    public double b;
     ParamatricFunction f;
-    public float r;
-    public float g;
-    public float b;
 
-    public FunctionGrapher(ParamatricFunction f, float r, float g, float b) {
+    public FunctionGrapher(ParamatricFunction f, double r, double g, double b) {
         this.f = f;
         this.r = r;
         this.g = g;
@@ -36,19 +36,19 @@ public class FunctionGrapher implements Drawable {
         GL.createCapabilities();
         //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
-        glColor3f(r,g,b);
+        glColor3f(r, g, b);
 
         glBegin(GL_POINTS);
-        for (double i = this.f.tMin; i < this.f.tMax; i = i + (this.f.tMax - this.f.tMin)/1000) {
+        for (double i = this.f.tMin; i < this.f.tMax; i = i + (this.f.tMax - this.f.tMin) / 1000) {
             Coordinate c = this.f.eval(i);
             double x = c.x;
             double y = c.y;
-            glVertex3f((float)x , (float)y , 0);
+            glVertex3f((double) x, (double) y, 0);
             try {
                 c = this.f.eval(i);
                 x = c.x;
                 y = c.y;
-                glVertex3f((float)x , (float)y , 0);
+                glVertex3f((double) x, (double) y, 0);
             } catch (IndexOutOfBoundsException error) {
             }
 

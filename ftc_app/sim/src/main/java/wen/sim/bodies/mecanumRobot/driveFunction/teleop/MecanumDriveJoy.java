@@ -17,7 +17,7 @@ public class MecanumDriveJoy implements MecanumDriveMode {
         FloatBuffer joysticks = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
         //Microsoft X-Box 360 pad
         //Logitech Logitech Dual Action
-        float leftStickX = 0, leftStickY = 0, rightStickX = 0;
+        double leftStickX = 0, leftStickY = 0, rightStickX = 0;
         if (glfwGetJoystickName(GLFW_JOYSTICK_1).equals("Logitech Logitech Dual Action")) {
             leftStickX = joysticks.get(0);
             leftStickY = -1 * joysticks.get(1);
@@ -30,7 +30,7 @@ public class MecanumDriveJoy implements MecanumDriveMode {
 
             rightStickX = -joysticks.get(3);
         }
-        float deadzone = .3f;
+        double deadzone = .3f;
         if (leftStickY < deadzone && leftStickY > -deadzone) {
             leftStickY = 0;
         }
@@ -42,10 +42,10 @@ public class MecanumDriveJoy implements MecanumDriveMode {
         }
         SimpleMatrix wheelV = bot.velocityToWheel(leftStickX, leftStickY, rightStickX);
 
-        bot.wheelFL = (float) wheelV.get(0, 0);
-        bot.wheelBL = (float) wheelV.get(2, 0);
-        bot.wheelFR = (float) wheelV.get(1, 0);
-        bot.wheelBR = (float) wheelV.get(3, 0);
+        bot.wheelFL = (double) wheelV.get(0, 0);
+        bot.wheelBL = (double) wheelV.get(2, 0);
+        bot.wheelFR = (double) wheelV.get(1, 0);
+        bot.wheelBR = (double) wheelV.get(3, 0);
 
     }
 

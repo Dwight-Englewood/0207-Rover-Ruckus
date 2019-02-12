@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL;
 
 import java.util.ArrayList;
 
-import wen.control.Coordinate;
+import wen.control.function.Quintic.Coordinate;
 import wen.sim.bodies.Body;
 import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
 import wen.sim.bodies.mecanumRobot.normFunction.MecanumNormMode;
@@ -13,34 +13,32 @@ import wen.sim.bodies.mecanumRobot.normFunction.MecanumNormMode;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.toDegrees;
-import static java.lang.StrictMath.abs;
-import static java.util.Collections.max;
 import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
 import static org.lwjgl.opengl.GL11.GL_LINE;
 import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_POLYGON;
 import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glFlush;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glPolygonMode;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glTranslatef;
-import static org.lwjgl.opengl.GL11.glVertex2f;
-import static org.lwjgl.opengl.GL11.glVertex3f;
+import static wen.sim.openglfix.OpenGLFix.glColor3f;
+import static wen.sim.openglfix.OpenGLFix.glRotatef;
+import static wen.sim.openglfix.OpenGLFix.glTranslatef;
+import static wen.sim.openglfix.OpenGLFix.glVertex2f;
+import static wen.sim.openglfix.OpenGLFix.glVertex3f;
 
 public class MecanumRobot extends Body {
-    public float botMass = 5;
-    public float drag;
-    public float linearMotorScale;
-    public float wheelRadius;
-    public float wheelFR = 0;
-    public float wheelFL = 0;
-    public float wheelBL = 0;
-    public float wheelBR = 0;
+    public double botMass = 5;
+    public double drag;
+    public double linearMotorScale;
+    public double wheelRadius;
+    public double wheelFR = 0;
+    public double wheelFL = 0;
+    public double wheelBL = 0;
+    public double wheelBR = 0;
     public boolean drawPos = false;
 
     MecanumDriveMode drive;
@@ -49,7 +47,7 @@ public class MecanumRobot extends Body {
     ArrayList<Coordinate> path = new ArrayList<>();
     ArrayList<Coordinate> rot = new ArrayList<>();
 
-    public MecanumRobot(float botMass, float drag, float linearMotorScale, float wheelRadius, MecanumDriveMode mdm, MecanumNormMode mnm) {
+    public MecanumRobot(double botMass, double drag, double linearMotorScale, double wheelRadius, MecanumDriveMode mdm, MecanumNormMode mnm) {
         this.botMass = botMass;
         this.drag = drag;
         this.linearMotorScale = linearMotorScale;
@@ -58,7 +56,7 @@ public class MecanumRobot extends Body {
         this.norm = mnm;
     }
 
-    public MecanumRobot(float x, float y, float r, float botMass, float drag, float linearMotorScale, float wheelRadius, MecanumDriveMode mdm, MecanumNormMode mnm) {
+    public MecanumRobot(double x, double y, double r, double botMass, double drag, double linearMotorScale, double wheelRadius, MecanumDriveMode mdm, MecanumNormMode mnm) {
         this.botMass = botMass;
         this.drag = drag;
         this.linearMotorScale = linearMotorScale;
@@ -95,9 +93,9 @@ public class MecanumRobot extends Body {
     //move to body
     public void updateForce() {
         SimpleMatrix forces = wheelToForce(wheelFL, wheelFR, wheelBL, wheelBR);
-        this.botXF = (float) (linearMotorScale * forces.get(1, 0) + drag * this.botXD);
-        this.botYF = (float) (linearMotorScale * forces.get(0, 0) + drag * this.botYD);
-        this.botRF = (float) (linearMotorScale * forces.get(2, 0) + drag * this.botRD);
+        this.botXF = (double) (linearMotorScale * forces.get(1, 0) + drag * this.botXD);
+        this.botYF = (double) (linearMotorScale * forces.get(0, 0) + drag * this.botYD);
+        this.botRF = (double) (linearMotorScale * forces.get(2, 0) + drag * this.botRD);
     }
 
     public SimpleMatrix getJ(double t) {
@@ -106,13 +104,13 @@ public class MecanumRobot extends Body {
         return rotMatrix.mult(mecanumMatrix);
     }
 
-    public SimpleMatrix velocityToWheel(float vx, float vy, float vr) {
+    public SimpleMatrix velocityToWheel(double vx, double vy, double vr) {
         SimpleMatrix velocity = new SimpleMatrix(new double[][]{{vy}, {vx}, {vr}});
-        SimpleMatrix inv = (getJ((float) (this.botR))).pseudoInverse();
+        SimpleMatrix inv = (getJ((double) (this.botR))).pseudoInverse();
         return inv.mult(velocity).scale((1 / wheelRadius) * 4);
     }
 
-    public SimpleMatrix wheelToForce(float w1, float w2, float w3, float w4) {
+    public SimpleMatrix wheelToForce(double w1, double w2, double w3, double w4) {
         SimpleMatrix j = getJ((this.botR));
         SimpleMatrix w = new SimpleMatrix(new double[][]{{w1}, {w2}, {w3}, {w4}});
         return (j.mult(w).scale(wheelRadius * .25));
@@ -135,13 +133,13 @@ public class MecanumRobot extends Body {
         glLoadIdentity();
         glPushMatrix();
         //glScalef(1 / viewSize, 1 / viewSize, 1);
-        glTranslatef(this.botX / 10, this.botY / 10, (float) 0);
-        glRotatef((float) toDegrees(this.botR), 0, 0, 1);
+        glTranslatef(this.botX / 10, this.botY / 10, (double) 0);
+        glRotatef((double) toDegrees(this.botR), 0, 0, 1);
         //glScalef(1 / viewSize, 1 / viewSize, 1);
         glColor3f(0.2f, 0.2f, 1.0f);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glBegin(GL_POLYGON);
-        float boxHalfDim = .1f;
+        double boxHalfDim = .1f;
         glColor3f(0.2f, 0.2f, 1.0f);
         glVertex2f(boxHalfDim, boxHalfDim);
         glVertex2f(-boxHalfDim, boxHalfDim);
@@ -153,6 +151,7 @@ public class MecanumRobot extends Body {
         glFlush();
     }
 
+
     @Override
     public void drawData(long window) {
         if (drawPos) {
@@ -163,10 +162,10 @@ public class MecanumRobot extends Body {
             for (int i = 0; i < path.size(); i++) {
                 Coordinate e = path.get(i);
                 glColor3f(200f / 255, Math.abs(200 - i % 400) / 255f, Math.abs(200 - i % 400) / 255f);
-                glVertex3f((float) e.x / 10, (float) e.y / 10, 0);
+                glVertex3f((double) e.x / 10, (double) e.y / 10, 0);
                 try {
                     e = path.get(i + 1);
-                    glVertex3f((float)e.x / 10, (float)e.y / 10, 0);
+                    glVertex3f((double) e.x / 10, (double) e.y / 10, 0);
                 } catch (IndexOutOfBoundsException error) {
                 }
 
@@ -185,13 +184,13 @@ public class MecanumRobot extends Body {
                 glColor3f(Math.abs(225 - i % 450) / 255f, 100f, Math.abs(225 - i % 450) / 255f);
                 double y = (e.y + Math.PI);
                 double fixedRotation = (y % (Math.PI * 2)) < 0 ? Math.PI * 2 + (y % (Math.PI * 2)) : (y % (Math.PI * 2));
-                glVertex3f(j / 200f - 1f, (float) (fixedRotation / (Math.PI * 2)) / 2f - 1, 0);
+                glVertex3f(j / 200f - 1f, (double) (fixedRotation / (Math.PI * 2)) / 2f - 1, 0);
                 try {
                     e = rot.get(i + 1);
                     y = (e.y + Math.PI);
                     fixedRotation = (y % (Math.PI * 2)) < 0 ? Math.PI * 2 + (y % (Math.PI * 2)) : (y % (Math.PI * 2));
 
-                    glVertex3f((j + 1) / 200f - 1f, (float) (fixedRotation / (Math.PI * 2)) / 2f - 1, 0);
+                    glVertex3f((j + 1) / 200f - 1f, (double) (fixedRotation / (Math.PI * 2)) / 2f - 1, 0);
                 } catch (IndexOutOfBoundsException error) {
                 }
                 j++;
