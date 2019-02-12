@@ -163,10 +163,10 @@ public class MecanumRobot extends Body {
             for (int i = 0; i < path.size(); i++) {
                 Coordinate e = path.get(i);
                 glColor3f(200f / 255, Math.abs(200 - i % 400) / 255f, Math.abs(200 - i % 400) / 255f);
-                glVertex3f(e.x / 10, e.y / 10, 0);
+                glVertex3f((float) e.x / 10, (float) e.y / 10, 0);
                 try {
                     e = path.get(i + 1);
-                    glVertex3f(e.x / 10, e.y / 10, 0);
+                    glVertex3f((float)e.x / 10, (float)e.y / 10, 0);
                 } catch (IndexOutOfBoundsException error) {
                 }
 

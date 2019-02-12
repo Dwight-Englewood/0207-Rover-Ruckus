@@ -1,10 +1,14 @@
 package wen.sim.simulator;
 
 
+import wen.control.Coordinate;
+import wen.control.Quintic.QuinticHermiteBasis;
+import wen.control.Quintic.QuinticHermiteSpline;
 import wen.sim.bodies.Body;
 
 import wen.sim.bodies.Cubic;
 import wen.sim.bodies.Drawable;
+import wen.sim.bodies.FunctionGrapher;
 import wen.sim.bodies.TrajectorySim;
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
 import wen.sim.bodies.mecanumRobot.driveFunction.auton.PID1Drive;
@@ -30,7 +34,7 @@ public class RobotSimulator implements Simulator {
 
     Body robotMecKey = new MecanumRobot(5, -15f, 30, 5, new MecanumDriveKey(), new DriveNorm());
     Body robotTankJoy = new MecanumRobot(5, -15f, 30, 5, new TankDriveJoy(), new DriveNorm());
-    Body robotMecJoy = new MecanumRobot(5, -15f, 30, 5, new MecanumDriveJoy(), new DriveNorm());
+    Body robotMecJoy = new MecanumRobot(5, -20f, 50, 5, new MecanumDriveJoy(), new DriveNorm());
     Body robotPID11 = new MecanumRobot(-5, 5,0, 5, -15f, 30, 5, straightPID1, new PIDNorm());
     Body robotPID12 = new MecanumRobot(-5, 0,0, 5, -15f, 30, 5, straightPID2, new PIDNorm());
     Body robotPID13 = new MecanumRobot(-5, -5,0, 5, -15f, 30, 5, straightPID3, new PIDNorm());
@@ -40,8 +44,10 @@ public class RobotSimulator implements Simulator {
     TrajectorySim cubic = new TrajectorySim(new Cubic());
 
     //Drawable[] drawables = {robotPID2, target, cubic};
-    Drawable[] drawables = {robotPID11, robotPID12, robotPID13, straightPID1,straightPID2,straightPID3};
-
+    //Drawable[] drawables = {robotPID11, robotPID12, robotPID13, straightPID1,straightPID2,straightPID3};
+    //Drawable[] drawables = {robotMecJoy};
+    //Drawable[] drawables = {new FunctionGrapher(QuinticHermiteBasis.h0,1,0,0),new FunctionGrapher(QuinticHermiteBasis.h1,0,1,0),new FunctionGrapher(QuinticHermiteBasis.h2,0,0,1),new FunctionGrapher(QuinticHermiteBasis.h3,1,1,0),new FunctionGrapher(QuinticHermiteBasis.h4,0,1,1),new FunctionGrapher(QuinticHermiteBasis.h5,1,0,1)};
+    Drawable[] drawables = {new FunctionGrapher(new QuinticHermiteSpline(new Coordinate(-.5,-.5), new Coordinate(0,.5),new Coordinate(0,0),new Coordinate(.5,.5), new Coordinate(0,.5),new Coordinate(0,0)),1,1,1)};
 
     private long lasttime = System.currentTimeMillis();
     private boolean bounded = false;
