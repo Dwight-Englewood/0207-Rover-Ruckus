@@ -1,4 +1,4 @@
-package wen.control.function.Quintic;
+package wen.control.function.quintic;
 
 public class QuinticHermiteBasis {
 

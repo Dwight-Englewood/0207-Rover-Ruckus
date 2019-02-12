@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL;
 
 import java.util.ArrayList;
 
-import wen.control.function.Quintic.Coordinate;
+import wen.control.function.Coordinate;
 import wen.sim.bodies.Body;
 import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
 import wen.sim.bodies.mecanumRobot.normFunction.MecanumNormMode;

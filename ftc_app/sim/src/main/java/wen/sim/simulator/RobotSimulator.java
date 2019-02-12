@@ -1,8 +1,8 @@
 package wen.sim.simulator;
 
 
-import wen.control.function.Quintic.Coordinate;
-import wen.control.function.Quintic.QuinticHermiteSpline;
+import wen.control.function.Coordinate;
+import wen.control.function.quintic.QuinticHermiteSpline;
 import wen.sim.bodies.Body;
 import wen.sim.bodies.Cubic;
 import wen.sim.bodies.Drawable;
@@ -16,7 +16,15 @@ import wen.sim.bodies.mecanumRobot.driveFunction.teleop.MecanumDriveKey;
 import wen.sim.bodies.mecanumRobot.driveFunction.teleop.TankDriveJoy;
 import wen.sim.bodies.mecanumRobot.normFunction.DriveNorm;
 import wen.sim.bodies.mecanumRobot.normFunction.PIDNorm;
+import wen.sim.bodies.primitives.Point;
+import wen.sim.bodies.primitives.Vector;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.glfwGetKey;
@@ -43,7 +51,18 @@ public class RobotSimulator implements Simulator {
     //Drawable[] drawables = {robotPID11, robotPID12, robotPID13, straightPID1,straightPID2,straightPID3};
     //Drawable[] drawables = {robotMecJoy};
     //Drawable[] drawables = {new FunctionGrapher(QuinticHermiteBasis.h0,1,0,0),new FunctionGrapher(QuinticHermiteBasis.h1,0,1,0),new FunctionGrapher(QuinticHermiteBasis.h2,0,0,1),new FunctionGrapher(QuinticHermiteBasis.h3,1,1,0),new FunctionGrapher(QuinticHermiteBasis.h4,0,1,1),new FunctionGrapher(QuinticHermiteBasis.h5,1,0,1)};
-    Drawable[] drawables = {new FunctionGrapher(new QuinticHermiteSpline(new Coordinate(-.5, -.5), new Coordinate(0, .5), new Coordinate(0, 0), new Coordinate(.5, .5), new Coordinate(0, .5), new Coordinate(0, 0)), 1, 1, 1)};
+    //Drawable[] drawables = {new FunctionGrapher(new QuinticHermiteSpline(new Coordinate(-.5, -.5), new Coordinate(0, .5), new Coordinate(0, 0), new Coordinate(.5, .5), new Coordinate(0, .5), new Coordinate(0, 0)), 1, 1, 1),new FunctionGrapher(new QuinticHermiteSpline(new Coordinate(-.5, -.5), new Coordinate(-1, 3), new Coordinate(0, 0), new Coordinate(.5, .5), new Coordinate(0, .5), new Coordinate(0, 0)), 1, 0, 1)};
+
+    Coordinate p0 = new Coordinate(-.8, -.8);
+    Coordinate p1 = new Coordinate(.8, .8);
+    Coordinate v0= new Coordinate(.2, 0);
+    Coordinate v1= new Coordinate(.2, 0);
+    Coordinate a0= new Coordinate(0, 0);
+    Coordinate a1= new Coordinate(0, 0);
+    FunctionGrapher spline = new FunctionGrapher(new QuinticHermiteSpline(p0, v0,a0, p1, v1,a1), 1, 1, 1);
+
+    Drawable[] drawables = {new Point(p0, 0f/255, 206f/255, 30f/255, .02, GLFW_KEY_Q),new Point(p1, 12f/255, 96f/255, 25f/255, .02, GLFW_KEY_A), new Vector(v0, 0,0,1,.01,GLFW_KEY_W,p0), new Vector(a0, 0,1,1,.01,GLFW_KEY_E,p0),new Vector(v1, 0,0,1,.01,GLFW_KEY_S,p1),new Vector(a1, 0,1,1,.01,GLFW_KEY_D,p1), spline};
+    //Drawable[] drawables = {new Point(p0, 0f/255, 206f/255, 30f/255, .02, GLFW_KEY_Q),new Point(p1, 12f/255, 96f/255, 25f/255, .02, GLFW_KEY_A), new Point(v0, 0,0,1,.01,GLFW_KEY_W), new Point(a0, 0,1,1,.01,GLFW_KEY_E),new Point(v1, 0,0,1,.01,GLFW_KEY_S),new Point(a1, 0,1,1,.01,GLFW_KEY_D), spline};
 
     private long lasttime = System.currentTimeMillis();
     private boolean bounded = false;
@@ -61,6 +80,8 @@ public class RobotSimulator implements Simulator {
         for (Drawable a : drawables) {
             a.update(window);
         }
+
+
     }
 
 

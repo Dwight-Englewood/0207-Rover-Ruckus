@@ -2,8 +2,8 @@ package wen.sim.bodies;
 
 import org.lwjgl.opengl.GL;
 
-import wen.control.function.Quintic.Coordinate;
-import wen.control.function.Quintic.ParamatricFunction;
+import wen.control.function.Coordinate;
+import wen.control.function.quintic.ParamatricFunction;
 
 import static org.lwjgl.opengl.GL11.GL_POINTS;
 import static org.lwjgl.opengl.GL11.glBegin;

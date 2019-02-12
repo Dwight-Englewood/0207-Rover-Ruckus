@@ -1,11 +1,13 @@
-package wen.control.function.Quintic;
+package wen.control.function.quintic;
 
-import static wen.control.function.Quintic.QuinticHermiteBasis.h0;
-import static wen.control.function.Quintic.QuinticHermiteBasis.h1;
-import static wen.control.function.Quintic.QuinticHermiteBasis.h2;
-import static wen.control.function.Quintic.QuinticHermiteBasis.h3;
-import static wen.control.function.Quintic.QuinticHermiteBasis.h4;
-import static wen.control.function.Quintic.QuinticHermiteBasis.h5;
+import wen.control.function.Coordinate;
+
+import static wen.control.function.quintic.QuinticHermiteBasis.h0;
+import static wen.control.function.quintic.QuinticHermiteBasis.h1;
+import static wen.control.function.quintic.QuinticHermiteBasis.h2;
+import static wen.control.function.quintic.QuinticHermiteBasis.h3;
+import static wen.control.function.quintic.QuinticHermiteBasis.h4;
+import static wen.control.function.quintic.QuinticHermiteBasis.h5;
 
 
 public class QuinticHermiteSpline extends ParamatricFunction {

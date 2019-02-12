@@ -1,4 +1,6 @@
-package wen.control.function.Quintic;
+package wen.control.function.quintic;
+
+import wen.control.function.Coordinate;
 
 public abstract class ParamatricFunction {
 
