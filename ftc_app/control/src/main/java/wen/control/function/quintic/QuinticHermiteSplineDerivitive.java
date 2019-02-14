@@ -22,11 +22,11 @@ public class QuinticHermiteSplineDerivitive extends ParamatricFunction {
 
     public QuinticHermiteSplineDerivitive(Coordinate p0, Coordinate v0, Coordinate a0, Coordinate p1, Coordinate v1, Coordinate a1) {
         this.p0 = p0;
-        this.v0 = v0;
-        this.a0 = a0;
+        this.v0 = v0.add(p0);
+        this.a0 = a0.add(p0);
         this.p1 = p1;
-        this.v1 = v1;
-        this.a1 = a1;
+        this.v1 = v1.add(p0);
+        this.a1 = a1.add(p0);
     }
 
     @Override

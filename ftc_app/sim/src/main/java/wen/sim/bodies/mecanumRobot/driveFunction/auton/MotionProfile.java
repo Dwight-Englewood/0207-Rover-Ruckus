@@ -124,10 +124,10 @@ public class MotionProfile implements MecanumDriveMode {
             Coordinate dab = pathd.eval((System.currentTimeMillis() - this.startTime) / 5000d);
 
 
-            bot.botXD = dab.x+.9;
+            bot.botXD = dab.x;
             System.out.println("x----x");
             System.out.println(bot.botXD);
-            bot.botYD = dab.y+.9;
+            bot.botYD = dab.y;
             System.out.println("y----y");
             System.out.println(bot.botYD);
 

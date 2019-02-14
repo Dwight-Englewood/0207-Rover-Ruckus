@@ -77,7 +77,7 @@ public class RobotSimulator implements Simulator {
         }
     };
 
-    Body robotPath = new MecanumRobot(-9, -9, 0, 5, -15f, 30, 5, new MotionProfile(1, 0, q, qd, qdd), new PIDNorm());
+    Body robotPath = new MecanumRobot(0, 0, 0, 5, -15f, 30, 5, new MotionProfile(1, 0, q, qd, qdd), new PIDNorm());
 
 
     FunctionGrapher spline0 = new FunctionGrapher(q, 1, 1, 1);
