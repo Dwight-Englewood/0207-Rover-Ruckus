@@ -1,10 +1,10 @@
-package wen.sim.bodies;
+package wen.sim.bodies.graphing;
 
 import org.lwjgl.opengl.GL;
 
 import wen.control.function.Coordinate;
-import wen.control.function.Function;
-import wen.control.function.ParamatricFunction;
+import wen.control.function.ParametricFunction;
+import wen.sim.bodies.Drawable;
 
 import static org.lwjgl.opengl.GL11.GL_POINTS;
 import static org.lwjgl.opengl.GL11.glBegin;
@@ -14,14 +14,14 @@ import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static wen.sim.openglfix.OpenGLFix.glColor3f;
 import static wen.sim.openglfix.OpenGLFix.glVertex3f;
 
-public class FunctionGrapher3 implements Drawable {
+public class ParametricPathGrapher implements Drawable {
 
     public double r;
     public double g;
     public double b;
-    Function f;
+    ParametricFunction f;
 
-    public FunctionGrapher3(Function f, double r, double g, double b) {
+    public ParametricPathGrapher(ParametricFunction f, double r, double g, double b) {
         this.f = f;
         this.r = r;
         this.g = g;
@@ -41,9 +41,17 @@ public class FunctionGrapher3 implements Drawable {
 
         glBegin(GL_POINTS);
         for (double i = this.f.tMin; i < this.f.tMax; i = i + (this.f.tMax - this.f.tMin) / 1000) {
-            double c = this.f.eval(i);
-            glVertex3f(i, c, 0);
-
+            Coordinate c = this.f.eval(i);
+            double x = c.x;
+            double y = c.y;
+            glVertex3f((double) x, (double) y, 0);
+            try {
+                c = this.f.eval(i);
+                x = c.x;
+                y = c.y;
+                glVertex3f((double) x, (double) y, 0);
+            } catch (IndexOutOfBoundsException error) {
+            }
 
         }
         glEnd();

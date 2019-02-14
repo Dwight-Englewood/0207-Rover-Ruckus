@@ -31,6 +31,8 @@ public class Vector implements Drawable {
     public int togglebutton;
     public Coordinate base;
 
+    public boolean debugJoystick = true;
+
     public Vector(Coordinate loc, double r, double g, double b, double radius, int togglebutton, Coordinate base) {
         this.loc = loc;
         this.r = r;
@@ -47,10 +49,10 @@ public class Vector implements Drawable {
         glLoadIdentity();
         glColor3f(r, g, b);
         glBegin(GL_LINES);
-        glVertex3f((this.loc.x + base.x), (this.loc.y + base.y),0);
-        glVertex3f(base.x, base.y,0);
+        glVertex3f((this.loc.x + base.x), (this.loc.y + base.y), 0);
+        glVertex3f(base.x, base.y, 0);
         glEnd();
-        glTranslatef((this.loc.x  + base.x), (this.loc.y  + base.y), 0);
+        glTranslatef((this.loc.x + base.x), (this.loc.y + base.y), 0);
         glBegin(GL_POLYGON);
         for (int i = 0; i < 360; i++) {
             glVertex2f(radius * Math.cos(Math.toRadians(i)), radius * Math.sin(Math.toRadians(i)));
@@ -72,30 +74,37 @@ public class Vector implements Drawable {
 
     @Override
     public void update(long window) {
-        FloatBuffer joysticks = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
-        //Microsoft X-Box 360 pad
-        //Logitech Logitech Dual Action
-        double leftStickX = 0, leftStickY = 0;
-        if (glfwGetJoystickName(GLFW_JOYSTICK_1).equals("Logitech Logitech Dual Action")) {
-            leftStickX = joysticks.get(2);
-            leftStickY = -1 * joysticks.get(3);
+        try {
+            FloatBuffer joysticks = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
+            //Microsoft X-Box 360 pad
+            //Logitech Logitech Dual Action
+            double leftStickX = 0, leftStickY = 0;
+            if (glfwGetJoystickName(GLFW_JOYSTICK_1).equals("Logitech Logitech Dual Action")) {
+                leftStickX = joysticks.get(2);
+                leftStickY = -1 * joysticks.get(3);
 
 
-        } else if (glfwGetJoystickName(GLFW_JOYSTICK_1).equals("Microsoft X-Box 360 pad")) {
-            leftStickX = joysticks.get(3);
-            leftStickY = -1 * joysticks.get(4);
+            } else if (glfwGetJoystickName(GLFW_JOYSTICK_1).equals("Microsoft X-Box 360 pad")) {
+                leftStickX = joysticks.get(3);
+                leftStickY = -1 * joysticks.get(4);
 
-        }
-        double deadzone = .3f;
-        if (leftStickY < deadzone && leftStickY > -deadzone) {
-            leftStickY = 0;
-        }
-        if (leftStickX < deadzone && leftStickX > -deadzone) {
-            leftStickX = 0;
-        }
-        if (glfwGetKey(window, this.togglebutton) == GLFW_PRESS) {
-            this.loc.x = this.loc.x + leftStickX / 30;
-            this.loc.y = this.loc.y + leftStickY / 30;
+            }
+            double deadzone = .3f;
+            if (leftStickY < deadzone && leftStickY > -deadzone) {
+                leftStickY = 0;
+            }
+            if (leftStickX < deadzone && leftStickX > -deadzone) {
+                leftStickX = 0;
+            }
+            if (glfwGetKey(window, this.togglebutton) == GLFW_PRESS) {
+                this.loc.x = this.loc.x + leftStickX / 30;
+                this.loc.y = this.loc.y + leftStickY / 30;
+            }
+        } catch (NullPointerException e) {
+            if (debugJoystick) {
+                debugJoystick = false;
+                System.out.println("No Joystick Connected");
+            }
         }
     }
 }

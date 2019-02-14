@@ -1,8 +1,6 @@
 package wen.control.function.quintic;
 
-import wen.control.function.Coordinate;
 import wen.control.function.Function;
-import wen.control.function.ParamatricFunction;
 
 public class QuinticPolynomial extends Function {
 

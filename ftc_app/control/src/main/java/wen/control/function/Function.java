@@ -2,8 +2,8 @@ package wen.control.function;
 
 public abstract class Function {
 
-    public double tMin = 0;
-    public double tMax = 1;
+    public double xMin = 0;
+    public double xMax = 1;
 
     public abstract double eval(double t);
 

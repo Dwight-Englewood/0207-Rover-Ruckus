@@ -1,7 +1,7 @@
 package wen.control.function.quintic;
 
 import wen.control.function.Coordinate;
-import wen.control.function.ParamatricFunction;
+import wen.control.function.ParametricFunction;
 
 import static wen.control.function.quintic.QuinticHermiteBasis.h0dd;
 import static wen.control.function.quintic.QuinticHermiteBasis.h1dd;
@@ -11,7 +11,7 @@ import static wen.control.function.quintic.QuinticHermiteBasis.h4dd;
 import static wen.control.function.quintic.QuinticHermiteBasis.h5dd;
 
 
-public class QuinticHermiteSplineDerivitiveDerivitive extends ParamatricFunction {
+public class QuinticHermiteSplineDerivitiveDerivitive extends ParametricFunction {
 
     public Coordinate p0;
     public Coordinate v0;
@@ -22,11 +22,11 @@ public class QuinticHermiteSplineDerivitiveDerivitive extends ParamatricFunction
 
     public QuinticHermiteSplineDerivitiveDerivitive(Coordinate p0, Coordinate v0, Coordinate a0, Coordinate p1, Coordinate v1, Coordinate a1) {
         this.p0 = p0;
-        this.v0 = v0.add(p0);
-        this.a0 = a0.add(p0);
+        this.v0 = v0;
+        this.a0 = a0;
         this.p1 = p1;
-        this.v1 = v1.add(p0);
-        this.a1 = a1.add(p0);
+        this.v1 = v1;
+        this.a1 = a1;
     }
 
     @Override

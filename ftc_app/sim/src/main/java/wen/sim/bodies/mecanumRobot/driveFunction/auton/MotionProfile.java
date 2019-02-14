@@ -16,7 +16,6 @@ public class MotionProfile implements MecanumDriveMode {
 
     double ka;
     double kv;
-
     QuinticHermiteSpline path;
     QuinticHermiteSplineDerivitive pathd;
     QuinticHermiteSplineDerivitiveDerivitive pathdd;
@@ -111,7 +110,7 @@ public class MotionProfile implements MecanumDriveMode {
 
         System.out.println((System.currentTimeMillis() - this.startTime) / 5000d);
         */
-        if ((System.currentTimeMillis() - this.startTime) / 5000d > 1) {
+        if ((System.currentTimeMillis() - this.startTime) / 2000d > 1) {
             bot.botXD = 0;
             bot.botYD = 0;
             bot.botXDD = 0;
@@ -121,13 +120,11 @@ public class MotionProfile implements MecanumDriveMode {
             bot.wheelBR = 0;
             bot.wheelFR = 0;
         } else {
-            Coordinate dab = pathd.eval((System.currentTimeMillis() - this.startTime) / 5000d);
-
-
-            bot.botXD = dab.x;
+            Coordinate dab = pathdd.eval((System.currentTimeMillis() - this.startTime) / 2000d);
+            bot.botXDD = dab.x;
             System.out.println("x----x");
             System.out.println(bot.botXD);
-            bot.botYD = dab.y;
+            bot.botYDD = dab.y;
             System.out.println("y----y");
             System.out.println(bot.botYD);
 
@@ -137,6 +134,7 @@ public class MotionProfile implements MecanumDriveMode {
 
     @Override
     public void reset() {
+        System.out.println("KMSMKSKMS");
         this.unset = true;
         this.startTime = System.currentTimeMillis();
     }

@@ -121,7 +121,7 @@ public class MecanumRobot extends Body {
         drive.updateWheelPower(window, this);
         norm.normWheelPower(this);
         updateForce();
-        //forceToAcceleration();
+        forceToAcceleration();
         this.path.add(new Coordinate(this.botX, this.botY));
         this.rot.add(new Coordinate(this.botX, this.botR));
     }

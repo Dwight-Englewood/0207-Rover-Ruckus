@@ -1,9 +1,9 @@
-package wen.sim.bodies;
+package wen.sim.bodies.graphing;
 
 import org.lwjgl.opengl.GL;
 
-import wen.control.function.Coordinate;
-import wen.control.function.ParamatricFunction;
+import wen.control.function.Function;
+import wen.sim.bodies.Drawable;
 
 import static org.lwjgl.opengl.GL11.GL_POINTS;
 import static org.lwjgl.opengl.GL11.glBegin;
@@ -18,9 +18,9 @@ public class FunctionGrapher implements Drawable {
     public double r;
     public double g;
     public double b;
-    ParamatricFunction f;
+    Function f;
 
-    public FunctionGrapher(ParamatricFunction f, double r, double g, double b) {
+    public FunctionGrapher(Function f, double r, double g, double b) {
         this.f = f;
         this.r = r;
         this.g = g;
@@ -39,18 +39,10 @@ public class FunctionGrapher implements Drawable {
         glColor3f(r, g, b);
 
         glBegin(GL_POINTS);
-        for (double i = this.f.tMin; i < this.f.tMax; i = i + (this.f.tMax - this.f.tMin) / 1000) {
-            Coordinate c = this.f.eval(i);
-            double x = c.x;
-            double y = c.y;
-            glVertex3f((double) x, (double) y, 0);
-            try {
-                c = this.f.eval(i);
-                x = c.x;
-                y = c.y;
-                glVertex3f((double) x, (double) y, 0);
-            } catch (IndexOutOfBoundsException error) {
-            }
+        for (double i = this.f.xMin; i < this.f.xMax; i = i + (this.f.xMax - this.f.xMin) / 1000) {
+            double c = this.f.eval(i);
+            glVertex3f(i, c, 0);
+
 
         }
         glEnd();

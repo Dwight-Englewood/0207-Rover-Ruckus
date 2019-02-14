@@ -1,11 +1,11 @@
-package wen.sim.bodies;
+package wen.sim.bodies.graphing;
 
 import org.lwjgl.opengl.GL;
 
 import wen.control.function.Coordinate;
-import wen.control.function.ParamatricFunction;
+import wen.control.function.ParametricFunction;
+import wen.sim.bodies.Drawable;
 
-import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_POINTS;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glEnd;
@@ -14,14 +14,14 @@ import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static wen.sim.openglfix.OpenGLFix.glColor3f;
 import static wen.sim.openglfix.OpenGLFix.glVertex3f;
 
-public class FunctionGrapher2 implements Drawable {
+public class ParametricFunctionGrapher implements Drawable {
 
     public double r;
     public double g;
     public double b;
-    ParamatricFunction f;
+    ParametricFunction f;
 
-    public FunctionGrapher2(ParamatricFunction f, double r, double g, double b) {
+    public ParametricFunctionGrapher(ParametricFunction f, double r, double g, double b) {
         this.f = f;
         this.r = r;
         this.g = g;

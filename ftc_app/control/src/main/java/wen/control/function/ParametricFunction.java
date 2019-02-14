@@ -2,7 +2,7 @@ package wen.control.function;
 
 import wen.control.function.Coordinate;
 
-public abstract class ParamatricFunction {
+public abstract class ParametricFunction {
 
     public double tMin = 0;
     public double tMax = 1;
