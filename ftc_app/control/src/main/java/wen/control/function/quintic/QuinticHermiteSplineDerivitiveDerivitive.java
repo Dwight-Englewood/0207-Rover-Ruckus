@@ -1,6 +1,7 @@
 package wen.control.function.quintic;
 
 import wen.control.function.Coordinate;
+import wen.control.function.ParamatricFunction;
 
 import static wen.control.function.quintic.QuinticHermiteBasis.h0dd;
 import static wen.control.function.quintic.QuinticHermiteBasis.h1dd;
@@ -30,6 +31,6 @@ public class QuinticHermiteSplineDerivitiveDerivitive extends ParamatricFunction
 
     @Override
     public Coordinate eval(double t) {
-        return (new Coordinate(h0dd.eval(t).y * p0.x + h1dd.eval(t).y * v0.x + h2dd.eval(t).y * a0.x + h3dd.eval(t).y * a1.x + h4dd.eval(t).y * v1.x + h5dd.eval(t).y * p1.x, h0dd.eval(t).y * p0.y + h1dd.eval(t).y * v0.y + h2dd.eval(t).y * a0.y + h3dd.eval(t).y * a1.y + h4dd.eval(t).y * v1.y + h5dd.eval(t).y * p1.y));
+        return (new Coordinate(h0dd.eval(t)* p0.x + h1dd.eval(t) * v0.x + h2dd.eval(t) * a0.x + h3dd.eval(t)* a1.x + h4dd.eval(t) * v1.x + h5dd.eval(t)* p1.x, h0dd.eval(t) * p0.y + h1dd.eval(t)* v0.y + h2dd.eval(t) * a0.y + h3dd.eval(t) * a1.y + h4dd.eval(t) * v1.y + h5dd.eval(t) * p1.y));
     }
 }

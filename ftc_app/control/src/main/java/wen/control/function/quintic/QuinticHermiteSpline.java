@@ -1,6 +1,7 @@
 package wen.control.function.quintic;
 
 import wen.control.function.Coordinate;
+import wen.control.function.ParamatricFunction;
 
 import static wen.control.function.quintic.QuinticHermiteBasis.h0;
 import static wen.control.function.quintic.QuinticHermiteBasis.h1;
@@ -30,6 +31,6 @@ public class QuinticHermiteSpline extends ParamatricFunction {
 
     @Override
     public Coordinate eval(double t) {
-        return (new Coordinate(h0.eval(t).y * p0.x + h1.eval(t).y * v0.x + h2.eval(t).y * a0.x + h3.eval(t).y * a1.x + h4.eval(t).y * v1.x + h5.eval(t).y * p1.x, h0.eval(t).y * p0.y + h1.eval(t).y * v0.y + h2.eval(t).y * a0.y + h3.eval(t).y * a1.y + h4.eval(t).y * v1.y + h5.eval(t).y * p1.y));
+        return (new Coordinate(h0.eval(t) * p0.x + h1.eval(t) * v0.x + h2.eval(t) * a0.x + h3.eval(t) * a1.x + h4.eval(t) * v1.x + h5.eval(t) * p1.x, h0.eval(t) * p0.y + h1.eval(t) * v0.y + h2.eval(t) * a0.y + h3.eval(t) * a1.y + h4.eval(t) * v1.y + h5.eval(t) * p1.y));
     }
 }

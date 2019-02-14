@@ -10,8 +10,13 @@ public class Coordinate {
         this.y = y;
     }
 
-    public Coordinate add (Coordinate c) {
+    public Coordinate add(Coordinate c) {
         return new Coordinate(this.x + c.x, this.y + c.y);
+    }
+
+    public Coordinate norm() {
+        double mag = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        return (new Coordinate(x / mag, y / mag));
     }
 
     @Override

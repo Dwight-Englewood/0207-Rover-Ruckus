@@ -1,8 +1,10 @@
 package wen.control.function.quintic;
 
 import wen.control.function.Coordinate;
+import wen.control.function.Function;
+import wen.control.function.ParamatricFunction;
 
-public class QuinticPolynomial extends ParamatricFunction {
+public class QuinticPolynomial extends Function {
 
     public final double a;
     public final double b;
@@ -20,7 +22,7 @@ public class QuinticPolynomial extends ParamatricFunction {
         this.f = f;
     }
 
-    public Coordinate eval(double t) {
-        return (new Coordinate(t, a * Math.pow(t, 5) + b * Math.pow(t, 4) + c * Math.pow(t, 3) + d * Math.pow(t, 2) + e * Math.pow(t, 1) + f));
+    public double eval(double t) {
+        return (a * Math.pow(t, 5) + b * Math.pow(t, 4) + c * Math.pow(t, 3) + d * Math.pow(t, 2) + e * Math.pow(t, 1) + f);
     }
 }
