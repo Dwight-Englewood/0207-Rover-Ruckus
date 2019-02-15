@@ -8,8 +8,8 @@ import wen.control.function.Coordinate;
 import wen.sim.bodies.Body;
 
 import static java.lang.Math.toDegrees;
+import static org.lwjgl.opengl.GL11.GL_FILL;
 import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
-import static org.lwjgl.opengl.GL11.GL_LINE;
 import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_POLYGON;
 import static org.lwjgl.opengl.GL11.glBegin;
@@ -68,13 +68,13 @@ public class BasicBody extends Body {
         glRotatef((double) toDegrees(this.botR), 0, 0, 1);
         //glScalef(1 / viewSize, 1 / viewSize, 1);
         glColor3f(0.2f, 0.2f, 1.0f);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glBegin(GL_POLYGON);
         double boxHalfDim = .1f;
-        glColor3f(0.2f, 0.2f, 1.0f);
+        glColor3f(.7f, 0.2f, 1.0f);
         glVertex2f(boxHalfDim, boxHalfDim);
         glVertex2f(-boxHalfDim, boxHalfDim);
-        glColor3f(0.2f, 0.8f, 1.0f);
+        glColor3f(0.5f, 0.8f, .2f);
         glVertex2f(-boxHalfDim, -boxHalfDim);
         glVertex2f(boxHalfDim, -boxHalfDim);
         glEnd();
@@ -89,9 +89,10 @@ public class BasicBody extends Body {
         //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
         glBegin(GL_LINES);
+        glColor3f(1, 0, 0);
+
         for (int i = 0; i < path.size(); i++) {
             Coordinate e = path.get(i);
-            glColor3f(200f / 255, Math.abs(200 - i % 400) / 255f, Math.abs(200 - i % 400) / 255f);
             glVertex3f((double) e.x / 10, (double) e.y / 10, 0);
             try {
                 e = path.get(i + 1);
