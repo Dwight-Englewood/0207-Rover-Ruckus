@@ -85,6 +85,7 @@ public class BasicBody extends Body {
 
     @Override
     public void drawData(long window) {
+
         GL.createCapabilities();
         //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
@@ -102,7 +103,7 @@ public class BasicBody extends Body {
 
         }
         glEnd();
-
+        /*
         glBegin(GL_LINES);
 
         int start = 0;
@@ -130,7 +131,7 @@ public class BasicBody extends Body {
 
 
         glFlush();
-
+        */
     }
 
 }

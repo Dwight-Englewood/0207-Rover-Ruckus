@@ -9,8 +9,8 @@ import static java.lang.StrictMath.abs;
 import static java.util.Collections.max;
 
 public class DriveNorm implements MecanumNormMode {
-    public final double max = .1f;
-    public final double min = -.1f;
+    public final double max = 1f;
+    public final double min = -1f;
     @Override
     public void normWheelPower(MecanumRobot bot) {
         double largest = max(new ArrayList<Double>(Arrays.asList(abs(bot.wheelFL), abs(bot.wheelFR), abs(bot.wheelBR), abs(bot.wheelBL))));

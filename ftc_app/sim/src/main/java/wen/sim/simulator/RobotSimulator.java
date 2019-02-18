@@ -3,6 +3,7 @@ package wen.sim.simulator;
 
 import wen.control.function.Coordinate;
 import wen.control.function.Function;
+import wen.control.function.PiecewiseLinear;
 import wen.control.function.quintic.QuinticHermiteSpline;
 import wen.control.function.quintic.QuinticHermiteSplineDerivitive;
 import wen.control.function.quintic.QuinticHermiteSplineDerivitiveDerivitive;
@@ -42,7 +43,7 @@ public class RobotSimulator implements Simulator {
 
     Body robotMecKey = new MecanumRobot(5, -15f, 30, 5, new MecanumDriveKey(), new DriveNorm());
     Body robotTankJoy = new MecanumRobot(5, -15f, 30, 5, new TankDriveJoy(), new DriveNorm());
-    Body robotMecJoy = new MecanumRobot(5, -20f, 50, 5, new MecanumDriveJoy(), new DriveNorm());
+    Body robotMecJoy = new MecanumRobot(5, -15f, 30, 5, new MecanumDriveJoy(), new DriveNorm());
     Body robotPID11 = new MecanumRobot(-5, 5, 0, 5, -15f, 30, 5, straightPID1, new PIDNorm());
     Body robotPID12 = new MecanumRobot(-5, 0, 0, 5, -15f, 30, 5, straightPID2, new PIDNorm());
     Body robotPID13 = new MecanumRobot(-5, -5, 0, 5, -15f, 30, 5, straightPID3, new PIDNorm());
@@ -56,9 +57,9 @@ public class RobotSimulator implements Simulator {
 
     Coordinate p0 = new Coordinate(-.8, -.8);
     Coordinate p1 = new Coordinate(.8, .8);
-    Coordinate v0 = new Coordinate(0, 0);
-    Coordinate v1 = new Coordinate(0, -1);
-    Coordinate a0 = new Coordinate(1, 0);
+    Coordinate v0 = new Coordinate(0, 0); // BAD IS WACK
+    Coordinate v1 = new Coordinate(-1, 0);
+    Coordinate a0 = new Coordinate(0, 1);
     Coordinate a1 = new Coordinate(0, 0);
     //Coordinate p2 = new Coordinate(.2, 0);
     //Coordinate v2 = new Coordinate(0, 0);
@@ -75,13 +76,18 @@ public class RobotSimulator implements Simulator {
         }
     };
 
-    Body robotPath = new BasicBody(p0.x*10, p0.y*10, 0, new BasicBodyDrive(1, 0, q, qd, qdd));
+    Body robotPath = new BasicBody(p0.x * 10, p0.y * 10, 0, new BasicBodyDrive(1, 0, q, qd, qdd));
 
 
     ParametricPathGrapher spline0 = new ParametricPathGrapher(q, 1, 1, 1);
     //ParametricPathGrapher spline1 = new ParametricPathGrapher(new QuinticHermiteSpline(p1, v1, a1, p2, v2, a2), 1, 1, 1);
     ParametricFunctionGrapher spline0d = new ParametricFunctionGrapher(qd, 0, 0, 1);
     FunctionGrapher spline1d = new FunctionGrapher(eml, 1, 1, 1);
+
+    PiecewiseLinear piecewiseLinearTest = new PiecewiseLinear(new Coordinate[]{new Coordinate(0, 0), new Coordinate(.1, .1), new Coordinate(.5, .1), new Coordinate(.6, 0)});
+
+    FunctionGrapher pwlg = new FunctionGrapher(piecewiseLinearTest, 0, 1, 0);
+    FunctionGrapher pwlgd = new FunctionGrapher(piecewiseLinearTest.derivitiveF(), 0, 1, 1);
 
     //ParametricPathGrapher spline1d = new ParametricPathGrapher(new QuinticHermiteSplineDerivitiveDerivitive(p1, v1, a1, p2, v2, a2), 1, 0, 0);
 

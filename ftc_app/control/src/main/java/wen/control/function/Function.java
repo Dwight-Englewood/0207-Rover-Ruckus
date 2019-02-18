@@ -11,6 +11,15 @@ public abstract class Function {
         return ((this.eval(t + .0005) - this.eval(t - .0005)) / .001);
     }
 
+    public Function derivitiveF() {
+        return new Function() {
+            @Override
+            public double eval(double t) {
+                return this.derivitive(t);
+            }
+        };
+    }
+
     public double integral(double tLow, double tMax) {
         double sum = 0;
 

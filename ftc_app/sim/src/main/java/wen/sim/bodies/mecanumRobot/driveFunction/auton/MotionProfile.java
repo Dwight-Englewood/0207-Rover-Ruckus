@@ -11,7 +11,7 @@ import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
 
 public class MotionProfile implements MecanumDriveMode {
 
-    long startTime;
+    //long startTime;
     boolean unset;
 
     double ka;
@@ -20,57 +20,8 @@ public class MotionProfile implements MecanumDriveMode {
     QuinticHermiteSplineDerivitive pathd;
     QuinticHermiteSplineDerivitiveDerivitive pathdd;
     double displacement;
-
-    Function mpp = new Function() {
-        @Override
-        public double eval(double t) {
-            t = t / path.length();
-            if (t < 1) {
-                return t * t / 2;
-            } else if (t < 5) {
-                return .5 + (t - 1);
-            } else if (t < 6) {
-                return 4.5 + .5 - (6 - t) * (6 - t) / 2;
-            } else {
-                return 0;
-            }
-        }
-    };
-
-    Function mpv = new Function() {
-        @Override
-        public double eval(double t) {
-            t = t / path.length();
-
-            if (t < 1) {
-                return t;
-            } else if (t < 5) {
-                return 1;
-            } else if (t < 6) {
-                return (5 - t);
-            } else {
-                return 0;
-            }
-        }
-    };
-
-    Function mpa = new Function() {
-        @Override
-        public double eval(double t) {
-            t = t / path.length();
-
-            if (t < 3) {
-                return 1;
-            } else if (t < 8) {
-                return 0;
-            } else if (t < 11) {
-                return -1;
-            } else {
-                return 0;
-            }
-        }
-    };
-
+    double lastBotX;
+    double lastBotY;
 
     PIDControllerBadOOP pid = new PIDControllerBadOOP(0, 0, 0, 0);
 
@@ -81,36 +32,14 @@ public class MotionProfile implements MecanumDriveMode {
         this.path = path;
         this.pathd = pathd;
         this.pathdd = pathdd;
-        this.startTime = System.currentTimeMillis();
     }
 
     @Override
     public void updateWheelPower(long window, MecanumRobot bot) {
-/*
-        Coordinate p = path.eval((System.currentTimeMillis() - this.startTime) / 10000d);
+        this.displacement = this.displacement + Math.sqrt(Math.pow(bot.botX - this.lastBotX, 2) + Math.pow(bot.botY - this.lastBotY, 2));
 
-        pid.updateError(Math.sqrt(Math.pow(bot.botX - p.x, 2) + Math.pow(bot.botY - p.y, 2)));
-        double correction = pid.correction();
-        if (unset) {
-            this.startTime = System.currentTimeMillis();
-            unset = false;
-        }
-
-        Coordinate v = pathd.eval((System.currentTimeMillis() - this.startTime) / 10000d).norm();
-        Coordinate a = pathdd.eval((System.currentTimeMillis() - this.startTime) / 10000d).norm();
-
-        SimpleMatrix wheelV = bot.velocityToWheel(v.x, (kv * v.y + ka * a.y), 0);
-
-        /*
-        bot.wheelFL = (double) wheelV.get(0, 0);
-        bot.wheelBL = (double) wheelV.get(2, 0);
-        bot.wheelFR = (double) wheelV.get(1, 0);
-        bot.wheelBR = (double) wheelV.get(3, 0);
-
-
-        System.out.println((System.currentTimeMillis() - this.startTime) / 5000d);
-        */
-        if ((System.currentTimeMillis() - this.startTime) / 2000d > 1) {
+        if (path.displacementToParameter(this.displacement) > path.tMax) {
+            System.out.println("Done");
             bot.botXD = 0;
             bot.botYD = 0;
             bot.botXDD = 0;
@@ -120,7 +49,7 @@ public class MotionProfile implements MecanumDriveMode {
             bot.wheelBR = 0;
             bot.wheelFR = 0;
         } else {
-            Coordinate dab = pathdd.eval((System.currentTimeMillis() - this.startTime) / 2000d);
+            Coordinate dab = pathdd.eval(path.displacementToParameter(this.displacement));
             bot.botXDD = dab.x;
             System.out.println("x----x");
             System.out.println(bot.botXD);
@@ -136,7 +65,6 @@ public class MotionProfile implements MecanumDriveMode {
     public void reset() {
         System.out.println("KMSMKSKMS");
         this.unset = true;
-        this.startTime = System.currentTimeMillis();
     }
 
 }

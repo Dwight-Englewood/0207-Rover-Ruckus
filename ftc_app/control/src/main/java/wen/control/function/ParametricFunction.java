@@ -19,5 +19,18 @@ public abstract class ParametricFunction {
         return collect;
     }
 
+    public double displacementToParameter(double d) {
+        double collect = 0;
+        for (double t = tMin; t < tMax; t = t + .001) {
+            Coordinate j = this.eval(t-.001);
+            Coordinate i = this.eval(t);
+            collect = collect + Math.sqrt(Math.pow(i.x-j.x, 2) + Math.pow(i.y-j.y, 2));
+            if (collect > d) {
+                return t;
+            }
+        }
+        return tMax + 1;
+    }
+
 
 }
