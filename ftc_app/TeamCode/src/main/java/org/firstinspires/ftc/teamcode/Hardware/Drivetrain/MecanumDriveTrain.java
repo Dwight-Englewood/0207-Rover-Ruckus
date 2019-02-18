@@ -10,6 +10,10 @@ import org.firstinspires.ftc.teamcode.Hardware.State;
 import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
 import org.firstinspires.ftc.teamcode.Matrices.PowerVector4WD;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.pow;
+import static java.lang.Math.sin;
+
 public class MecanumDriveTrain extends DriveTrain {
 
     private final double l, alpha, r;
@@ -91,14 +95,11 @@ public class MecanumDriveTrain extends DriveTrain {
     }
     //Takes a DirRotVector, which encodes the desired rotation and movement in the x and y directionds
     //It also takes the angle of rotation of the robot itself
-    public PowerVector4WD driveVector(DirRotVector drv, double botTheta) {
-        //The line that performs all of the computation needed to determine the motor speeds
-        return new PowerVector4WD(powerMatrix.mult(rotationMatrix(botTheta).mult(drv).scale(-Math.sqrt(2)/r)));
-    }
 
-    public PowerVector4WD drive(DirRotVector drv, double botTheta) {
-        PowerVector4WD powVector = this.driveVector(drv, botTheta);
-        powVector = powVector.scale();
+    public SimpleMatrix drive(DirRotVector drv, double botTheta) {
+        SimpleMatrix powVector = this.velocityToWheel(drv.get(0,0), drv.get(1,0), botTheta);
+        double max = Math.max(Math.max(powVector.get(0,0), powVector.get(1,0)), Math.max(powVector.get(2,0), powVector.get(3,0)));
+        powVector.scale(1/max);
         this.fr.setPower(powVector.get(0, 0));
         this.fl.setPower(powVector.get(1, 0));
         this.bl.setPower(powVector.get(2, 0));
@@ -119,12 +120,20 @@ public class MecanumDriveTrain extends DriveTrain {
             this.br.setPower(1);
         }
     }
+    public SimpleMatrix getJ(double t) {
+        SimpleMatrix rotMatrix = new SimpleMatrix(new double[][]{{cos(t), sin(t), 0}, {-sin(t), cos(t), 0}, {0, 0, 1}});
+        SimpleMatrix mecanumMatrix = new SimpleMatrix(new double[][]{{1, 1, 1, 1}, {1, -1, -1, 1}, {-.5, .5, -.5, .5}});
+        return rotMatrix.mult(mecanumMatrix);
+    }
+
+    public SimpleMatrix velocityToWheel(double vx, double vy, double vr) {
+        SimpleMatrix velocity = new SimpleMatrix(new double[][]{{vy}, {vx}, {vr}});
+        SimpleMatrix inv = (getJ((double) (this.r))).pseudoInverse();
+        return inv.mult(velocity).scale(4);
+    }
 
     //Rotation Matrix returns a generic rotation matrix for the robot
     //Used to apply the rotation of the bot to the motor speeds needed to move a certain direction, to make the robot move relative to the field and not its own orientation
-    private SimpleMatrix rotationMatrix(double theta) {
-        return new SimpleMatrix(new double[][]{{Math.cos(theta), Math.sin(theta), 0}, {-Math.sin(theta), Math.cos(theta), 0}, {0, 0, 1}});
-    }
 
     public void tankControl(Gamepad gamepad, boolean slowMode, boolean reverseMode) {
         //Reverse the controls if reverse mode is on

@@ -6,10 +6,12 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.ejml.simple.SimpleMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
+import org.firstinspires.ftc.teamcode.Hardware.RebuildBot;
 import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
 import org.firstinspires.ftc.teamcode.Matrices.PowerVector4WD;
 
@@ -18,7 +20,7 @@ import org.firstinspires.ftc.teamcode.Matrices.PowerVector4WD;
 @Disabled
 public class FieldCentricDrive extends OpMode {
 
-    Bot boot = new Bot(false, true);
+    RebuildBot boot = new RebuildBot(false, true);
     /*
     fr = 1
     fl = 2
@@ -92,7 +94,7 @@ public class FieldCentricDrive extends OpMode {
 
             telemetry.addData("botTheta", botTheta);
 
-            PowerVector4WD powVector = boot.driveTrain.drive(merp, botTheta);
+            SimpleMatrix powVector = boot.driveTrain.drive(merp, botTheta);
             telemetry.addData("fr_dri", powVector.get(0, 0));
             telemetry.addData("fl_dri", powVector.get(1, 0));
             telemetry.addData("bl_dri", powVector.get(2, 0));
