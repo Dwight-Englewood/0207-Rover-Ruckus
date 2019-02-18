@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Testing;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -10,14 +9,12 @@ import org.ejml.simple.SimpleMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.teamcode.Hardware.Bot;
 import org.firstinspires.ftc.teamcode.Hardware.RebuildBot;
 import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
-import org.firstinspires.ftc.teamcode.Matrices.PowerVector4WD;
 
 
 @TeleOp(name = "FieldCentricDrive", group = "Teleop")
-@Disabled
+//@Disabled
 public class FieldCentricDrive extends OpMode {
 
     RebuildBot boot = new RebuildBot(false, true);
@@ -37,8 +34,8 @@ public class FieldCentricDrive extends OpMode {
     public void init() {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         boot.init(hardwareMap);
-        boot.driveTrain.fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        boot.driveTrain.bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        boot.driveTrain.fl.setDirection(DcMotorSimple.Direction.FORWARD);
+        boot.driveTrain.bl.setDirection(DcMotorSimple.Direction.FORWARD);
         boot.driveTrain.fr.setDirection(DcMotorSimple.Direction.REVERSE);
         boot.driveTrain.br.setDirection(DcMotorSimple.Direction.REVERSE);
     }
@@ -57,50 +54,30 @@ public class FieldCentricDrive extends OpMode {
 
         double botTheta = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
         //The readings from the gyro are different from the reading needed for the field centric code, so we apply a function to fix it
-        botTheta =  (botTheta < 0) ? -botTheta : 2*Math.PI-botTheta;
-        double rsx = -gamepad1.left_stick_x;
-        double nrsy = -gamepad1.left_stick_y;
+        botTheta = (botTheta < 0) ? -botTheta : 2 * Math.PI - botTheta;
+        double lsx = -gamepad1.left_stick_x;
+        double lsy = gamepad1.left_stick_y;
         double theta = gamepad1.right_stick_x;
-        if (gamepad1.dpad_up) {
-            rsx = 0;
-            nrsy = 1;
-        } else if (gamepad1.dpad_down) {
-            rsx = 0;
-            nrsy = -1;
-        } else if (gamepad1.dpad_left) {
-            rsx = 1;
-            nrsy = 0;
-        } else if (gamepad1.dpad_right) {
-            rsx = -1;
-            nrsy = 0;
-        }
 
-        if (gamepad1.right_trigger > .4) {
-            boot.driveTrain.fr.setPower(1);
-            boot.driveTrain.fl.setPower(1);
-            boot.driveTrain.bl.setPower(1);
-            boot.driveTrain.br.setPower(1);
-        } else if (gamepad1.left_trigger > .4) {
-            boot.driveTrain.fr.setPower(-1);
-            boot.driveTrain.fl.setPower(-1);
-            boot.driveTrain.bl.setPower(-1);
-            boot.driveTrain.br.setPower(-1);
-        } else {
-            DirRotVector merp = new DirRotVector(rsx, nrsy, theta);
-            telemetry.addData("right_stick_x", rsx);
-            telemetry.addData("-gamepad1.right_stick_y", nrsy);
-            telemetry.addData("theta", theta);
-            telemetry.addData("botThetaRaw1", botTheta);
 
-            telemetry.addData("botTheta", botTheta);
+        telemetry.addData("lsx", lsx);
+        telemetry.addData("lsy", lsy);
+        telemetry.addData("lsr", theta);
 
-            SimpleMatrix powVector = boot.driveTrain.drive(merp, botTheta);
-            telemetry.addData("fr_dri", powVector.get(0, 0));
-            telemetry.addData("fl_dri", powVector.get(1, 0));
-            telemetry.addData("bl_dri", powVector.get(2, 0));
-            telemetry.addData("br_dri", powVector.get(3, 0));
-        }
 
+        telemetry.addData("botTheta", botTheta);
+
+
+        SimpleMatrix powVector = boot.driveTrain.drive(lsx, lsy, theta, botTheta);
+        telemetry.addData("fr_dri", powVector.get(0, 0));
+        telemetry.addData("fl_dri", powVector.get(1, 0));
+        telemetry.addData("bl_dri", powVector.get(2, 0));
+        telemetry.addData("br_dri", powVector.get(3, 0));
+
+        telemetry.addData("bl encoder", boot.driveTrain.bl.getCurrentPosition());
+        telemetry.addData("br encoder", boot.driveTrain.br.getCurrentPosition());
+        telemetry.addData("fl encoder", boot.driveTrain.fl.getCurrentPosition());
+        telemetry.addData("fr encoder", boot.driveTrain.fr.getCurrentPosition());
 
 
     }

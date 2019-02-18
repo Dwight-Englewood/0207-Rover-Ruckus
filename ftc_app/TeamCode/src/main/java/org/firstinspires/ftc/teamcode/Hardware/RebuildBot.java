@@ -16,7 +16,7 @@ import java.lang.reflect.Field;
 
 public class RebuildBot {
 
-    public MecanumDriveTrain driveTrain = new MecanumDriveTrain(5, 9, 9);
+    public MecanumDriveTrain driveTrain = new MecanumDriveTrain(5, 1, 1);
 
     private boolean isAuton;
     private boolean vumarkOff = true;

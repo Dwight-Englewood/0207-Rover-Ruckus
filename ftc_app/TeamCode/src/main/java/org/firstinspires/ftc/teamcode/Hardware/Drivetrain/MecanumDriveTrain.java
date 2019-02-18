@@ -7,18 +7,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.ejml.simple.SimpleMatrix;
 import org.firstinspires.ftc.teamcode.Hardware.State;
-import org.firstinspires.ftc.teamcode.Matrices.DirRotVector;
-import org.firstinspires.ftc.teamcode.Matrices.PowerVector4WD;
 
 import static java.lang.Math.cos;
-import static java.lang.Math.pow;
 import static java.lang.Math.sin;
 
 public class MecanumDriveTrain extends DriveTrain {
 
     private final double l, alpha, r;
     private final SimpleMatrix powerMatrix;
-    
+
     //make private
     public DcMotor fl, fr, bl, br;
     private int originTick;
@@ -50,6 +47,14 @@ public class MecanumDriveTrain extends DriveTrain {
                         -rollerAngleFactor, rollerAngleFactor, scaleFactor
                 }
         });
+    }
+
+    public static void main(String[] args) {
+        MecanumDriveTrain mdt = new MecanumDriveTrain(5, 1, 1);
+
+        SimpleMatrix powVector = mdt.drive(0, 1, 1, Math.PI * 2);
+
+
     }
 
     @Override
@@ -85,6 +90,8 @@ public class MecanumDriveTrain extends DriveTrain {
     public void reset() {
 
     }
+    //Takes a DirRotVector, which encodes the desired rotation and movement in the x and y directionds
+    //It also takes the angle of rotation of the robot itself
 
     @Override
     public void stop() {
@@ -93,15 +100,21 @@ public class MecanumDriveTrain extends DriveTrain {
         bl.setPower(0);
         br.setPower(0);
     }
-    //Takes a DirRotVector, which encodes the desired rotation and movement in the x and y directionds
-    //It also takes the angle of rotation of the robot itself
 
-    public SimpleMatrix drive(DirRotVector drv, double botTheta) {
-        SimpleMatrix powVector = this.velocityToWheel(drv.get(0,0), drv.get(1,0), botTheta);
-        double max = Math.max(Math.max(powVector.get(0,0), powVector.get(1,0)), Math.max(powVector.get(2,0), powVector.get(3,0)));
-        powVector.scale(1/max);
-        this.fr.setPower(powVector.get(0, 0));
-        this.fl.setPower(powVector.get(1, 0));
+    public SimpleMatrix drive(double lsx, double lsy, double lsr, double botTheta) {
+        SimpleMatrix powVector = this.velocityToWheel(lsx, lsy, lsr, botTheta);
+        double max = Math.max(Math.max(powVector.get(0, 0), powVector.get(1, 0)), Math.max(powVector.get(2, 0), powVector.get(3, 0)));
+        System.out.println(max);
+        if (max != 0 && Math.abs(max) > 1) {
+            powVector = powVector.scale(1 / Math.abs(max));
+        }
+        System.out.println(powVector.get(1, 0));
+        System.out.println(powVector.get(0, 0));
+        System.out.println(powVector.get(2, 0));
+        System.out.println(powVector.get(3, 0));
+
+        this.fr.setPower(powVector.get(1, 0));
+        this.fl.setPower(powVector.get(0, 0));
         this.bl.setPower(powVector.get(2, 0));
         this.br.setPower(powVector.get(3, 0));
         return powVector;
@@ -120,15 +133,17 @@ public class MecanumDriveTrain extends DriveTrain {
             this.br.setPower(1);
         }
     }
+
     public SimpleMatrix getJ(double t) {
+
         SimpleMatrix rotMatrix = new SimpleMatrix(new double[][]{{cos(t), sin(t), 0}, {-sin(t), cos(t), 0}, {0, 0, 1}});
         SimpleMatrix mecanumMatrix = new SimpleMatrix(new double[][]{{1, 1, 1, 1}, {1, -1, -1, 1}, {-.5, .5, -.5, .5}});
         return rotMatrix.mult(mecanumMatrix);
     }
 
-    public SimpleMatrix velocityToWheel(double vx, double vy, double vr) {
+    public SimpleMatrix velocityToWheel(double vx, double vy, double vr, double botTheta) {
         SimpleMatrix velocity = new SimpleMatrix(new double[][]{{vy}, {vx}, {vr}});
-        SimpleMatrix inv = (getJ((double) (this.r))).pseudoInverse();
+        SimpleMatrix inv = (getJ((double) (botTheta))).pseudoInverse();
         return inv.mult(velocity).scale(4);
     }
 
@@ -142,16 +157,16 @@ public class MecanumDriveTrain extends DriveTrain {
         double rightStick = reverseMode ? -gamepad.left_stick_y : gamepad.right_stick_y;
         double leftStick = reverseMode ? -gamepad.right_stick_y : gamepad.left_stick_y;
 
-        if (leftTrigger>.15) {
+        if (leftTrigger > .15) {
             //scale left strafe for precision mode
-            leftTrigger*= (slowMode ? .5 : 1);
+            leftTrigger *= (slowMode ? .5 : 1);
             //apply scaled power to motors
             this.strafepow(-leftTrigger);
             return;
         }
-        if (rightTrigger >.15) {
+        if (rightTrigger > .15) {
             //scale right strafe for precision mode
-            rightTrigger*= (slowMode ? .5 : 1);
+            rightTrigger *= (slowMode ? .5 : 1);
             //apply scaled power to motors
             this.strafepow(rightTrigger);
             return;
@@ -221,23 +236,24 @@ public class MecanumDriveTrain extends DriveTrain {
 
     /**
      * @param gyroTarget The target heading in degrees, between 0 and 360
-     * @param gyroRange The acceptable range off target in degrees, usually 1 or 2
+     * @param gyroRange  The acceptable range off target in degrees, usually 1 or 2
      * @param gyroActual The current heading in degrees, between 0 and 360
-     * @param minSpeed The minimum power to apply in order to turn (e.g. 0.05 when moving or 0.15 when stopped)
-     * @param addSpeed The maximum additional speed to apply in order to turn (proportional component), e.g. 0.3
+     * @param minSpeed   The minimum power to apply in order to turn (e.g. 0.05 when moving or 0.15 when stopped)
+     * @param addSpeed   The maximum additional speed to apply in order to turn (proportional component), e.g. 0.3
      */
     public void gyroCorrect(double gyroTarget, double gyroRange, double gyroActual, double minSpeed, double addSpeed) {
         double delta = (gyroTarget - gyroActual + 360.0) % 360.0; //the difference between target and actual mod 360
         if (delta > 180.0) delta -= 360.0; //makes delta between -180 and 180
         if (Math.abs(delta) > gyroRange) { //checks if delta is out of range
             double gyroMod = delta / 45.0; //scale from -1 to 1 if delta is less than 45 degrees
-            if (Math.abs(gyroMod) > 1.0) gyroMod = Math.signum(gyroMod); //set gyromod to 1 or -1 if the error is more than 45 degrees
+            if (Math.abs(gyroMod) > 1.0)
+                gyroMod = Math.signum(gyroMod); //set gyromod to 1 or -1 if the error is more than 45 degrees
             this.turn(minSpeed * Math.signum(gyroMod) + addSpeed * gyroMod);
-        }
-        else {
+        } else {
             this.turn(0.0);
         }
     }
+
     public void turn(double sPower) {
         fl.setPower(-sPower);
         fr.setPower(sPower);
@@ -249,7 +265,7 @@ public class MecanumDriveTrain extends DriveTrain {
         double power;
         int target = fl.getTargetPosition();
         int current = fl.getCurrentPosition();
-        int sign = target < current ? -1  : 1;
+        int sign = target < current ? -1 : 1;
         int diff = Math.abs(target - current);
         int originDiff = Math.abs(this.originTick - current);
 
@@ -275,11 +291,12 @@ public class MecanumDriveTrain extends DriveTrain {
 
         this.drivepow(sign * power);
     }
+
     public void germanScalePower() {
         double power;
         int target = fl.getTargetPosition();
         int current = fl.getCurrentPosition();
-        int sign = target < current ? -1  : 1;
+        int sign = target < current ? -1 : 1;
         int diff = Math.abs(target - current);
         int originDiff = Math.abs(this.originTick - current);
 
@@ -305,11 +322,12 @@ public class MecanumDriveTrain extends DriveTrain {
 
         this.drivepow(sign * power);
     }
+
     public void slightlyLessGermanScalePower() {
         double power;
         int target = fl.getTargetPosition();
         int current = fl.getCurrentPosition();
-        int sign = target < current ? -1  : 1;
+        int sign = target < current ? -1 : 1;
         int diff = Math.abs(target - current);
         int originDiff = Math.abs(this.originTick - current);
 
@@ -335,6 +353,7 @@ public class MecanumDriveTrain extends DriveTrain {
 
         this.drivepow(sign * power);
     }
+
     private int distanceToRevsNRO20(double distance) {
         final double wheelCirc = 31.9185813;
         final double gearMotorTickThing = 537.6; //neverrest orbital 20 = 537.6 counts per revolution
