@@ -109,7 +109,11 @@ public class MecanumRobot extends Body {
         SimpleMatrix inv = (getJ((double) (this.botR))).pseudoInverse();
         return inv.mult(velocity).scale((1 / wheelRadius) * 4);
     }
-
+    public static void main(String[] args) {
+        MecanumRobot mdt = new MecanumRobot(5, -15, 30, 5, null, null);
+        mdt.botR = Math.PI/2;
+        System.out.println(mdt.velocityToWheel(0, 1, 0));
+    }
     public SimpleMatrix wheelToForce(double w1, double w2, double w3, double w4) {
         SimpleMatrix j = getJ((this.botR));
         SimpleMatrix w = new SimpleMatrix(new double[][]{{w1}, {w2}, {w3}, {w4}});

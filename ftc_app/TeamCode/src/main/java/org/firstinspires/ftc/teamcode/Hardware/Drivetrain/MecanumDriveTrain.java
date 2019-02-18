@@ -52,9 +52,14 @@ public class MecanumDriveTrain extends DriveTrain {
     public static void main(String[] args) {
         MecanumDriveTrain mdt = new MecanumDriveTrain(5, 1, 1);
 
-        SimpleMatrix powVector = mdt.drive(0, 1, 1, Math.PI * 2);
+        try {
+            SimpleMatrix powVector = mdt.drive(0, 1, 0, Math.PI / 2);
 
+        } catch (NullPointerException e) {
+            System.out.println("asd");
+            SimpleMatrix powVector2 = mdt.drive(0, 1, 0, Math.PI);
 
+        }
     }
 
     @Override
@@ -71,10 +76,10 @@ public class MecanumDriveTrain extends DriveTrain {
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //Set to brake zeroPower for wacky drifting?
     }
 
@@ -104,7 +109,6 @@ public class MecanumDriveTrain extends DriveTrain {
     public SimpleMatrix drive(double lsx, double lsy, double lsr, double botTheta) {
         SimpleMatrix powVector = this.velocityToWheel(lsx, lsy, lsr, botTheta);
         double max = Math.max(Math.max(powVector.get(0, 0), powVector.get(1, 0)), Math.max(powVector.get(2, 0), powVector.get(3, 0)));
-        System.out.println(max);
         if (max != 0 && Math.abs(max) > 1) {
             powVector = powVector.scale(1 / Math.abs(max));
         }
@@ -143,7 +147,7 @@ public class MecanumDriveTrain extends DriveTrain {
 
     public SimpleMatrix velocityToWheel(double vx, double vy, double vr, double botTheta) {
         SimpleMatrix velocity = new SimpleMatrix(new double[][]{{vy}, {vx}, {vr}});
-        SimpleMatrix inv = (getJ((double) (botTheta))).pseudoInverse();
+        SimpleMatrix inv = (getJ((double) (Math.toDegrees(botTheta)))).pseudoInverse();
         return inv.mult(velocity).scale(4);
     }
 
