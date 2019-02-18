@@ -38,7 +38,7 @@ public class MotionProfile implements MecanumDriveMode {
     public void updateWheelPower(long window, MecanumRobot bot) {
         this.displacement = this.displacement + Math.sqrt(Math.pow(bot.botX - this.lastBotX, 2) + Math.pow(bot.botY - this.lastBotY, 2));
 
-        if (path.displacementToParameter(this.displacement) > path.tMax) {
+        if (path.displacementToParameter(this.displacement, 0, 1) > path.tMax) {
             System.out.println("Done");
             bot.botXD = 0;
             bot.botYD = 0;
@@ -49,7 +49,7 @@ public class MotionProfile implements MecanumDriveMode {
             bot.wheelBR = 0;
             bot.wheelFR = 0;
         } else {
-            Coordinate dab = pathdd.eval(path.displacementToParameter(this.displacement));
+            Coordinate dab = pathdd.eval(path.displacementToParameter(this.displacement, 0, 1));
             bot.botXDD = dab.x;
             System.out.println("x----x");
             System.out.println(bot.botXD);

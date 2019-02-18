@@ -61,13 +61,16 @@ public class RobotSimulator implements Simulator {
     Coordinate v1 = new Coordinate(-1, 0);
     Coordinate a0 = new Coordinate(0, 1);
     Coordinate a1 = new Coordinate(0, 0);
-    //Coordinate p2 = new Coordinate(.2, 0);
-    //Coordinate v2 = new Coordinate(0, 0);
-    //Coordinate a2 = new Coordinate(0, 0);
+    Coordinate p2 = new Coordinate(.2, 0);
+    Coordinate v2 = new Coordinate(0, 0);
+    Coordinate a2 = new Coordinate(0, 0);
 
     QuinticHermiteSplineDerivitiveDerivitive qdd = new QuinticHermiteSplineDerivitiveDerivitive(p0, v0, a0, p1, v1, a1);
     QuinticHermiteSplineDerivitive qd = new QuinticHermiteSplineDerivitive(p0, v0, a0, p1, v1, a1);
     QuinticHermiteSpline q = new QuinticHermiteSpline(p0, v0, a0, p1, v1, a1);
+    QuinticHermiteSplineDerivitiveDerivitive q1dd = new QuinticHermiteSplineDerivitiveDerivitive(p1, v1, a1, p2, v2, a2);
+    QuinticHermiteSplineDerivitive q1d = new QuinticHermiteSplineDerivitive(p1, v1, a1, p2, v2, a2);
+    QuinticHermiteSpline q1 = new QuinticHermiteSpline(p1, v1, a1, p2, v2, a2);
 
     Function eml = new Function() {
         @Override
@@ -76,10 +79,12 @@ public class RobotSimulator implements Simulator {
         }
     };
 
-    Body robotPath = new BasicBody(p0.x * 10, p0.y * 10, 0, new BasicBodyDrive(1, 0, q, qd, qdd));
+    Body robotPath = new BasicBody(p0.x * 10, p0.y * 10, 0, new BasicBodyDrive(1, 0, q, qd, qdd, q1, q1d, q1dd));
 
 
     ParametricPathGrapher spline0 = new ParametricPathGrapher(q, 1, 1, 1);
+    ParametricPathGrapher spline1 = new ParametricPathGrapher(q1, 1, 1, 1);
+
     //ParametricPathGrapher spline1 = new ParametricPathGrapher(new QuinticHermiteSpline(p1, v1, a1, p2, v2, a2), 1, 1, 1);
     ParametricFunctionGrapher spline0d = new ParametricFunctionGrapher(qd, 0, 0, 1);
     FunctionGrapher spline1d = new FunctionGrapher(eml, 1, 1, 1);
@@ -93,7 +98,7 @@ public class RobotSimulator implements Simulator {
 
 
     //Drawable[] drawables = {robotPath, new Point(p0, 0f / 255, 206f / 255, 30f / 255, .02, GLFW_KEY_Q), new Point(p1, 12f / 255, 96f / 255, 25f / 255, .02, GLFW_KEY_A), new Vector(v0, 0, 0, 1, .01, GLFW_KEY_W, p0), new Vector(a0, 0, 1, 1, .01, GLFW_KEY_E, p0), new Vector(v1, 0, 0, 1, .01, GLFW_KEY_S, p1), new Vector(a1, 0, 1, 1, .01, GLFW_KEY_D, p1), new Point(p2, 0f / 255, 206f / 255, 30f / 255, .02, GLFW_KEY_Z), new Vector(v2, 0, 0, 1, .01, GLFW_KEY_X, p2), new Vector(a2, 0, 1, 1, .01, GLFW_KEY_C, p2), spline1, spline0, spline0d, spline1d};
-    Drawable[] drawables = {robotPath, spline0, new Point(p0, 0f / 255, 206f / 255, 30f / 255, .02, GLFW_KEY_Q), new Point(p1, 12f / 255, 96f / 255, 25f / 255, .02, GLFW_KEY_A), new Vector(v0, 0, 0, 1, .01, GLFW_KEY_W, p0), new Vector(a0, 0, 1, 1, .01, GLFW_KEY_E, p0), new Vector(v1, 0, 0, 1, .01, GLFW_KEY_S, p1), new Vector(a1, 0, 1, 1, .01, GLFW_KEY_D, p1)};
+    Drawable[] drawables = {robotPath, spline0, spline1, new Point(p0, 0f / 255, 206f / 255, 30f / 255, .02, GLFW_KEY_Q), new Point(p1, 12f / 255, 96f / 255, 25f / 255, .02, GLFW_KEY_A), new Vector(v0, 0, 0, 1, .01, GLFW_KEY_W, p0), new Vector(a0, 0, 1, 1, .01, GLFW_KEY_E, p0), new Vector(v1, 0, 0, 1, .01, GLFW_KEY_S, p1), new Vector(a1, 0, 1, 1, .01, GLFW_KEY_D, p1)};
 
     //Drawable[] drawables = {new Point(p0, 0f/255, 206f/255, 30f/255, .02, GLFW_KEY_Q),new Point(p1, 12f/255, 96f/255, 25f/255, .02, GLFW_KEY_A), new Point(v0, 0,0,1,.01,GLFW_KEY_W), new Point(a0, 0,1,1,.01,GLFW_KEY_E),new Point(v1, 0,0,1,.01,GLFW_KEY_S),new Point(a1, 0,1,1,.01,GLFW_KEY_D), spline0};
 

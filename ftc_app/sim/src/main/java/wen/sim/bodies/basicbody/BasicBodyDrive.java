@@ -1,6 +1,10 @@
 package wen.sim.bodies.basicbody;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import wen.control.function.Coordinate;
+import wen.control.function.quintic.QuinticHermitePath;
 import wen.control.function.quintic.QuinticHermiteSpline;
 import wen.control.function.quintic.QuinticHermiteSplineDerivitive;
 import wen.control.function.quintic.QuinticHermiteSplineDerivitiveDerivitive;
@@ -26,17 +30,25 @@ public class BasicBodyDrive implements BasicBodyDriveMode, MecanumDriveMode {
     double lastBotX;
     double lastBotY;
 
-    QuinticHermiteSpline path;
-    QuinticHermiteSplineDerivitive pathd;
-    QuinticHermiteSplineDerivitiveDerivitive pathdd;
+    QuinticHermitePath q;
 
-    public BasicBodyDrive(double kv, double ka, QuinticHermiteSpline path, QuinticHermiteSplineDerivitive pathd, QuinticHermiteSplineDerivitiveDerivitive pathdd) {
+    public BasicBodyDrive(double kv, double ka, QuinticHermiteSpline path, QuinticHermiteSplineDerivitive pathd, QuinticHermiteSplineDerivitiveDerivitive pathdd, QuinticHermiteSpline path1, QuinticHermiteSplineDerivitive path1d, QuinticHermiteSplineDerivitiveDerivitive path1dd) {
         this.ka = ka;
         this.kv = kv;
-        this.path = path;
-        this.pathd = pathd;
-        this.pathdd = pathdd;
         this.startTime = System.currentTimeMillis();
+
+        ArrayList<QuinticHermiteSpline> paths = new ArrayList<>();
+        paths.add(path);
+        paths.add(path1);
+        ArrayList<QuinticHermiteSplineDerivitive> pathds = new ArrayList<>();
+        pathds.add(pathd);
+        pathds.add(path1d);
+        ArrayList<QuinticHermiteSplineDerivitiveDerivitive> pathdds = new ArrayList<>();
+        pathdds.add(pathdd);
+        pathdds.add(path1dd);
+
+        q = new QuinticHermitePath(paths, pathds, pathdds);
+
 
     }
 
@@ -59,9 +71,9 @@ public class BasicBodyDrive implements BasicBodyDriveMode, MecanumDriveMode {
         System.out.println("---------");
         if (shouldGo) {
 
-            if (path.displacementToParameter(this.displacement) > path.tMax) {
+            if (q.displacementToParameter(this.displacement, q.tMin, q.tMax) > q.tMax) {
                 System.out.println(this.displacement);
-                System.out.println(path.displacementToParameter(this.displacement));
+                System.out.println(q.displacementToParameter(this.displacement, q.tMin, q.tMax));
                 bot.botXD = 0;
                 bot.botYD = 0;
                 bot.botXDD = 0;
@@ -70,8 +82,8 @@ public class BasicBodyDrive implements BasicBodyDriveMode, MecanumDriveMode {
                 return new Coordinate(0,0);
             } else {
                 System.out.println("disp:"+this.displacement);
-                System.out.println("t:"+path.displacementToParameter(this.displacement));
-                Coordinate dab = pathdd.eval(path.displacementToParameter(this.displacement));
+                System.out.println("t:"+q.displacementToParameter(this.displacement, q.tMin, q.tMax));
+                Coordinate dab = q.evaldd(q.displacementToParameter(this.displacement, q.tMin, q.tMax));
                 //bot.botXDD = dab.x;
                 //System.out.println("x:" + bot.botXD);
                 //bot.botYDD = dab.y;
@@ -86,10 +98,11 @@ public class BasicBodyDrive implements BasicBodyDriveMode, MecanumDriveMode {
                 this.startTime = System.currentTimeMillis();
                 this.lastBotX = bot.defaultX;
                 this.lastBotY = bot.defaultY;
-                bot.botXD = this.path.v0.x;
-                bot.botYD = this.path.v0.y;
-                bot.botXDD = this.path.a0.x;
-                bot.botYDD = this.path.a0.y;
+                bot.botXD = this.q.qd.get(0).v0.x;
+                bot.botYD = this.q.qd.get(0).v0.y;
+                bot.botXDD = this.q.qdd.get(0).v0.x;
+                bot.botYDD = this.q.qdd.get(0).v0.y;
+
 
             }
             return new Coordinate(0,0);
