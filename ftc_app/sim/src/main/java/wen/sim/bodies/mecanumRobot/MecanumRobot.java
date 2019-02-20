@@ -39,6 +39,10 @@ public class MecanumRobot extends Body {
     public double wheelFL = 0;
     public double wheelBL = 0;
     public double wheelBR = 0;
+    public double wheelFRDist = 0;
+    public double wheelFLDist = 0;
+    public double wheelBLDist = 0;
+    public double wheelBRDist = 0;
     public boolean drawPos = true;
 
     MecanumDriveMode drive;
@@ -90,6 +94,25 @@ public class MecanumRobot extends Body {
         this.botRDD = this.botRF / this.botMass;
     }
 
+    public double getBotX() {
+        return ((wheelFLDist + wheelBRDist) - (wheelFRDist + wheelBLDist))/4;
+    }
+    public double getBotY() {
+        return ((wheelFLDist + wheelBRDist) + (wheelFRDist + wheelBLDist))/4;
+    }public double getBotR() {
+        return ((wheelFLDist + wheelBLDist) - (wheelFRDist + wheelBRDist))/4;
+    }
+    @Override
+    public void simulateStep(long window) {
+        double deltaTime = (System.currentTimeMillis() - lasttime) / (double) 1000;
+        wheelFLDist += wheelFL * deltaTime;
+        wheelFRDist += wheelFR * deltaTime;
+        wheelBLDist += wheelBL * deltaTime;
+        wheelBRDist += wheelBR * deltaTime;
+
+        super.simulateStep(window);
+    }
+
     //move to body
     public void updateForce() {
         SimpleMatrix forces = wheelToForce(wheelFL, wheelFR, wheelBL, wheelBR);
@@ -126,6 +149,10 @@ public class MecanumRobot extends Body {
         norm.normWheelPower(this);
         updateForce();
         forceToAcceleration();
+        System.out.println("MBot Ax: " + this.botXDD);
+        System.out.println("MBot Ay: " + this.botYDD);
+        System.out.println("--------");
+
         this.path.add(new Coordinate(this.botX, this.botY));
         this.rot.add(new Coordinate(this.botX, this.botR));
     }
@@ -165,7 +192,8 @@ public class MecanumRobot extends Body {
             glBegin(GL_LINES);
             for (int i = 0; i < path.size(); i++) {
                 Coordinate e = path.get(i);
-                glColor3f(200f / 255, Math.abs(200 - i % 400) / 255f, Math.abs(200 - i % 400) / 255f);
+                //glColor3f(200f / 255, Math.abs(200 - i % 400) / 255f, Math.abs(200 - i % 400) / 255f);
+                glColor3f(1, 0, 0);
                 glVertex3f((double) e.x / 10, (double) e.y / 10, 0);
                 try {
                     e = path.get(i + 1);

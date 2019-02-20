@@ -52,6 +52,9 @@ public class BasicBody extends Body {
 
     @Override
     public void update(long window) {
+        System.out.println("BBod Ax: " + this.botXDD);
+        System.out.println("BBod Ay: " + this.botYDD);
+
         bbdm.updateKinematics(window, this);
         this.path.add(new Coordinate(this.botX, this.botY));
         this.rot.add(new Coordinate(this.botX, this.botR));
@@ -90,7 +93,7 @@ public class BasicBody extends Body {
         //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
         glBegin(GL_LINES);
-        glColor3f(1, 0, 0);
+        glColor3f(0, 1, 0);
 
         for (int i = 0; i < path.size(); i++) {
             Coordinate e = path.get(i);

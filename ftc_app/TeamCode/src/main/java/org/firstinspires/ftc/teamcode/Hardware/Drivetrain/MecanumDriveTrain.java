@@ -53,7 +53,7 @@ public class MecanumDriveTrain extends DriveTrain {
         MecanumDriveTrain mdt = new MecanumDriveTrain(5, 1, 1);
 
         try {
-            SimpleMatrix powVector = mdt.drive(0, 1, 0, Math.PI / 2);
+            SimpleMatrix powVector = mdt.drive(0, 1, 1, Math.PI / 2);
 
         } catch (NullPointerException e) {
             System.out.println("asd");

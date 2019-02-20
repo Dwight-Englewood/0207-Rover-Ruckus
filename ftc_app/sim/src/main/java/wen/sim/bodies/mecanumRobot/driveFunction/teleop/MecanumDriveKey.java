@@ -2,6 +2,7 @@ package wen.sim.bodies.mecanumRobot.driveFunction.teleop;
 
 import org.ejml.simple.SimpleMatrix;
 
+import wen.control.function.Coordinate;
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
 import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
 

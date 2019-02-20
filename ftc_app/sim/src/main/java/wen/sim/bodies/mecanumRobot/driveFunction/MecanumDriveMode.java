@@ -1,5 +1,6 @@
 package wen.sim.bodies.mecanumRobot.driveFunction;
 
+import wen.control.function.Coordinate;
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
 
 public interface MecanumDriveMode {

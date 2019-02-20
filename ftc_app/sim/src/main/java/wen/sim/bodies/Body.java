@@ -19,7 +19,7 @@ public abstract class Body implements Drawable {
     public double defaultY = 0;
     public double defaultR = 0;
 
-    private long lasttime;
+    public long lasttime;
 
     public abstract void update(long window);
 

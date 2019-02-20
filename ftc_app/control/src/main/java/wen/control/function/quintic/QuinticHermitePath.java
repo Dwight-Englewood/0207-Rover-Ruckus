@@ -35,7 +35,6 @@ public class QuinticHermitePath extends ParametricFunction {
     }
 
     public Coordinate evaldd(double t) {
-        System.out.println("tttt:"+t);
         int index = (int) t;
         double along = t % 1;
         return this.qdd.get(index).eval(along);

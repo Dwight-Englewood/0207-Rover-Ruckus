@@ -19,6 +19,14 @@ public class Coordinate {
         return (new Coordinate(x / mag, y / mag));
     }
 
+    public double magnitude() {
+        return (Math.sqrt(Math.pow(this.x, 2)+Math.pow(this.y,2)));
+    }
+
+    public double heading() {
+        return (Math.atan(this.y/this.x));
+    }
+
     @Override
     public String toString() {
         return "(" + Double.toString(x) + ", " + Double.toString(y) + ")";

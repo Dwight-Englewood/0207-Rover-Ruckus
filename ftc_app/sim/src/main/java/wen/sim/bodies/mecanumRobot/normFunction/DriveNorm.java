@@ -14,7 +14,7 @@ public class DriveNorm implements MecanumNormMode {
     @Override
     public void normWheelPower(MecanumRobot bot) {
         double largest = max(new ArrayList<Double>(Arrays.asList(abs(bot.wheelFL), abs(bot.wheelFR), abs(bot.wheelBR), abs(bot.wheelBL))));
-        if (largest != 0) {
+        if (largest != 0 && largest > 1) {
             bot.wheelFL = bot.wheelFL / largest;
             bot.wheelFR = bot.wheelFR / largest;
             bot.wheelBL = bot.wheelBL / largest;

@@ -1,7 +1,8 @@
 package wen.sim.bodies.basicbody;
 
+import org.ejml.simple.SimpleMatrix;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import wen.control.function.Coordinate;
 import wen.control.function.quintic.QuinticHermitePath;
@@ -14,7 +15,6 @@ import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 import static org.lwjgl.glfw.GLFW.glfwGetKey;
 
 public class BasicBodyDrive implements BasicBodyDriveMode, MecanumDriveMode {
@@ -53,36 +53,16 @@ public class BasicBodyDrive implements BasicBodyDriveMode, MecanumDriveMode {
     }
 
 
-    @Override
-    public void updateKinematics(long window, BasicBody bot) {
-        this.displacement = this.displacement + Math.sqrt(Math.pow(bot.botX/10 - this.lastBotX/10, 2) + Math.pow(bot.botY/10 - this.lastBotY/10, 2));
-        this.lastBotX = bot.botX;
-        this.lastBotY = bot.botY;
-        System.out.println("asd" + this.displacement);
-        Coordinate dab = getAccelVector(window, bot);
-        System.out.println("x:" + dab.x);
-        System.out.println("y:" + dab.y);
-        System.out.println("---");
-        bot.botXDD = dab.x;
-        bot.botYDD = dab.y;
-    }
-
     public Coordinate getAccelVector(long window, Body bot) {
-        System.out.println("---------");
         if (shouldGo) {
 
             if (q.displacementToParameter(this.displacement, q.tMin, q.tMax) > q.tMax) {
-                System.out.println(this.displacement);
-                System.out.println(q.displacementToParameter(this.displacement, q.tMin, q.tMax));
                 bot.botXD = 0;
                 bot.botYD = 0;
                 bot.botXDD = 0;
                 bot.botYDD = 0;
-                System.out.println("wat");
-                return new Coordinate(0,0);
+                return new Coordinate(0, 0);
             } else {
-                System.out.println("disp:"+this.displacement);
-                System.out.println("t:"+q.displacementToParameter(this.displacement, q.tMin, q.tMax));
                 Coordinate dab = q.evaldd(q.displacementToParameter(this.displacement, q.tMin, q.tMax));
                 //bot.botXDD = dab.x;
                 //System.out.println("x:" + bot.botXD);
@@ -105,19 +85,38 @@ public class BasicBodyDrive implements BasicBodyDriveMode, MecanumDriveMode {
 
 
             }
-            return new Coordinate(0,0);
+            return new Coordinate(0, 0);
 
         }
     }
 
     @Override
-    public void updateWheelPower(long window, MecanumRobot bot) {
+    public void updateKinematics(long window, BasicBody bot) {
+        this.displacement = this.displacement + Math.sqrt(Math.pow(bot.botX / 10 - this.lastBotX / 10, 2) + Math.pow(bot.botY / 10 - this.lastBotY / 10, 2));
+        this.lastBotX = bot.botX;
+        this.lastBotY = bot.botY;
+        Coordinate dab = getAccelVector(window, bot);
+        double max = Math.max(Math.abs(dab.x), Math.abs(dab.y));
+        bot.botXDD = dab.x;
+        bot.botYDD = dab.y;
+    }
 
+    @Override
+    public void updateWheelPower(long window, MecanumRobot bot) {
+        this.displacement = this.displacement + Math.sqrt(Math.pow(bot.botX / 10 - this.lastBotX / 10, 2) + Math.pow(bot.botY / 10 - this.lastBotY / 10, 2));
+        this.lastBotX = bot.botX;
+        this.lastBotY = bot.botY;
+        Coordinate dab = getAccelVector(window, bot);
+        SimpleMatrix wheelV = bot.velocityToWheel(dab.x, dab.y, 0);
+
+        bot.wheelFL = wheelV.get(0, 0);
+        bot.wheelBL = wheelV.get(2, 0);
+        bot.wheelFR = wheelV.get(1, 0);
+        bot.wheelBR = wheelV.get(3, 0);
     }
 
     @Override
     public void reset() {
-        System.out.println("KMSMKSKMS");
         this.shouldGo = false;
         this.startTime = System.currentTimeMillis();
     }

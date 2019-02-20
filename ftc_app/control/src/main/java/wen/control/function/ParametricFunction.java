@@ -21,7 +21,6 @@ public abstract class ParametricFunction {
 
     public double displacementToParameter(double d, double tMin, double tMax) {
         double collect = 0;
-        System.out.println("PLS:"+this.tMax);
         for (double t = tMin; t < tMax; t = t + .001) {
             Coordinate j = this.eval(t-.001);
             Coordinate i = this.eval(t);
@@ -30,7 +29,6 @@ public abstract class ParametricFunction {
                 return t;
             }
         }
-        System.out.println("NICE");
         return tMax + 1;
     }
 

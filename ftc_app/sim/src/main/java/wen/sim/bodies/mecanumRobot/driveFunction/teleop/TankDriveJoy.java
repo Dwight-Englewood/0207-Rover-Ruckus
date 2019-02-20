@@ -3,6 +3,7 @@ package wen.sim.bodies.mecanumRobot.driveFunction.teleop;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+import wen.control.function.Coordinate;
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
 import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
 

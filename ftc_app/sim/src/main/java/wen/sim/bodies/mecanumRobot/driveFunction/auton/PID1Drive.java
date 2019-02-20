@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL;
 import java.util.ArrayList;
 
 import wen.control.PIDControllerBadOOP;
+import wen.control.function.Coordinate;
 import wen.sim.bodies.Drawable;
 import wen.sim.bodies.mecanumRobot.MecanumRobot;
 import wen.sim.bodies.mecanumRobot.driveFunction.MecanumDriveMode;
