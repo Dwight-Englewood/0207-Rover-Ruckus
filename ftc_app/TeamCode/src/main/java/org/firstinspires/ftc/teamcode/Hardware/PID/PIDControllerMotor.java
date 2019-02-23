@@ -21,7 +21,7 @@ public class PIDControllerMotor extends PIDController {
     }
 
     @Override
-    protected double correction() {
+    public double correction() {
         return Range.clip(super.correction(), -1, 1);
     }
 
@@ -37,7 +37,7 @@ public class PIDControllerMotor extends PIDController {
     }
 
     @Override
-    protected void reset() {
+    public void reset() {
         //super.reset();
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }

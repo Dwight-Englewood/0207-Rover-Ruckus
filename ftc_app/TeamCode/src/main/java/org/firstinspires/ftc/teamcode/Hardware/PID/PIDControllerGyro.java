@@ -28,7 +28,7 @@ public class PIDControllerGyro extends PIDController {
         this.dt.turn(pow);
     }
 
-    protected double correction() {
+    public double correction() {
         return Range.clip(super.correction(), -1, 1);
     }
 

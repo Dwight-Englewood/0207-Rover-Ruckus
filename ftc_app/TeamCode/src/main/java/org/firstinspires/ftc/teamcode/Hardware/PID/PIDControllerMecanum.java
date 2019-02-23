@@ -32,7 +32,7 @@ public class PIDControllerMecanum extends PIDController {
     }
 
     @Override
-    protected double correction() {
+    public double correction() {
         return Range.clip(super.correction(), -1, 1);
     }
 

@@ -8,12 +8,12 @@ public class PIDController {
 
     //Much thanks to Wesley, at blog.wesleyac.com
 
-    private final double pGain;
-    private final double iGain;
-    private final double dGain;
+    public double pGain;
+    public double iGain;
+    public double dGain;
 
     private double goal;
-    private double error;
+    public double error;
 
     private double lX;
     private double dError;
@@ -60,11 +60,11 @@ public class PIDController {
         }*/
     }
 
-    protected double correction() {
+    public double correction() {
         return ((error * pGain) + (iError * iGain) - (dError * dGain));
     }
 
-    protected void updateError(double currentPosition) {
+    public void updateError(double currentPosition) {
         this.error = goal - currentPosition;
         this.iError = this.iError + this.error;
         this.dError = currentPosition - this.lX;
@@ -84,7 +84,7 @@ public class PIDController {
         return Math.abs(this.error) < resolution;
     }
 
-    protected void reset() {
+    public void reset() {
         this.goal = 0;
         this.error = 0;
         this.lX = 0;
