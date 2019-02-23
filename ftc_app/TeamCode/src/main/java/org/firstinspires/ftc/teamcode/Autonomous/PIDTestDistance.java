@@ -2,23 +2,23 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Hardware.Bot;
 
 import wen.control.PIDController;
 
 
-@TeleOp(name = "PIDTest", group = "kms")
+@TeleOp(name = "PIDTestGyro", group = "kms")
 public class PIDTestDistance extends OpMode {
 
     Bot boot = new Bot(true, true);
-    double kp = 10;
+    double kp = 1;
     double ki = 0;
-    double kd = 20; //kinda big kinda ank but they work for turning
-    PIDController pidTurn = new PIDController(kp, ki, kd);
-    double gyroTarget = 90;
-    double gyroRange = .5;
+    double kd = 0;
+    PIDController pid = new PIDController(kp, ki, kd);
+    double resolution = 10;
+    int targetEncoderTicks;
 
     @Override
     public void init() {
@@ -34,7 +34,7 @@ public class PIDTestDistance extends OpMode {
     @Override
     public void start() {
         boot.start();
-        pidTurn.setGoal(boot.driveTrain.);
+        pid.setGoal(targetEncoderTicks);
 
 
     }
@@ -42,28 +42,26 @@ public class PIDTestDistance extends OpMode {
     @Override
     public void loop() {
         if (gamepad1.b) {
-            pidTurn.reset();
+            pid.reset();
+            boot.driveTrain.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            boot.driveTrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
         if (gamepad1.a) {
-            double gyroActual = boot.sensorSystem.getGyroRotation(AngleUnit.DEGREES);
-
-
-            double delta = (gyroTarget - gyroActual + 360.0) % 360.0; //the difference between target and actual mod 360
-            if (delta > 180.0) {
-                delta -= 360.0; //makes delta between -180 and 180
-            }
-            pidTurn.updateError(gyroActual / 360);
-            if (pidTurn.goalReached(.01)) { //checks if delta is out of range
+            double currentSum = boot.driveTrain.br.getCurrentPosition() +  boot.driveTrain.bl.getCurrentPosition() +  boot.driveTrain.fl.getCurrentPosition() +  boot.driveTrain.fr.getCurrentPosition();
+            currentSum = currentSum / 4;
+            pid.updateError(currentSum);
+            if (pid.goalReached(resolution)) { //checks if delta is out of range
                 telemetry.addData("Done", 0);
-                boot.driveTrain.turn(0.0);
+                boot.driveTrain.drivepow(0);
             } else {
-                double pidcorrect = pidTurn.correction();
+                double pidcorrect = pid.correction();
                 telemetry.addData("Correction", pidcorrect);
-                boot.driveTrain.drivepow(pidcorrect);
+                boot.driveTrain.drivepow(pidcorrect / targetEncoderTicks);
             }
-            telemetry.addData("PID Error", pidTurn.error);
-            telemetry.addData("Current Gyro", gyroActual);
+            telemetry.addData("PID Error", pid.error);
+            telemetry.addData("Current Dist", currentSum);
+            telemetry.addData("Target Dist", targetEncoderTicks);
         } else {
             if (gamepad1.dpad_up) {
                 boot.driveTrain.bl.setPower(1);
@@ -97,14 +95,14 @@ public class PIDTestDistance extends OpMode {
             }
         }
         if (gamepad1.left_trigger > .5) {
-            this.pidTurn.iGain = gamepad1.right_stick_y * 10;
+            this.pid.iGain = gamepad1.right_stick_y * 10;
         }
         if (gamepad1.right_trigger > .5) {
-            this.pidTurn.dGain = gamepad1.left_stick_y * 20;
+            this.pid.dGain = gamepad1.left_stick_y * 20;
         }
-        telemetry.addData("kp", pidTurn.pGain);
-        telemetry.addData("ki", pidTurn.iGain);
-        telemetry.addData("kd", pidTurn.dGain);
+        telemetry.addData("kp", pid.pGain);
+        telemetry.addData("ki", pid.iGain);
+        telemetry.addData("kd", pid.dGain);
 
     }
 
