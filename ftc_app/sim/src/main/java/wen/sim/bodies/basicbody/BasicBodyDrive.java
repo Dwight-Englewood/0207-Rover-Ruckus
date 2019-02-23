@@ -68,7 +68,7 @@ public class BasicBodyDrive implements BasicBodyDriveMode, MecanumDriveMode {
                 //System.out.println("x:" + bot.botXD);
                 //bot.botYDD = dab.y;
                 //System.out.println("y:" + bot.botYD);
-                return dab.scale(.1);
+                return dab.scale(.2);
 
             }
         } else {

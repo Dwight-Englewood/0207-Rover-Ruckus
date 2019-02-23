@@ -83,7 +83,7 @@ public class RobotSimulator implements Simulator {
 
     Body bodyPath = new BasicBody(p0.x * 10, p0.y * 10, 0, new BasicBodyDrive(1, 0, q, qd, qdd, q1, q1d, q1dd));
 
-    MecanumRobot roboPathFollower = new MecanumRobot(p0.x * 10, p0.y * 10, 0,1, 0, 1, 5, new BasicBodyDrive(1, 0, q, qd, qdd, q1, q1d, q1dd), new DriveNorm());
+    MecanumRobot roboPathFollower = new MecanumRobot(p0.x * 10, p0.y * 10, 0,5, 0, 5, 5, new BasicBodyDrive(1, 0, q, qd, qdd, q1, q1d, q1dd), new DriveNorm());
 
     ParametricPathGrapher spline0 = new ParametricPathGrapher(q, 1, 1, 1);
     ParametricPathGrapher spline1 = new ParametricPathGrapher(q1, 1, 1, 1);
