@@ -27,6 +27,10 @@ public class Coordinate {
         return (Math.atan(this.y/this.x));
     }
 
+    public Coordinate scale(double s){
+        return new Coordinate(this.x*s, this.y*s);
+    }
+
     @Override
     public String toString() {
         return "(" + Double.toString(x) + ", " + Double.toString(y) + ")";
