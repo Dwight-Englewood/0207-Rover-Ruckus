@@ -19,7 +19,7 @@ public class TankDriveJoy implements MecanumDriveMode {
 
         double leftStickY = -1 * joysticks.get(1);
 
-        double rightStickY = -1 * joysticks.get(3);
+        double rightStickY = -1 * joysticks.get(4);
 
         double deadzone = .3f;
         if (leftStickY < deadzone && leftStickY > -deadzone) {
