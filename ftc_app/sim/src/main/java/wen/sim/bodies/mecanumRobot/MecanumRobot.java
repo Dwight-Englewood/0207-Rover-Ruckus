@@ -179,6 +179,23 @@ public class MecanumRobot extends Body {
         glVertex2f(boxHalfDim, -boxHalfDim);
         glEnd();
         glPopMatrix();
+        glPushMatrix();
+        //glScalef(1 / viewSize, 1 / viewSize, 1);
+        glTranslatef(this.getBotX(), this.getBotY(), (double) 0);
+        glRotatef((double) toDegrees(this.botR), 0, 0, 1);
+        //glScalef(1 / viewSize, 1 / viewSize, 1);
+        glColor3f(0.2f, 0.2f, 1.0f);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glBegin(GL_POLYGON);
+        boxHalfDim = .05f;
+        glColor3f(0.2f, 0.2f, 1.0f);
+        glVertex2f(boxHalfDim, boxHalfDim);
+        glVertex2f(-boxHalfDim, boxHalfDim);
+        glColor3f(0.2f, 0.8f, 1.0f);
+        glVertex2f(-boxHalfDim, -boxHalfDim);
+        glVertex2f(boxHalfDim, -boxHalfDim);
+        glEnd();
+        glPopMatrix();
         glFlush();
     }
 

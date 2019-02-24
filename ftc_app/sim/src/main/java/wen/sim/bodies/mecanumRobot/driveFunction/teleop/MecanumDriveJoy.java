@@ -60,6 +60,7 @@ public class MecanumDriveJoy implements MecanumDriveMode {
 
         }
         SimpleMatrix wheelV = bot.velocityToWheel(leftStickX, leftStickY, rightStickX);
+        System.out.println("asd" + leftStickX);
 
         bot.wheelFL = (double) wheelV.get(0, 0);
         bot.wheelBL = (double) wheelV.get(2, 0);
