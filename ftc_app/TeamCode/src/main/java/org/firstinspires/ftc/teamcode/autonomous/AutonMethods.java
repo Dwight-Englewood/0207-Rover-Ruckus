@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.hardware.Bot;
+import org.firstinspires.ftc.teamcode.hardware.bots.Bot;
 
 public class AutonMethods {
     public Bot robot;
