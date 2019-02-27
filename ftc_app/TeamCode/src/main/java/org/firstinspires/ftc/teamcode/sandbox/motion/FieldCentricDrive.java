@@ -104,11 +104,19 @@ public class FieldCentricDrive extends OpMode {
             telemetry.addData("Vcy Z", v.zVeloc);
         }
 
+        if (gamepad1.right_trigger > .5) {
+
+            telemetry.addData("PosE X", boot.driveTrain.encoderXDriveWheel());
+            telemetry.addData("PosE Y", boot.driveTrain.encoderYDriveWheel());
+            telemetry.addData("PosE R", boot.driveTrain.encoderRDriveWheel());
+
+        }
+
         if (gamepad1.right_bumper) {
             Position p = imu.getPosition();
-            telemetry.addData("Pos X", p.x);
-            telemetry.addData("Pos Y", p.y);
-            telemetry.addData("Pos Z", p.z);
+            telemetry.addData("PosI X", p.x);
+            telemetry.addData("PosI Y", p.y);
+            telemetry.addData("PosI Z", p.z);
 
         }
 
