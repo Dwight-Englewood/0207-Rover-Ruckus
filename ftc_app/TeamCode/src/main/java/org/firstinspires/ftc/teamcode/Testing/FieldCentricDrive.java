@@ -103,6 +103,7 @@ public class FieldCentricDrive extends OpMode {
             telemetry.addData("Vcy Y", v.yVeloc);
             telemetry.addData("Vcy Z", v.zVeloc);
         }
+
         if (gamepad1.right_bumper) {
             Position p = imu.getPosition();
             telemetry.addData("Pos X", p.x);

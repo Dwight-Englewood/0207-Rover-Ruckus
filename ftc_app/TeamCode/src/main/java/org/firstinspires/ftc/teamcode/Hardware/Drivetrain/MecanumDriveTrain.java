@@ -26,17 +26,16 @@ public class MecanumDriveTrain extends DriveTrain {
 
     }
 
-    public static void main(String[] args) {
-        MecanumDriveTrain mdt = new MecanumDriveTrain();
+    public double encoderXDriveWheel() {
+        return ((fl.getCurrentPosition() + br.getCurrentPosition()) - (fr.getCurrentPosition() + bl.getCurrentPosition())) / 4d;
+    }
 
-        try {
-            SimpleMatrix powVector = mdt.drive(0, 1, 1, Math.PI / 2);
+    public double encoderYDriveWheel() {
+        return ((fl.getCurrentPosition() + br.getCurrentPosition()) + (fr.getCurrentPosition() + bl.getCurrentPosition())) / 4d;
+    }
 
-        } catch (NullPointerException e) {
-            System.out.println("asd");
-            SimpleMatrix powVector2 = mdt.drive(0, 1, 0, Math.PI);
-
-        }
+    public double encoderRDriveWheel() {
+        return ((fl.getCurrentPosition() + bl.getCurrentPosition()) - (fr.getCurrentPosition() + br.getCurrentPosition())) / 4d;
     }
 
     @Override
@@ -82,6 +81,7 @@ public class MecanumDriveTrain extends DriveTrain {
         bl.setPower(0);
         br.setPower(0);
     }
+
     public SimpleMatrix getJ(double t) {
         SimpleMatrix rotMatrix = new SimpleMatrix(new double[][]{{cos(t), sin(t), 0}, {-sin(t), cos(t), 0}, {0, 0, 1}});
         SimpleMatrix mecanumMatrix = new SimpleMatrix(new double[][]{{1, 1, 1, 1}, {1, -1, -1, 1}, {-.5, .5, -.5, .5}});
