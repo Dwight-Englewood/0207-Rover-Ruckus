@@ -16,7 +16,7 @@ import java.lang.reflect.Field;
 
 public class Bot {
 
-    public MecanumDriveTrain driveTrain = new MecanumDriveTrain(5, 9, 9);
+    public MecanumDriveTrain driveTrain = new MecanumDriveTrain();
     public Lift lift = new Lift();
     public MarkerDeploy markerDeploy = new MarkerDeploy();
     public SensorSystem sensorSystem = new SensorSystem();

@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Bot;
 import wen.control.PIDController;
 
 
-@TeleOp(name = "PIDTestGyro", group = "kms")
+@TeleOp(name = "PIDTestDistance ", group = "kms")
 public class PIDTestDistance extends OpMode {
 
     Bot boot = new Bot(true, true);

@@ -55,9 +55,10 @@ public class FieldCentricDrive extends OpMode {
         double botTheta = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
         //The readings from the gyro are different from the reading needed for the field centric code, so we apply a function to fix it
         botTheta = (botTheta < 0) ? -botTheta : 2 * Math.PI - botTheta;
+        botTheta = -botTheta;
         double lsx = -gamepad1.left_stick_x;
         double lsy = gamepad1.left_stick_y;
-        double theta = gamepad1.right_stick_x;
+        double theta = gamepad1.right_stick_x / 2;
 
 
         telemetry.addData("lsx", lsx);

@@ -13,44 +13,21 @@ import static java.lang.Math.sin;
 
 public class MecanumDriveTrain extends DriveTrain {
 
-    private final double l, alpha, r;
-    private final SimpleMatrix powerMatrix;
-
     //make private
     public DcMotor fl, fr, bl, br;
     private int originTick;
 
 
     //The parameters r, a,  and b correspond to various measurements of the robot
-    public MecanumDriveTrain(double r, double a, double b) {
-        this.l = Math.sqrt(Math.pow(a, 2.0) + Math.pow(b, 2));
-        this.r = a;
-        this.alpha = Math.atan(b / a);
-        double rollerAngleFactor = Math.sqrt(2) / 2;
-        double scaleFactor = l * Math.sin(Math.PI / 4 - alpha);
+    public MecanumDriveTrain() {
+
         //This powerMatrix is to perform a rotation depending on the angle of the roller's on the mecanum wheel
         //Our mecanum wheels have rollers mounted at a 45 degree angle
-        this.powerMatrix = new SimpleMatrix(new double[][]{
-                {
-                        rollerAngleFactor, rollerAngleFactor, scaleFactor
-                },
 
-                {
-                        rollerAngleFactor, -rollerAngleFactor, scaleFactor
-                },
-
-                {
-                        -rollerAngleFactor, -rollerAngleFactor, scaleFactor
-                },
-
-                {
-                        -rollerAngleFactor, rollerAngleFactor, scaleFactor
-                }
-        });
     }
 
     public static void main(String[] args) {
-        MecanumDriveTrain mdt = new MecanumDriveTrain(5, 1, 1);
+        MecanumDriveTrain mdt = new MecanumDriveTrain();
 
         try {
             SimpleMatrix powVector = mdt.drive(0, 1, 1, Math.PI / 2);
@@ -105,6 +82,18 @@ public class MecanumDriveTrain extends DriveTrain {
         bl.setPower(0);
         br.setPower(0);
     }
+    public SimpleMatrix getJ(double t) {
+        SimpleMatrix rotMatrix = new SimpleMatrix(new double[][]{{cos(t), sin(t), 0}, {-sin(t), cos(t), 0}, {0, 0, 1}});
+        SimpleMatrix mecanumMatrix = new SimpleMatrix(new double[][]{{1, 1, 1, 1}, {1, -1, -1, 1}, {-.5, .5, -.5, .5}});
+        return rotMatrix.mult(mecanumMatrix);
+    }
+
+    public SimpleMatrix velocityToWheel(double vx, double vy, double vr, double botTheta) {
+        SimpleMatrix velocity = new SimpleMatrix(new double[][]{{vy}, {vx}, {vr}});
+        SimpleMatrix inv = (getJ((double) (botTheta))).pseudoInverse();
+        return inv.mult(velocity).scale(4);
+    }
+
 
     public SimpleMatrix drive(double lsx, double lsy, double lsr, double botTheta) {
         SimpleMatrix powVector = this.velocityToWheel(lsx, lsy, lsr, botTheta);
@@ -137,22 +126,6 @@ public class MecanumDriveTrain extends DriveTrain {
             this.br.setPower(1);
         }
     }
-
-    public SimpleMatrix getJ(double t) {
-
-        SimpleMatrix rotMatrix = new SimpleMatrix(new double[][]{{cos(t), sin(t), 0}, {-sin(t), cos(t), 0}, {0, 0, 1}});
-        SimpleMatrix mecanumMatrix = new SimpleMatrix(new double[][]{{1, 1, 1, 1}, {1, -1, -1, 1}, {-.5, .5, -.5, .5}});
-        return rotMatrix.mult(mecanumMatrix);
-    }
-
-    public SimpleMatrix velocityToWheel(double vx, double vy, double vr, double botTheta) {
-        SimpleMatrix velocity = new SimpleMatrix(new double[][]{{vy}, {vx}, {vr}});
-        SimpleMatrix inv = (getJ((double) (Math.toDegrees(botTheta)))).pseudoInverse();
-        return inv.mult(velocity).scale(4);
-    }
-
-    //Rotation Matrix returns a generic rotation matrix for the robot
-    //Used to apply the rotation of the bot to the motor speeds needed to move a certain direction, to make the robot move relative to the field and not its own orientation
 
     public void tankControl(Gamepad gamepad, boolean slowMode, boolean reverseMode) {
         //Reverse the controls if reverse mode is on
