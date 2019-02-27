@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.sandbox.testing;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
 @TeleOp(name = "RakeTest", group = "Teleop")
+@Disabled
 public class RakeTest extends OpMode {
     Servo top;
     Servo bot;

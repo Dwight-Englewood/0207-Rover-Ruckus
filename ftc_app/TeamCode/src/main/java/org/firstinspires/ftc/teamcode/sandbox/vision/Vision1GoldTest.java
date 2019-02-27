@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.sandbox.vision;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -11,7 +12,7 @@ import java.util.List;
 
 
 @TeleOp(name = "Vumark1GoldTest", group = "Teleop")
-//@Disabled
+@Disabled
 public class Vision1GoldTest extends OpMode {
 
     TFWrapper1Gold tfw1g = new TFWrapper1Gold();

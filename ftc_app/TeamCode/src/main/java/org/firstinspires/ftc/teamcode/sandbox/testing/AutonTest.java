@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.sandbox.testing;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
@@ -7,6 +8,7 @@ import org.firstinspires.ftc.teamcode.autonomous.AutonMethods;
 
 
 @Autonomous(name = "AutonTest", group = "Auton")
+@Disabled
 public class AutonTest extends OpMode {
     public AutonMethods auto = new AutonMethods();
 
