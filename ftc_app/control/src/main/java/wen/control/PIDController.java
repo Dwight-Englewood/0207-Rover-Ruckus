@@ -72,8 +72,8 @@ public class PIDController {
     }
 
     public void setGoal(double goal) {
-        this.goal = goal;
         this.reset();
+        this.goal = goal;
     }
 
     protected void setGoalNoReset(double goal) {
