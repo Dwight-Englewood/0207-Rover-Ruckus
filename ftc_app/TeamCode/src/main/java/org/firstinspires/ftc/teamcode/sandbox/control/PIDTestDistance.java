@@ -13,12 +13,12 @@ import wen.control.PIDController;
 public class PIDTestDistance extends OpMode {
 
     Bot boot = new Bot(true, true);
-    double kp = 1;
-    double ki = 0;
-    double kd = 0;
+    double kp = 2;
+    double ki = 0.0005;
+    double kd = 5;
     PIDController pid = new PIDController(kp, ki, kd);
     double resolution = 10;
-    int targetEncoderTicks;
+    int targetEncoderTicks = 3000;
 
     @Override
     public void init() {
@@ -44,6 +44,9 @@ public class PIDTestDistance extends OpMode {
         if (gamepad1.b) {
             pid.reset();
             boot.driveTrain.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            pid.setGoal(targetEncoderTicks);
+        }
+        if (gamepad1.left_bumper) {
             boot.driveTrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
@@ -94,11 +97,14 @@ public class PIDTestDistance extends OpMode {
                 boot.driveTrain.br.setPower(0);
             }
         }
-        if (gamepad1.left_trigger > .5) {
-            this.pid.iGain = gamepad1.right_stick_y * 10;
+        if (gamepad2.left_trigger > .5) {
+            this.pid.iGain = gamepad2.right_stick_y / 100;
         }
-        if (gamepad1.right_trigger > .5) {
-            this.pid.dGain = gamepad1.left_stick_y * 20;
+        if (gamepad2.right_trigger > .5) {
+            this.pid.dGain = gamepad2.left_stick_y * 20;
+        }
+        if (gamepad2.left_bumper) {
+            this.pid.pGain = gamepad2.left_stick_y * 10;
         }
         telemetry.addData("kp", pid.pGain);
         telemetry.addData("ki", pid.iGain);
