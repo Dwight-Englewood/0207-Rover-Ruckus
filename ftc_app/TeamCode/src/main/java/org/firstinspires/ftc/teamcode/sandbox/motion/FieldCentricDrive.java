@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.sandbox.motion;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.ejml.simple.SimpleMatrix;
@@ -42,6 +43,7 @@ public class FieldCentricDrive extends OpMode {
         boot.driveTrain.bl.setDirection(DcMotorSimple.Direction.FORWARD);
         boot.driveTrain.fr.setDirection(DcMotorSimple.Direction.REVERSE);
         boot.driveTrain.br.setDirection(DcMotorSimple.Direction.REVERSE);
+        boot.driveTrain.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
@@ -51,7 +53,9 @@ public class FieldCentricDrive extends OpMode {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new NaiveAccelerationIntegrator();
         imu.initialize(parameters);
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        imu.startAccelerationIntegration(new Position(), new Velocity(), 200);
+
+
 
     }
 
@@ -61,6 +65,7 @@ public class FieldCentricDrive extends OpMode {
 
     @Override
     public void start() {
+        boot.driveTrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lastTime = System.currentTimeMillis();
 
     }

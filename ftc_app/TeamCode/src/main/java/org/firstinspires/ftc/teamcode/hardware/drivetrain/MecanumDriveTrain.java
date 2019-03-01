@@ -13,9 +13,16 @@ import static java.lang.Math.sin;
 
 public class MecanumDriveTrain extends DriveTrain {
 
+    private final double radiansToEncoderRotation = 1000;
     //make private
     public DcMotor fl, fr, bl, br;
+    public double encoderXDriveWheel;
+    public double encoderYDriveWheel;
     private int originTick;
+    private int lastFLPos;
+    private int lastFRPos;
+    private int lastBLPos;
+    private int lastBRPos;
 
 
     //The parameters r, a,  and b correspond to various measurements of the robot
@@ -26,8 +33,15 @@ public class MecanumDriveTrain extends DriveTrain {
 
     }
 
+    /*public void updatePos(double rot) {
+        double deltaX = ((fl.getCurrentPosition()-lastFLPos + br.getCurrentPosition()-lastBRPos) - (fr.getCurrentPosition()-lastFRPos + bl.getCurrentPosition()-lastBLPos)) / 4d;
+        double deltaY = ((fl.getCurrentPosition()-lastFLPos + br.getCurrentPosition()-lastBRPos) + (fr.getCurrentPosition()-lastFRPos + bl.getCurrentPosition()-lastBLPos)) / 4d;
+        double
+        this.encoderXDriveWheel =
+
+    }*/
     public double encoderXDriveWheel() {
-        return ((fl.getCurrentPosition() + br.getCurrentPosition()) - (fr.getCurrentPosition() + bl.getCurrentPosition())) / 4d;
+        return ((fl.getCurrentPosition() - lastFLPos + br.getCurrentPosition() - lastBRPos) - (fr.getCurrentPosition() + bl.getCurrentPosition())) / 4d;
     }
 
     public double encoderYDriveWheel() {
