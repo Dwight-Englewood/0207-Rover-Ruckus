@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -7,16 +8,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.hardware.bots.Bot;
 
 
-@TeleOp(name = "Telebop", group = "Teleop")
-public class Telebop extends OpMode {
+@TeleOp(name = "Telebop2PersonOldbot", group = "Teleop")
+public class Telebop2PersonOldbot extends OpMode {
 
     Bot robot = new Bot(false);
+    BNO055IMU imu;
+    BNO055IMU.Parameters parameters;
 
     ElapsedTime slowTimer = new ElapsedTime();
     boolean slow = false;
-
     ElapsedTime reverseTimer = new ElapsedTime();
     boolean reverse = false;
+    ElapsedTime rakeTimer = new ElapsedTime();
+    boolean rakeDown = false;
 
     @Override
     public void init() {
@@ -43,9 +47,28 @@ public class Telebop extends OpMode {
             slowTimer.reset();
         }
 
-        if (gamepad1.back && reverseTimer.milliseconds() >= 750) {
+        if (gamepad1.right_bumper && reverseTimer.milliseconds() >= 750) {
             reverse = !reverse;
             reverseTimer.reset();
+        }
+
+        if (gamepad1.x) {
+            rakeDown = false;
+        } else if (gamepad1.y) {
+            rakeDown = true;
+            rakeTimer.reset();
+        }
+
+        if (rakeDown && rakeTimer.milliseconds() < 250) {
+            robot.rake.downfirst();
+        } else if (rakeDown) {
+            if (gamepad1.b) {
+                robot.rake.downButNotAsMuch();
+            } else {
+                robot.rake.down();
+            }
+        } else {
+            robot.rake.up();
         }
 
         robot.driveTrain.tankControl(gamepad1, slow, reverse);
@@ -54,26 +77,23 @@ public class Telebop extends OpMode {
         else if (gamepad1.dpad_down) robot.lift.lift();
         else robot.lift.stop();
 
-        if (gamepad1.dpad_left) robot.rake.up();
-        else if (gamepad1.dpad_right) robot.rake.down();
-
-
-        if (gamepad1.b) robot.markerDeploy.drop();
+        if (gamepad2.b) robot.markerDeploy.drop();
         else robot.markerDeploy.raise();
 
-        if (gamepad1.x) robot.dumper.up();
-        else if (gamepad1.y) robot.dumper.down();
+        if (gamepad2.left_stick_y < -0.5) robot.dumper.upWithFailsafe();
+        else if (gamepad2.x) robot.dumper.up();
+        else if (gamepad2.left_stick_y > .5) robot.dumper.down();
         else robot.dumper.stop();
 
         if (gamepad1.a) robot.dumper.open();
         else robot.dumper.close();
 
-        if (gamepad1.right_bumper) robot.intake.intake();
-        else if (gamepad1.left_bumper) robot.intake.outtake();
+        if (gamepad2.right_trigger > .5) robot.intake.intake();
+        else if (gamepad2.left_trigger > .5) robot.intake.outtake();
         else robot.intake.stop();
 
-        telemetry.addData("Lift Ticks", robot.lift.getTicks());
         telemetry.addData("Slow?", slow);
+        telemetry.addData("Reverse?", reverse);
         telemetry.update();
     }
 

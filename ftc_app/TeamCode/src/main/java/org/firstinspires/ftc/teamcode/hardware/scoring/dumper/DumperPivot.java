@@ -8,8 +8,8 @@ import org.firstinspires.ftc.teamcode.hardware.State;
 import org.firstinspires.ftc.teamcode.hardware.Subsystem;
 
 public class DumperPivot implements Subsystem {
-    public final double pivotUpPos = 1;
-    public final double pivotDownPos = -1;
+    private final double pivotScorePos = 1;
+    private final double pivotNotScorePos = -1;
     private Servo dumperPivot;
     private DcMotor spool;
     private DumperState state;
@@ -29,7 +29,7 @@ public class DumperPivot implements Subsystem {
 
         //magSwitch = hwMap.get(DigitalChannel.class, "dumpmag");
         //distanceSensor = hwMap.get(Rev2mDistanceSensor.class, "dumpdist");
-        this.pivotDown();
+        this.pivotNotScore();
     }
 
     @Override
@@ -52,29 +52,27 @@ public class DumperPivot implements Subsystem {
         return this.state;
     }
 
-    public void pivotUp() {
-        this.dumperPivot.setPosition(pivotUpPos);
+    public void pivotScore() {
+        this.dumperPivot.setPosition(pivotScorePos);
 
     }
 
-    public void pivotDown() {
-        this.dumperPivot.setPosition(pivotDownPos);
+    public void pivotNotScore() {
+        this.dumperPivot.setPosition(pivotNotScorePos);
     }
 
     public void up() {
         spool.setPower(-.8);
     }
 
-    public void upWithFailsafe() {
-
-        spool.setPower(-.8);
-
-    }
-
     public void down() {
 
         spool.setPower(.8);
 
+    }
+
+    public void idle() {
+        spool.setPower(0);
     }
 
 

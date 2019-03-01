@@ -85,6 +85,11 @@ public class IntakeSlides implements Subsystem {
         intake.setPower(-1);
     }
 
+    public void notake() {
+        intake.setPower(0);
+    }
+
+
     public void pivotUp() {
         intakePivot.setPosition(pivotUpPos);
     }
@@ -92,7 +97,6 @@ public class IntakeSlides implements Subsystem {
     public void pivotDown() {
         intakePivot.setPosition(pivotDownPos);
     }
-
 
 
     public void extendPID() {
@@ -134,6 +138,11 @@ public class IntakeSlides implements Subsystem {
     public void retractBasic() {
         extendo.setPower(-1);
     }
+
+    public void idle() {
+        extendo.setPower(0);
+    }
+
 
     public void update(Command c) {
         switch (c) {
