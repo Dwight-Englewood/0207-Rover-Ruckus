@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.hardware.Subsystem;
 import org.firstinspires.ftc.teamcode.hardware.drivetrain.MecanumDriveTrain;
-import org.firstinspires.ftc.teamcode.hardware.scoring.Dumper;
-import org.firstinspires.ftc.teamcode.hardware.scoring.Intake;
+import org.firstinspires.ftc.teamcode.hardware.scoring.dumper.Dumper;
+import org.firstinspires.ftc.teamcode.hardware.scoring.intake.Intake;
 import org.firstinspires.ftc.teamcode.hardware.scoring.Lift;
 import org.firstinspires.ftc.teamcode.hardware.scoring.MarkerDeploy;
 import org.firstinspires.ftc.teamcode.hardware.scoring.Rake;

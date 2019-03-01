@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.hardware.scoring;
+package org.firstinspires.ftc.teamcode.hardware.scoring.intake;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;

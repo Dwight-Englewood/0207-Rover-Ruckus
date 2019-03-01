@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.hardware.scoring;
+package org.firstinspires.ftc.teamcode.hardware.scoring.intake;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -26,7 +26,7 @@ public class IntakeSlides implements Subsystem {
 
     private DcMotor extendo;
     private CRServo intake;
-    private Servo pivot;
+    private Servo intakePivot;
     private DigitalChannel magSwitch;
 
     private PIDController pidIntake = new PIDController(kp, ki, kd);
@@ -42,8 +42,8 @@ public class IntakeSlides implements Subsystem {
 
         intake = hwMap.get(CRServo.class, "intake");
 
-        pivot = hwMap.get(Servo.class, "pivot");
-        pivot.setPosition(pivotUpPos);
+        intakePivot = hwMap.get(Servo.class, "intakePivot");
+        intakePivot.setPosition(pivotUpPos);
 
         magSwitch = hwMap.get(DigitalChannel.class, "magSwitch");
 
@@ -53,14 +53,14 @@ public class IntakeSlides implements Subsystem {
     @Override
     public void start() {
         extendo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        pivot.setPosition(pivotUpPos);
+        intakePivot.setPosition(pivotUpPos);
         intake.setPower(0);
     }
 
     @Override
     public void reset() {
         extendo.setPower(0);
-        pivot.setPosition(pivotUpPos);
+        intakePivot.setPosition(pivotUpPos);
         intake.setPower(0);
 
     }
@@ -69,7 +69,7 @@ public class IntakeSlides implements Subsystem {
     public void stop() {
         extendo.setPower(0);
         intake.setPower(0);
-        
+
     }
 
     @Override
@@ -86,11 +86,11 @@ public class IntakeSlides implements Subsystem {
     }
 
     public void pivotUp() {
-        pivot.setPosition(pivotUpPos);
+        intakePivot.setPosition(pivotUpPos);
     }
 
     public void pivotDown() {
-        pivot.setPosition(pivotDownPos);
+        intakePivot.setPosition(pivotDownPos);
     }
 
 

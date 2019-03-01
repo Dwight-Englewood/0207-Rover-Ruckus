@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.hardware.scoring;
+package org.firstinspires.ftc.teamcode.hardware.scoring.dumper;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
