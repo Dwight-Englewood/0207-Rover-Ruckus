@@ -9,10 +9,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.hardware.State;
 import org.firstinspires.ftc.teamcode.hardware.Subsystem;
 
-public class SensorSystem implements Subsystem {
+public class IMU implements Subsystem {
     private BNO055IMU imu;
 
-    public SensorSystem(){
+    public IMU(){
         this.state = sensorState.RUNNING;
     }
 

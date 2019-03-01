@@ -66,7 +66,7 @@ public class DumperPivot implements Subsystem {
     }
 
     public void upWithFailsafe() {
-       
+
         spool.setPower(-.8);
 
     }

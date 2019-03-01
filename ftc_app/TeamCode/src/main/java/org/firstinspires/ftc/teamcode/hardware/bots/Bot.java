@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.hardware.scoring.intake.Intake;
 import org.firstinspires.ftc.teamcode.hardware.scoring.Lift;
 import org.firstinspires.ftc.teamcode.hardware.scoring.MarkerDeploy;
 import org.firstinspires.ftc.teamcode.hardware.scoring.Rake;
-import org.firstinspires.ftc.teamcode.hardware.sensors.SensorSystem;
+import org.firstinspires.ftc.teamcode.hardware.sensors.IMU;
 import org.firstinspires.ftc.teamcode.hardware.sensors.vision.tensorflow.TFWrapper2Mineral;
 import org.firstinspires.ftc.teamcode.hardware.sensors.vision.vumark.VumarkWrapper;
 
@@ -20,7 +20,7 @@ public class Bot {
     public MecanumDriveTrain driveTrain = new MecanumDriveTrain();
     public Lift lift = new Lift();
     public MarkerDeploy markerDeploy = new MarkerDeploy();
-    public SensorSystem sensorSystem = new SensorSystem();
+    public IMU sensorSystem = new IMU();
     public TFWrapper2Mineral tensorFlow = new TFWrapper2Mineral();
     public VumarkWrapper vumarkWrapper = new VumarkWrapper();
     public Dumper dumper = new Dumper();

@@ -4,6 +4,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.hardware.Subsystem;
 import org.firstinspires.ftc.teamcode.hardware.drivetrain.MecanumDriveTrain;
+import org.firstinspires.ftc.teamcode.hardware.scoring.dumper.DumperPivot;
+import org.firstinspires.ftc.teamcode.hardware.scoring.intake.IntakeSlides;
+import org.firstinspires.ftc.teamcode.hardware.sensors.IMU;
+import org.firstinspires.ftc.teamcode.hardware.sensors.vision.opencv.GoldDetectorWrapper;
 import org.firstinspires.ftc.teamcode.hardware.sensors.vision.tensorflow.TFWrapper2Mineral;
 import org.firstinspires.ftc.teamcode.hardware.sensors.vision.vumark.VumarkWrapper;
 
@@ -12,6 +16,10 @@ import java.lang.reflect.Field;
 public class RebuildBot {
 
     public MecanumDriveTrain driveTrain = new MecanumDriveTrain();
+    public IntakeSlides intakeSlides = new IntakeSlides();
+    public DumperPivot dumperPivot = new DumperPivot();
+    public IMU imu = new IMU();
+    public GoldDetectorWrapper goldDetector = new GoldDetectorWrapper();
 
     private boolean isAuton;
     private boolean vumarkOff = true;
@@ -30,7 +38,7 @@ public class RebuildBot {
         for (Field f : fields) {
             try {
                 if (f.get(this) instanceof Subsystem) {
-                    if (!isAuton && f.get(this) instanceof TFWrapper2Mineral) {
+                    if (!isAuton && f.get(this) instanceof GoldDetectorWrapper) {
                         continue;
                     }
                     if (f.get(this) instanceof VumarkWrapper && vumarkOff) {
@@ -50,7 +58,7 @@ public class RebuildBot {
         for (Field f : fields) {
             try {
                 if (f.get(this) instanceof Subsystem) {
-                    if (!isAuton && f.get(this) instanceof TFWrapper2Mineral) {
+                    if (!isAuton && f.get(this) instanceof GoldDetectorWrapper) {
                         continue;
                     }
 
@@ -71,7 +79,7 @@ public class RebuildBot {
         for (Field f : fields) {
             try {
                 if (f.get(this) instanceof Subsystem) {
-                    if (!isAuton && f.get(this) instanceof TFWrapper2Mineral) {
+                    if (!isAuton && f.get(this) instanceof GoldDetectorWrapper) {
                         continue;
                     }
 
@@ -97,7 +105,7 @@ public class RebuildBot {
         for (Field f : fields) {
             try {
                 if (f.get(this) instanceof Subsystem) {
-                    if (!isAuton && f.get(this) instanceof TFWrapper2Mineral) {
+                    if (!isAuton && f.get(this) instanceof GoldDetectorWrapper) {
                         continue;
                     }
 
