@@ -21,7 +21,7 @@ public class GoldDetectorWrapper extends OpenCVPipeline implements Subsystem {
     public ImageView imageView = ImageView.THRESH;
     public GoldDetectorPipeline grip = new GoldDetectorPipeline();
     // To keep it such that we don't have to instantiate a new Mat every call to processFrame,
-    // we declare the Mats up here and reuse them. This is easier on the garbage collector.
+    // we declare the Mats upSafe here and reuse them. This is easier on the garbage collector.
     private Mat hsv = new Mat();
     private Mat thresholded = new Mat();
     // this is just here so we can expose it later thru getContours.

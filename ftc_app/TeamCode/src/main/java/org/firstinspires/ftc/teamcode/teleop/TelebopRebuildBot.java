@@ -54,9 +54,9 @@ public class TelebopRebuildBot extends OpMode {
 
 
         if (gamepad1.dpad_up) {
-            boot.dumperPivot.up();
+            boot.dumperPivot.upNotSafe();
         } else if (gamepad1.dpad_down) {
-            boot.dumperPivot.down();
+            boot.dumperPivot.downNotSafe();;
         } else {
             boot.dumperPivot.idle();
         }

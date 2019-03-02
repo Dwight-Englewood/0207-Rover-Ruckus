@@ -14,18 +14,21 @@ public class DumperPivot implements Subsystem {
     private final double pivotScorePos = 1;
     private final double pivotNotScorePos = -1;
     private final double distanceMaxDumper = 50; // in cm, guessed value
-    private final double distanceCargoHold = 50;
+    private final double distanceCargoHold = 50; // changes based on minerals in lander - might get sketch? have to test values and stuff, also the fact that mienrals prolly wont stack that high
     private final double distanceLander = 10;
+
+    private final double speedUp = 1;
+    private final double speedDown = -1;
+    private final double speedStop = 0;
 
     private Servo dumperPivot;
     private DcMotor spool;
+
     private DigitalChannel magSwitchDumper;
     private Rev2mDistanceSensor distanceSensorDumper;
     private Rev2mDistanceSensor distanceSensorLander; // mounted underneath dumper
 
     private DumperState state;
-    //private DigitalChannel magSwitch;
-    //public Rev2mDistanceSensor distanceSensor;
 
     public DumperPivot() {
     }
@@ -56,7 +59,7 @@ public class DumperPivot implements Subsystem {
 
     @Override
     public void stop() {
-        spool.setPower(0);
+        spool.setPower(speedStop);
     }
 
     @Override
@@ -73,24 +76,32 @@ public class DumperPivot implements Subsystem {
         this.dumperPivot.setPosition(pivotNotScorePos);
     }
 
-    public void up() {
+    public void upNotSafe() {
+        spool.setPower(speedUp);
+    }
+
+    public void upSafe() {
         if (this.distanceSensorDumper.getDistance(DistanceUnit.CM) > this.distanceMaxDumper) {
-            spool.setPower(0);
+            spool.setPower(speedStop);
         } else {
-            spool.setPower(-.8);
+            spool.setPower(speedUp);
         }
     }
 
-    public void down() {
+    public void downNotSafe() {
+        spool.setPower(speedDown);
+    }
+
+    public void downSafe() {
         if (magSwitchDumper.getState()) {
-            spool.setPower(0);
+            spool.setPower(speedStop);
         } else {
-            spool.setPower(.8);
+            spool.setPower(speedDown);
         }
     }
 
     public void idle() {
-        spool.setPower(0);
+        spool.setPower(speedStop);
     }
 
     public LineupState getLineupState() {

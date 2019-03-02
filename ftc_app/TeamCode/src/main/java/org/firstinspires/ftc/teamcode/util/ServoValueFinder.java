@@ -69,7 +69,7 @@ public class ServoValueFinder extends OpMode {
     @Override
     public void loop() {
         if (crservos.size() == 0 && servos.size() == 0) {
-            telemetry.addData("No Servos/CR Servos Connected - ", "Press dpad up to end program");
+            telemetry.addData("No Servos/CR Servos Connected - ", "Press dpad upSafe to end program");
             if (gamepad1.dpad_up) {
                 this.stop();
             }

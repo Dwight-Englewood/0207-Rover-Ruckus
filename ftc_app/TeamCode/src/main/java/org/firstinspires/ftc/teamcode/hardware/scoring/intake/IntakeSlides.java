@@ -16,17 +16,21 @@ public class IntakeSlides implements Subsystem {
 
     private final double pivotUpPos = 1;
     private final double pivotDownPos = -1;
+
     private final double kp = 1;
     private final double ki = 0;
     private final double kd = 0;
+
     private final int encoderTicksExtended = 5000; // dummy val
     private final int encoderTicksRetracted = 0;
     private final int encoderTicksPivotDeadzone = 100;
+
     private final double resolution = 10;
 
     private DcMotor extendo;
     private CRServo intake;
     private Servo intakePivot;
+
     private DigitalChannel magSwitchIntake;
 
     private PIDController pidIntake = new PIDController(kp, ki, kd);
@@ -136,7 +140,9 @@ public class IntakeSlides implements Subsystem {
     }
 
     public void retractBasic() {
-        extendo.setPower(-1);
+        if (magSwitchIntake.getState() == true) {
+            extendo.setPower(-1);
+        }
     }
 
     public void idle() {
