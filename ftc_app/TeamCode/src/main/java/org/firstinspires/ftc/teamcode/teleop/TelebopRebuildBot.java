@@ -1,20 +1,11 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.ejml.simple.SimpleMatrix;
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.hardware.bots.RebuildBot;
-import org.firstinspires.ftc.teamcode.hardware.sensors.imu.NaiveAccelerationIntegrator;
 
 
 @TeleOp(name = "FieldCentricDrive", group = "Teleop")
@@ -76,7 +67,7 @@ public class TelebopRebuildBot extends OpMode {
             boot.dumperPivot.pivotNotScore();
         }
 
-        if(gamepad2.dpad_up) {
+        if (gamepad2.dpad_up) {
             boot.intakeSlides.extendBasic();
         } else if (gamepad2.dpad_down) {
             boot.intakeSlides.retractBasic();

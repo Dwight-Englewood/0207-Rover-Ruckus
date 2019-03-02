@@ -27,7 +27,7 @@ public class IntakeSlides implements Subsystem {
     private DcMotor extendo;
     private CRServo intake;
     private Servo intakePivot;
-    private DigitalChannel magSwitch;
+    private DigitalChannel magSwitchIntake;
 
     private PIDController pidIntake = new PIDController(kp, ki, kd);
 
@@ -45,7 +45,7 @@ public class IntakeSlides implements Subsystem {
         intakePivot = hwMap.get(Servo.class, "intakePivot");
         intakePivot.setPosition(pivotUpPos);
 
-        magSwitch = hwMap.get(DigitalChannel.class, "magSwitch");
+        magSwitchIntake = hwMap.get(DigitalChannel.class, "magSwitchIntake");
 
         state = IntakeSlideState.RETRACTED;
     }
@@ -122,7 +122,7 @@ public class IntakeSlides implements Subsystem {
         }
         if (this.state != IntakeSlideState.RETRACTED) {
             pidIntake.updateError((double) extendo.getCurrentPosition());
-            if (pidIntake.goalReached(resolution) || magSwitch.getState() == true) {
+            if (pidIntake.goalReached(resolution) || magSwitchIntake.getState() == true) {
                 this.state = IntakeSlideState.RETRACTED;
                 extendo.setPower(0);
             } else {
