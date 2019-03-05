@@ -93,6 +93,20 @@ public class IntakeSlides implements Subsystem {
         intake.setPower(0);
     }
 
+    public void setIntakePosition(double d) {
+        if (d < -1) {
+            d = -1;
+        } else if (d > 1) {
+            d = 1;
+        }
+        d = d + 1;
+        d = d / 2;
+        double pos = this.pivotDownPos + d*(this.pivotUpPos - this.pivotDownPos);
+        intakePivot.setPosition(pos);
+        if (Math.abs(pos) > .75) {
+            this.intake();
+        }
+    }
 
     public void pivotUp() {
         intakePivot.setPosition(pivotUpPos);
