@@ -152,10 +152,19 @@ public class IntakeSlides implements Subsystem {
     public void extendBasic() {
         extendo.setPower(1);
     }
+    public void extendBasicSlow() {
+        extendo.setPower(.3);
+    }
 
     public void retractBasic() {
-        if (magSwitchIntake.getState() == true) {
+        if (magSwitchIntake.getState() != true) {
             extendo.setPower(-1);
+        }
+    }
+
+    public void retractBasicSlow() {
+        if (magSwitchIntake.getState() != true) {
+            extendo.setPower(-.3);
         }
     }
 

@@ -68,9 +68,9 @@ public class TelebopRebuildBot extends OpMode {
         }
 
         if (gamepad2.dpad_up) {
-            boot.intakeSlides.extendBasic();
+            boot.intakeSlides.extendBasicSlow();
         } else if (gamepad2.dpad_down) {
-            boot.intakeSlides.retractBasic();
+            boot.intakeSlides.retractBasicSlow();
         } else {
             boot.intakeSlides.idle();
         }
