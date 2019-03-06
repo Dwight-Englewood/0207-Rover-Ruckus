@@ -16,7 +16,7 @@ import wen.control.PIDController;
 public class IntakeSlides implements Subsystem {
 
     public final double pivotUpPos = 1;
-    public final double pivotDownPos = -1;
+    public final double pivotDownPos = -.9;
 
     public final double kp = 1;
     public final double ki = 0;

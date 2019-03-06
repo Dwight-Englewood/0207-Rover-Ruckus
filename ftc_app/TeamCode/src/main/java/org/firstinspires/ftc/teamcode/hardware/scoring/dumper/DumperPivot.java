@@ -44,7 +44,7 @@ public class DumperPivot implements Subsystem {
 
         magSwitchDumper = hwMap.get(DigitalChannel.class, "magSwitchDumper");
         //distanceSensor = hwMap.get(Rev2mDistanceSensor.class, "dumpdist");
-        this.pivotNotScore();
+        this.pivotScore();
     }
 
     @Override
