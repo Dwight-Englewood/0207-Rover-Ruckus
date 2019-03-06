@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.hardware.bots.RebuildBot;
 
 
-@TeleOp(name = "FieldCentricDrive", group = "Teleop")
+@TeleOp(name = "TeleopRebuildBot", group = "Teleop")
 //@Disabled
 public class TelebopRebuildBot extends OpMode {
 
