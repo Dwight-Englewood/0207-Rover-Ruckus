@@ -32,37 +32,34 @@ public class GoldDetectorPipeline {
     private Mat hsvThresholdOutput = new Mat();
     private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
 
+    //Given a Mat, or image from the phone camera,
     public void process(Mat source0) {
-        // Step Resize_Image0:
-        Mat resizeImageInput = source0;
-        double resizeImageWidth = RESIZE_IMAGE_WIDTH;
-        double resizeImageHeight = RESIZE_IMAGE_HEIGHT;
-        int resizeImageInterpolation = Imgproc.INTER_CUBIC;
-        resizeImage(resizeImageInput, resizeImageWidth, resizeImageHeight, resizeImageInterpolation, resizeImageOutput);
+        // Step 1: Resize_Image0:
+        Mat resizeImageInput = source0; // Create a copy of the source imgae
+        int resizeImageInterpolation = Imgproc.INTER_CUBIC; // Set the interpolation algorithm
+        resizeImage(resizeImageInput, RESIZE_IMAGE_WIDTH, RESIZE_IMAGE_HEIGHT, resizeImageInterpolation, resizeImageOutput); // Perform the image resize
 
-        // Step CV_cvtColor0:
-        Mat cvCvtcolorSrc = resizeImageOutput;
-        int cvCvtcolorCode = Imgproc.COLOR_RGB2HSV;
-        cvCvtcolor(cvCvtcolorSrc, cvCvtcolorCode, cvCvtcolorOutput);
+        // Step 2: Convert RBG to HSV Color Format
+        Mat cvCvtcolorSrc = resizeImageOutput; //Copy the resized image
+        int cvCvtcolorCode = Imgproc.COLOR_RGB2HSV; // Set the Color Format transformation we will do
+        cvCvtcolor(cvCvtcolorSrc, cvCvtcolorCode, cvCvtcolorOutput); // Convert the Color Format
 
-        // Step Blur0:
-        Mat blurInput = cvCvtcolorOutput;
-        BlurType blurType = BlurType.get("Median Filter");
-        double blurRadius = BLUR_RADIUS;
-        blur(blurInput, blurType, blurRadius, blurOutput);
+        // Step 3: Blur the Image
+        Mat blurInput = cvCvtcolorOutput; // Copy the converted image
+        BlurType blurType = BlurType.get("Median Filter"); // Tell the type of blur we will use
+        blur(blurInput, blurType, BLUR_RADIUS, blurOutput); // Blur the image
 
-        // Step HSV_Threshold0:
-        Mat hsvThresholdInput = blurOutput;
-        double[] hsvThresholdHue = {hsvHueLow, hsvHueHigh};
-        double[] hsvThresholdSaturation = {hsvSatLow, hsvSatHigh};
-        double[] hsvThresholdValue = {hsvValLow, hsvValHigh};
-        hsvThreshold(hsvThresholdInput, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, hsvThresholdOutput);
+        // Step 4: HSV Threshold the Image
+        Mat hsvThresholdInput = blurOutput; // Copy the blurred image
+        double[] hsvThresholdHue = {hsvHueLow, hsvHueHigh}; // Set the Hue range we will accept pixels for
+        double[] hsvThresholdSaturation = {hsvSatLow, hsvSatHigh}; // Set the Saturation range we will accept pixels for
+        double[] hsvThresholdValue = {hsvValLow, hsvValHigh}; // Set the Value range we will accept pixels for
+        hsvThreshold(hsvThresholdInput, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, hsvThresholdOutput); // Threshold the image for the specified colors
 
-        // Step Find_Contours0:
-        Mat findContoursInput = hsvThresholdOutput;
-        boolean findContoursExternalOnly = false;
-        findContours(findContoursInput, findContoursExternalOnly, findContoursOutput);
-
+        // Step 5: Find the Contours
+        Mat findContoursInput = hsvThresholdOutput; // Copy the thresholded image
+        boolean findContoursExternalOnly = false; //Tell it to find all contours it identifies
+        findContours(findContoursInput, findContoursExternalOnly, findContoursOutput); // Find Contours in the image
     }
 
     public Mat resizeImageOutput() {
