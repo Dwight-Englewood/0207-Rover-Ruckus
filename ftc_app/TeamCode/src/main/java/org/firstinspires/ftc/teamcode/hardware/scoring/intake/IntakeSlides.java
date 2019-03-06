@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.hardware.State;
 import org.firstinspires.ftc.teamcode.hardware.Subsystem;
@@ -14,28 +15,28 @@ import wen.control.PIDController;
 
 public class IntakeSlides implements Subsystem {
 
-    private final double pivotUpPos = 1;
-    private final double pivotDownPos = -1;
+    public final double pivotUpPos = 1;
+    public final double pivotDownPos = -1;
 
-    private final double kp = 1;
-    private final double ki = 0;
-    private final double kd = 0;
+    public final double kp = 1;
+    public final double ki = 0;
+    public final double kd = 0;
 
-    private final int encoderTicksExtended = 5000; // dummy val
-    private final int encoderTicksRetracted = 0;
-    private final int encoderTicksPivotDeadzone = 100;
+    public final int encoderTicksExtended = 5000; // dummy val
+    public final int encoderTicksRetracted = 0;
+    public final int encoderTicksPivotDeadzone = 100;
 
-    private final double resolution = 10;
+    public final double resolution = 10;
 
-    private DcMotor extendo;
-    private CRServo intake;
-    private Servo intakePivot;
+    public DcMotor extendo;
+    public CRServo intake;
+    public Servo intakePivot;
 
-    private DigitalChannel magSwitchIntake;
+    public DigitalChannel magSwitchIntake;
 
-    private PIDController pidIntake = new PIDController(kp, ki, kd);
+    public PIDController pidIntake = new PIDController(kp, ki, kd);
 
-    private IntakeSlideState state;
+    public IntakeSlideState state;
 
     @Override
     public void init(HardwareMap hwMap) {
@@ -57,6 +58,7 @@ public class IntakeSlides implements Subsystem {
     @Override
     public void start() {
         extendo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        extendo.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakePivot.setPosition(pivotUpPos);
         intake.setPower(0);
     }
@@ -82,11 +84,11 @@ public class IntakeSlides implements Subsystem {
     }
 
     public void intake() {
-        intake.setPower(1);
+        intake.setPower(.7);
     }
 
     public void outtake() {
-        intake.setPower(-1);
+        intake.setPower(-.7);
     }
 
     public void notake() {
@@ -116,6 +118,9 @@ public class IntakeSlides implements Subsystem {
         intakePivot.setPosition(pivotDownPos);
     }
 
+    public void pivotMiddle() {
+        intakePivot.setPosition(0);
+    }
 
     public void extendPID() {
         if (this.state != IntakeSlideState.EXTENDING && this.state != IntakeSlideState.EXTENDED) {
@@ -152,19 +157,37 @@ public class IntakeSlides implements Subsystem {
     public void extendBasic() {
         extendo.setPower(1);
     }
+
+    public void moveVariable(double d) {
+        double pow = Range.clip(d, -1, 1);
+        if (pow < 0) {
+            if (magSwitchIntake.getState() == true) {
+                extendo.setPower(d);
+                pivotMiddle();
+            }
+        } else {
+            extendo.setPower(d);
+        }
+    }
+
+
     public void extendBasicSlow() {
         extendo.setPower(.3);
     }
 
     public void retractBasic() {
-        if (magSwitchIntake.getState() != true) {
+        if (magSwitchIntake.getState() == true) {
             extendo.setPower(-1);
+        } else {
+            extendo.setPower(0);
         }
     }
 
     public void retractBasicSlow() {
-        if (magSwitchIntake.getState() != true) {
+        if (magSwitchIntake.getState() == true) {
             extendo.setPower(-.3);
+        } else {
+            extendo.setPower(0);
         }
     }
 
@@ -179,7 +202,7 @@ public class IntakeSlides implements Subsystem {
                 break;
             case OKTOSTOPANDRESET:
                 if (this.state == IntakeSlideState.RETRACTED && extendo.getMode() != DcMotor.RunMode.STOP_AND_RESET_ENCODER) {
-                    extendo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    //]]extendo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 }
             case EXTEND:
                 this.extendPID();
@@ -206,13 +229,13 @@ public class IntakeSlides implements Subsystem {
         RETRACT;
     }
 
-    private enum IntakeSlideState implements State {
+    public enum IntakeSlideState implements State {
         EXTENDED("Extended"),
         EXTENDING("Extending"),
         RETRACTING("Retracting"),
         RETRACTED("Retracted");
 
-        private String str;
+        public String str;
 
         IntakeSlideState(String str) {
             this.str = str;

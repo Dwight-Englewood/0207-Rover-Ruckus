@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.hardware.Subsystem;
 import org.firstinspires.ftc.teamcode.hardware.drivetrain.MecanumDriveTrain;
+import org.firstinspires.ftc.teamcode.hardware.scoring.Lift;
 import org.firstinspires.ftc.teamcode.hardware.scoring.dumper.DumperPivot;
 import org.firstinspires.ftc.teamcode.hardware.scoring.intake.IntakeSlides;
 import org.firstinspires.ftc.teamcode.hardware.sensors.IMU;
@@ -20,6 +21,7 @@ public class RebuildBot {
     public DumperPivot dumperPivot = new DumperPivot();
     public IMU imu = new IMU();
     public GoldDetectorWrapper goldDetector = new GoldDetectorWrapper();
+    public Lift lift = new Lift();
 
     private boolean isAuton;
     private boolean vumarkOff = true;

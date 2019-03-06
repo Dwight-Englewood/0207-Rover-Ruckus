@@ -18,15 +18,15 @@ public class DumperPivot implements Subsystem {
     private final double distanceLander = 10;
 
     private final double speedUp = 1;
-    private final double speedDown = -1;
+    private final double speedDown = -.5;
     private final double speedStop = 0;
 
     private Servo dumperPivot;
     private DcMotor spool;
 
     private DigitalChannel magSwitchDumper;
-    private Rev2mDistanceSensor distanceSensorDumper;
-    private Rev2mDistanceSensor distanceSensorLander; // mounted underneath dumper
+    //private Rev2mDistanceSensor distanceSensorDumper;
+    //private Rev2mDistanceSensor distanceSensorLander; // mounted underneath dumper
 
     private DumperState state;
 
@@ -76,27 +76,27 @@ public class DumperPivot implements Subsystem {
         this.dumperPivot.setPosition(pivotNotScorePos);
     }
 
-    public void upNotSafe() {
-        spool.setPower(speedUp);
+    public void upNotSafe(double d) {
+        spool.setPower(d);
     }
 
-    public void upSafe() {
+    /*public void upSafe() {
         if (this.distanceSensorDumper.getDistance(DistanceUnit.CM) > this.distanceMaxDumper) {
             spool.setPower(speedStop);
         } else {
             spool.setPower(speedUp);
         }
-    }
+    }*/
 
     public void downNotSafe() {
         spool.setPower(speedDown);
     }
 
-    public void downSafe() {
+    public void downSafe(double d) {
         if (magSwitchDumper.getState()) {
-            spool.setPower(speedStop);
+            spool.setPower(d);
         } else {
-            spool.setPower(speedDown);
+            spool.setPower(speedStop);
         }
     }
 
@@ -104,7 +104,7 @@ public class DumperPivot implements Subsystem {
         spool.setPower(speedStop);
     }
 
-    public LineupState getLineupState() {
+    /*public LineupState getLineupState() {
         double distance = this.distanceSensorLander.getDistance(DistanceUnit.CM);
         if (distance > distanceCargoHold) {
             return LineupState.NONE;
@@ -114,7 +114,7 @@ public class DumperPivot implements Subsystem {
             return LineupState.OVERLANDER;
         }
 
-    }
+    }*/
 
     public enum LineupState {
         OVERLANDER, OVERCARGOHOLD, NONE;

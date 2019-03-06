@@ -32,7 +32,7 @@ public class GoldDetectorPipeline {
     private Mat hsvThresholdOutput = new Mat();
     private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
 
-    //Given a Mat, or image from the phone camera,
+    //Given a Mat, or image from the phone camerbbbbbbba,
     public void process(Mat source0) {
         // Step 1: Resize_Image0:
         Mat resizeImageInput = source0; // Create a copy of the source imgae
@@ -135,7 +135,7 @@ public class GoldDetectorPipeline {
         Imgproc.findContours(input, contours, hierarchy, mode, method);
     }
 
-    enum BlurType {
+    enum                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             BlurType {
         BOX("Box Blur"), GAUSSIAN("Gaussian Blur"), MEDIAN("Median Filter"),
         BILATERAL("Bilateral Filter");
 
