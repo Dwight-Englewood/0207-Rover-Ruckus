@@ -55,7 +55,7 @@ public class TelebopRebuildBot extends OpMode {
         double theta = gamepad1.right_stick_x / 2;
         //SimpleMatrix powVector = boot.driveTrain.drive(lsx, lsy, theta, botTheta);
 
-        boot.driveTrain.tankControl(gamepad1, false, false);
+        boot.driveTrain.tankControl(gamepad1, false, true);
 
 
         double liftPow = -gamepad2.right_stick_y;
@@ -92,11 +92,11 @@ public class TelebopRebuildBot extends OpMode {
         }
 
         if (gamepad2.a) {
-            boot.intakeSlides.pivotDown();
+            boot.intakeSlides.intakePivot.setPosition(-.9);
         } else if (gamepad2.b) {
-            boot.intakeSlides.pivotUp();
+            boot.intakeSlides.intakePivot.setPosition(.9);
         } else if (gamepad2.x) {
-            boot.intakeSlides.pivotMiddle();
+            boot.intakeSlides.intakePivot.setPosition(.4);
         }
 
 

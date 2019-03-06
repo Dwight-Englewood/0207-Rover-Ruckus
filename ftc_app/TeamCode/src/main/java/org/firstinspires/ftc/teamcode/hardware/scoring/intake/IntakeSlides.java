@@ -119,7 +119,7 @@ public class IntakeSlides implements Subsystem {
     }
 
     public void pivotMiddle() {
-        intakePivot.setPosition(0);
+        intakePivot.setPosition(.4);
     }
 
     public void extendPID() {
