@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.ejml.simple.SimpleMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.hardware.bots.RebuildBot;
 
@@ -45,27 +44,10 @@ public class TelebopRebuildBot extends OpMode {
 
     @Override
     public void loop() {
-
-        double botTheta = boot.imu.getGyroRotation(AngleUnit.RADIANS);
-        //The readings from the gyro are different from the reading needed for the field centric code, so we apply a function to fix it
-        botTheta = (botTheta < 0) ? -botTheta : 2 * Math.PI - botTheta;
-        botTheta = -botTheta;
-        double lsx = -gamepad1.left_stick_x;
-        double lsy = gamepad1.left_stick_y;
-        double theta = gamepad1.right_stick_x / 2;
-        //SimpleMatrix powVector = boot.driveTrain.drive(lsx, lsy, theta, botTheta);
-
+        
         boot.driveTrain.tankControl(gamepad1, false, true);
 
-
-        double liftPow = -gamepad2.right_stick_y;
-        if (liftPow > 0.05) {
-            boot.dumperPivot.upNotSafe(liftPow);
-        } else if (liftPow < -0.05) {
-            boot.dumperPivot.downSafe(liftPow);
-        } else {
-            boot.dumperPivot.idle();
-        }
+        this.boot.dumperPivot.variableSafe(-gamepad2.right_stick_y);
 
         if (gamepad2.dpad_up) {
             boot.lift.lift();
@@ -76,31 +58,28 @@ public class TelebopRebuildBot extends OpMode {
         }
 
         if (gamepad1.a) {
-            boot.dumperPivot.pivotNotScore();
-        } else {
             boot.dumperPivot.pivotScore();
+        } else {
+            boot.dumperPivot.pivotNotScore();
         }
 
-        boot.intakeSlides.moveVariable(-gamepad2.left_stick_y);
+        boot.intakeSlides.variableMove(-gamepad2.left_stick_y);
 
         if (gamepad2.left_trigger > .5) {
             boot.intakeSlides.outtake();
         } else if (gamepad2.right_trigger > .5) {
             boot.intakeSlides.intake();
         } else {
-            boot.intakeSlides.intake.setPower(0);
+            boot.intakeSlides.notake();
         }
 
         if (gamepad2.a) {
-            boot.intakeSlides.intakePivot.setPosition(-.9);
+            boot.intakeSlides.pivotDown();
         } else if (gamepad2.b) {
-            boot.intakeSlides.intakePivot.setPosition(.9);
+            boot.intakeSlides.pivotUp();
         } else if (gamepad2.x) {
-            boot.intakeSlides.intakePivot.setPosition(.4);
+            boot.intakeSlides.pivotMiddle();
         }
-
-
-        telemetry.addData("sad", boot.intakeSlides.magSwitchIntake.getState());
 
     }
 

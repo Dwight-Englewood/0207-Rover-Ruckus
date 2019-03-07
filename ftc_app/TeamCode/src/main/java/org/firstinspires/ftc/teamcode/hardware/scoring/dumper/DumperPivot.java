@@ -11,8 +11,8 @@ import org.firstinspires.ftc.teamcode.hardware.State;
 import org.firstinspires.ftc.teamcode.hardware.Subsystem;
 
 public class DumperPivot implements Subsystem {
-    private final double pivotScorePos = 1;
-    private final double pivotNotScorePos = -1;
+    private final double pivotScorePos = -1;
+    private final double pivotNotScorePos = 1;
     private final double distanceMaxDumper = 50; // in cm, guessed value
     private final double distanceCargoHold = 50; // changes based on minerals in lander - might get sketch? have to test values and stuff, also the fact that mienrals prolly wont stack that high
     private final double distanceLander = 10;
@@ -49,6 +49,7 @@ public class DumperPivot implements Subsystem {
 
     @Override
     public void start() {
+        spool.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
 
@@ -97,6 +98,16 @@ public class DumperPivot implements Subsystem {
             spool.setPower(d);
         } else {
             spool.setPower(speedStop);
+        }
+    }
+
+    public void variableSafe(double liftPow) {
+        if (liftPow > 0.05) {
+            this.upNotSafe(liftPow);
+        } else if (liftPow < -0.05) {
+            this.downSafe(liftPow);
+        } else {
+            this.idle();
         }
     }
 
