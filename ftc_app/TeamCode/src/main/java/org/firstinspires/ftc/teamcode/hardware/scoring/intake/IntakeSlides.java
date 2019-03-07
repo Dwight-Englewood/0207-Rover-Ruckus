@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.hardware.scoring.intake;
 
+import com.qualcomm.hardware.hitechnic.HiTechnicNxtDcMotorController;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -31,7 +33,7 @@ public class IntakeSlides implements Subsystem {
 
     private final double resolution = 10;
 
-    private DcMotor extendo;
+    private DcMotorEx extendo;
     private CRServo intake;
     private Servo intakePivot;
 
@@ -43,7 +45,7 @@ public class IntakeSlides implements Subsystem {
 
     @Override
     public void init(HardwareMap hwMap) {
-        extendo = hwMap.get(DcMotor.class, "extendo");
+        extendo = (DcMotorEx) hwMap.get(DcMotor.class, "extendo");
         extendo.setDirection(DcMotorSimple.Direction.FORWARD);
         extendo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         extendo.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -116,13 +118,15 @@ public class IntakeSlides implements Subsystem {
 
     public void variableMove(double d) {
         double pow = Range.clip(d, -1, 1);
-        if (pow < 0) {
+        if (pow < -.05) {
             if (magSwitchIntake.getState() == true) {
                 extendo.setPower(d);
                 pivotMiddle();
             }
-        } else {
+        } else if (pow > 0.5) {
             extendo.setPower(d);
+        } else {
+            extendo.setVelocity(0);
         }
     }
 

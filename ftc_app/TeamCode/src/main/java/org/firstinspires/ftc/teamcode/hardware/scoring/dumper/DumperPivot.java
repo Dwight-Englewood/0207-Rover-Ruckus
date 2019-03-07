@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.hardware.scoring.dumper;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.hardware.Subsystem;
 public class DumperPivot implements Subsystem {
     private final double pivotScorePos = -1;
     private final double pivotNotScorePos = 1;
+
     private final double distanceMaxDumper = 50; // in cm, guessed value
     private final double distanceCargoHold = 50; // changes based on minerals in lander - might get sketch? have to test values and stuff, also the fact that mienrals prolly wont stack that high
     private final double distanceLander = 10;
@@ -22,7 +24,7 @@ public class DumperPivot implements Subsystem {
     private final double speedStop = 0;
 
     private Servo dumperPivot;
-    private DcMotor spool;
+    public DcMotorEx spool;
 
     private DigitalChannel magSwitchDumper;
     //private Rev2mDistanceSensor distanceSensorDumper;
@@ -37,19 +39,20 @@ public class DumperPivot implements Subsystem {
     public void init(HardwareMap hwMap) {
         dumperPivot = hwMap.get(Servo.class, "dumperPivot");
         //backWall = hwMap.get(Servo.class, "wall");
-        spool = hwMap.get(DcMotor.class, "spool");
+        spool = (DcMotorEx) hwMap.get(DcMotor.class, "spool");
         spool.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         spool.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
         magSwitchDumper = hwMap.get(DigitalChannel.class, "magSwitchDumper");
         //distanceSensor = hwMap.get(Rev2mDistanceSensor.class, "dumpdist");
-        this.pivotScore();
+        this.pivotNotScore();
     }
 
     @Override
     public void start() {
         spool.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.pivotNotScore();
 
     }
 
@@ -107,7 +110,8 @@ public class DumperPivot implements Subsystem {
         } else if (liftPow < -0.05) {
             this.downSafe(liftPow);
         } else {
-            this.idle();
+            //this.idle();
+            this.spool.setVelocity(0);
         }
     }
 

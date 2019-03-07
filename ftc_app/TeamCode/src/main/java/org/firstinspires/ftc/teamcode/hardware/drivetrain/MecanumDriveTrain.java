@@ -58,10 +58,10 @@ public class MecanumDriveTrain extends DriveTrain {
         fr = hwMap.get(DcMotor.class, "fr");
         bl = hwMap.get(DcMotor.class, "bl");
         br = hwMap.get(DcMotor.class, "br");
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        br.setDirection(DcMotorSimple.Direction.FORWARD);
+        fl.setDirection(DcMotorSimple.Direction.FORWARD);
+        bl.setDirection(DcMotorSimple.Direction.FORWARD);
+        fr.setDirection(DcMotorSimple.Direction.REVERSE);
+        br.setDirection(DcMotorSimple.Direction.REVERSE);
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -152,14 +152,14 @@ public class MecanumDriveTrain extends DriveTrain {
             //scale left strafe for precision mode
             leftTrigger *= (slowMode ? .5 : 1);
             //apply scaled power to motors
-            this.strafepow(-leftTrigger);
+            this.strafepow(leftTrigger);
             return;
         }
         if (rightTrigger > .15) {
             //scale right strafe for precision mode
             rightTrigger *= (slowMode ? .5 : 1);
             //apply scaled power to motors
-            this.strafepow(rightTrigger);
+            this.strafepow(-rightTrigger);
             return;
         }
         //scale tank drive for precision mode

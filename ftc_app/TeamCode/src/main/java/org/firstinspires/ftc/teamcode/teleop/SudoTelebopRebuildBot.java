@@ -49,9 +49,9 @@ public class SudoTelebopRebuildBot extends OpMode {
         double botTheta = boot.imu.getGyroRotation(AngleUnit.RADIANS);
         //The readings from the gyro are different from the reading needed for the field centric code, so we apply a function to fix it
         botTheta = (botTheta < 0) ? -botTheta : 2 * Math.PI - botTheta;
-        botTheta = -botTheta;
+        botTheta = botTheta;
         double lsx = -gamepad1.left_stick_x;
-        double lsy = gamepad1.left_stick_y;
+        double lsy = -gamepad1.left_stick_y;
         double theta = gamepad1.right_stick_x / 2;
         SimpleMatrix powVector = boot.driveTrain.drive(lsx, lsy, theta, botTheta);
 
