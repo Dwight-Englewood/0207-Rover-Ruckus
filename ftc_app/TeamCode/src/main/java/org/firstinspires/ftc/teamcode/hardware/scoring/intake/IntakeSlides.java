@@ -14,9 +14,9 @@ import org.firstinspires.ftc.teamcode.hardware.Subsystem;
 
 public class IntakeSlides implements Subsystem {
 
-    private final double pivotUpPos = 1;
+    private final double pivotUpPos = 0;
     private final double pivotMidPos = .5;
-    private final double pivotDownPos = 0;
+    private final double pivotDownPos = 1;
 
     private final double intakePower = .7;
     private final double outtakePower = -.7;
@@ -120,12 +120,15 @@ public class IntakeSlides implements Subsystem {
     public void variableMove(double d) {
         double pow = Range.clip(d, -1, 1);
         if (pow < -.05) {
+            extendo.setPower(d);
+        } else if (pow > 0.5) {
             if (magSwitchIntake.getState() == true) {
+
                 extendo.setPower(d);
                 pivotMiddle();
             }
-        } else if (pow > 0.5) {
-            extendo.setPower(d);
+
+
         } else {
             extendo.setVelocity(0);
         }

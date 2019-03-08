@@ -48,9 +48,9 @@ public class TelebopRebuildBot extends OpMode {
 
         this.boot.dumperPivot.variableSafe(-gamepad2.right_stick_y);
 
-        if (gamepad2.dpad_up) {
+        if (gamepad1.dpad_up) {
             boot.lift.lift();
-        } else if (gamepad2.dpad_down) {
+        } else if (gamepad1.dpad_down) {
             boot.lift.drop();
         } else {
             boot.lift.stop();
