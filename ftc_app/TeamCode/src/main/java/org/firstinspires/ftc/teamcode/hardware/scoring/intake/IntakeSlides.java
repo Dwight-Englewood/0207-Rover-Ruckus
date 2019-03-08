@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.hardware.scoring.intake;
 
-import com.qualcomm.hardware.hitechnic.HiTechnicNxtDcMotorController;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -16,8 +15,8 @@ import org.firstinspires.ftc.teamcode.hardware.Subsystem;
 public class IntakeSlides implements Subsystem {
 
     private final double pivotUpPos = 1;
-    private final double pivotMidPos = .4;
-    private final double pivotDownPos = -.9;
+    private final double pivotMidPos = .5;
+    private final double pivotDownPos = 0;
 
     private final double intakePower = .7;
     private final double outtakePower = -.7;
@@ -53,6 +52,8 @@ public class IntakeSlides implements Subsystem {
         intake = hwMap.get(CRServo.class, "intake");
 
         intakePivot = hwMap.get(Servo.class, "intakePivot");
+        intakePivot.scaleRange(0.1, 0.8);
+
         intakePivot.setPosition(pivotUpPos);
 
         magSwitchIntake = hwMap.get(DigitalChannel.class, "magSwitchIntake");
