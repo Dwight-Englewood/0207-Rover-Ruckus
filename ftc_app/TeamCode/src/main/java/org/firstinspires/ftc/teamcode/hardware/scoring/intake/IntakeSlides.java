@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.hardware.Subsystem;
 
 public class IntakeSlides implements Subsystem {
 
-    private final double pivotUpPos = 0;
+    private final double pivotUpPos = .5;
     private final double pivotMidPos = .5;
     private final double pivotDownPos = 1;
 

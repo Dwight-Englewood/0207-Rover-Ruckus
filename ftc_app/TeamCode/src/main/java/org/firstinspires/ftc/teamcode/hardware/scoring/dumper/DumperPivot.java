@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.hardware.State;
 import org.firstinspires.ftc.teamcode.hardware.Subsystem;
 
 public class DumperPivot implements Subsystem {
-    private final double pivotScorePos = -1;
+    private final double pivotScorePos = 0;
     private final double pivotNotScorePos = 1;
 
     private final double distanceMaxDumper = 50; // in cm, guessed value
