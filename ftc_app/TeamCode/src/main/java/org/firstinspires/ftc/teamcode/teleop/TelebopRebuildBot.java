@@ -48,9 +48,9 @@ public class TelebopRebuildBot extends OpMode {
 
         this.boot.dumperPivot.variableSafe(-gamepad2.right_stick_y);
 
-        if (gamepad1.dpad_up) {
+        if (gamepad1.dpad_down) {
             boot.lift.lift();
-        } else if (gamepad1.dpad_down) {
+        } else if (gamepad1.dpad_up) {
             boot.lift.drop();
         } else {
             boot.lift.stop();
@@ -80,6 +80,7 @@ public class TelebopRebuildBot extends OpMode {
             boot.intakeSlides.pivotMiddle();
         }
 
+        telemetry.addData("magswitch", boot.intakeSlides.magSwitchIntake.getState());
     }
 
     @Override

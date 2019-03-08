@@ -14,8 +14,8 @@ import org.firstinspires.ftc.teamcode.hardware.Subsystem;
 
 public class IntakeSlides implements Subsystem {
 
-    private final double pivotUpPos = .5;
-    private final double pivotMidPos = .5;
+    private final double pivotUpPos = .2 ;
+    private final double pivotMidPos = .65;
     private final double pivotDownPos = 1;
 
     private final double intakePower = .7;
@@ -31,12 +31,10 @@ public class IntakeSlides implements Subsystem {
     private final int encoderTicksPivotDeadzone = 100;
 
     private final double resolution = 10;
-
+    public DigitalChannel magSwitchIntake;
     private DcMotorEx extendo;
     private CRServo intake;
     private Servo intakePivot;
-
-    private DigitalChannel magSwitchIntake;
 
     /*public PIDController pidIntake = new PIDController(kp, ki, kd);
 
@@ -45,7 +43,7 @@ public class IntakeSlides implements Subsystem {
     @Override
     public void init(HardwareMap hwMap) {
         extendo = (DcMotorEx) hwMap.get(DcMotor.class, "extendo");
-        extendo.setDirection(DcMotorSimple.Direction.FORWARD);
+        extendo.setDirection(DcMotorSimple.Direction.REVERSE);
         extendo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         extendo.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -54,8 +52,7 @@ public class IntakeSlides implements Subsystem {
         intakePivot = hwMap.get(Servo.class, "intakePivot");
         intakePivot.scaleRange(0.1, 0.8);
 
-        intakePivot.setPosition(pivotUpPos);
-
+        this.pivotMiddle();
         magSwitchIntake = hwMap.get(DigitalChannel.class, "magSwitchIntake");
 
         //state = IntakeSlideState.RETRACTED;
@@ -65,14 +62,13 @@ public class IntakeSlides implements Subsystem {
     public void start() {
         extendo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         extendo.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakePivot.setPosition(pivotUpPos);
         intake.setPower(0);
     }
 
     @Override
     public void reset() {
         extendo.setPower(0);
-        intakePivot.setPosition(pivotUpPos);
+        this.pivotMiddle();
         intake.setPower(0);
 
     }
@@ -106,7 +102,9 @@ public class IntakeSlides implements Subsystem {
     }
 
     public void pivotDown() {
-        intakePivot.setPosition(pivotDownPos);
+        if (magSwitchIntake.getState() == true) {
+            intakePivot.setPosition(pivotDownPos);
+        }
     }
 
     public void pivotMiddle() {
@@ -120,15 +118,12 @@ public class IntakeSlides implements Subsystem {
     public void variableMove(double d) {
         double pow = Range.clip(d, -1, 1);
         if (pow < -.05) {
-            extendo.setPower(d);
-        } else if (pow > 0.5) {
             if (magSwitchIntake.getState() == true) {
-
-                extendo.setPower(d);
+                extendo.setPower(.5*d);
                 pivotMiddle();
             }
-
-
+        } else if (pow > 0.5) {
+            extendo.setPower(.5*d);
         } else {
             extendo.setVelocity(0);
         }
