@@ -44,7 +44,7 @@ public class TelebopRebuildBot extends OpMode {
     @Override
     public void loop() {
         
-        boot.driveTrain.tankControl(gamepad1, false, false);
+        boot.driveTrain.tankControl(gamepad1, false, gamepad1.start);
 
         this.boot.dumperPivot.variableSafe(-gamepad2.right_stick_y);
 

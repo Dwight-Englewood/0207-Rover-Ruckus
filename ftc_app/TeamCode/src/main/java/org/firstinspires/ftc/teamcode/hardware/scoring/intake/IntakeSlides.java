@@ -116,16 +116,16 @@ public class IntakeSlides implements Subsystem {
     public void variableMove(double d) {
         double pow = Range.clip(d, -1, 1);
         if (pow < -.05) {
-            if (magSwitchIntake.getState() == true) {
+            if (magSwitchIntake.getState() == false) {
                 this.shouldStop = true;
                 //pivotMiddle();
             }
             if (!shouldStop) {
-                extendo.setPower(.9 * d);
+                extendo.setPower(d);
             }
 
         } else if (pow > 0.5) {
-            extendo.setPower(.9 * d);
+            extendo.setPower(d);
             this.shouldStop = false;
         } else {
             extendo.setVelocity(0);
