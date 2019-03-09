@@ -58,6 +58,8 @@ public class TelebopRebuildBot extends OpMode {
 
         if (gamepad1.a) {
             boot.dumperPivot.pivotScore();
+        } else if (gamepad1.b) {
+            boot.dumperPivot.pivotAltScorePos();
         } else {
             boot.dumperPivot.pivotNotScore();
         }
