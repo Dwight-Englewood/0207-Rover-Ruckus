@@ -52,7 +52,7 @@ public class IntakeSlides implements Subsystem {
         intakePivot = hwMap.get(Servo.class, "intakePivot");
         intakePivot.scaleRange(0.1, 0.8);
 
-        this.pivotMiddle();
+        this.pivotUp();
         magSwitchIntake = hwMap.get(DigitalChannel.class, "magSwitchIntake");
 
         //state = IntakeSlideState.RETRACTED;

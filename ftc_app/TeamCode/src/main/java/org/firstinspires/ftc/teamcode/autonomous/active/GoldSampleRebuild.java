@@ -6,8 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.teamcode.autonomous.AutonMethods;
 import org.firstinspires.ftc.teamcode.hardware.sensors.vision.opencv.MineralPosition;
 
-import static org.firstinspires.ftc.teamcode.hardware.sensors.vision.tensorflow.TFWrapper2Mineral.TFState;
-
 
 @Autonomous(name = "GoldSampleRebuild", group = "AutonOppositeCrater")
 //@Disabled
@@ -29,8 +27,9 @@ public class GoldSampleRebuild extends OpMode {
     int distToWall = 45;
     int rotParalellToWall = 315;
     int distStrafeWall = -50;
-    int distToDepot = 120;
+    int distToDepot = 100;
     int distToCrater = -195;
+
     @Override
     public void init() {
         auto.robot.init(hardwareMap);
@@ -51,7 +50,7 @@ public class GoldSampleRebuild extends OpMode {
 
     @Override
     public void loop() {
-        switch(auto.command) {
+        switch (auto.command) {
             case 0:
                 if (auto.robot.lift.newYears()) {
                     auto.command++;
@@ -95,7 +94,7 @@ public class GoldSampleRebuild extends OpMode {
                 break;
 
             case 8:
-                switch(sampleLocation) {
+                switch (sampleLocation) {
                     case LEFT:
                         auto.setTarget(distLeftSample);
                         break;
@@ -140,7 +139,7 @@ public class GoldSampleRebuild extends OpMode {
                 auto.PIDTurn(rotParalellSample, 1);
                 break;
             case 16:
-                switch(sampleLocation) {
+                switch (sampleLocation) {
                     case LEFT:
                         auto.setTarget(distLeftSample - distLeftSample + distToWall);
                         break;
@@ -173,18 +172,17 @@ public class GoldSampleRebuild extends OpMode {
             case 22:
                 auto.finishDrive();
                 break;
-            case 23: // this might be deprecated
-               /* if (auto.timer.milliseconds() > 750) {
-                    auto.robot.markerDeploy.drop();
+            case 23: // this might be deprecated? This might work? make sure the distance is ok, check timings and the like
+                if (auto.timer.milliseconds() > 250) {
+                    //auto.robot.intakeSlides.outtake();
                     auto.timer.reset();
                     auto.command++;
-                } else if (auto.timer.milliseconds() > 500) {
-                    auto.robot.markerDeploy.raise();
                 } else {
-                    auto.robot.markerDeploy.drop();
-                }*/
-               auto.command++;
+                    auto.robot.intakeSlides.pivotMiddle();
+                    auto.robot.intakeSlides.outtake();
+                }
                 break;
+                //auto.command++;
             case 24:
                 auto.PIDTurn(rotParalellToWall, 1);
                 break;

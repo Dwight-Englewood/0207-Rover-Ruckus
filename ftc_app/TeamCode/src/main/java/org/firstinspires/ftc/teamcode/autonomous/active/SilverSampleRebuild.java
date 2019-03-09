@@ -6,8 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.teamcode.autonomous.AutonMethods;
 import org.firstinspires.ftc.teamcode.hardware.sensors.vision.opencv.MineralPosition;
 
-import static org.firstinspires.ftc.teamcode.hardware.sensors.vision.tensorflow.TFWrapper2Mineral.TFState;
-
 
 @Autonomous(name = "SilverSampleRebuild", group = "AutonOppositeCrater")
 //@Disabled
@@ -31,6 +29,7 @@ public class SilverSampleRebuild extends OpMode {
     int distStrafeWall = 60;
     int distToDepot = 120;
     int distToCrater = -190;
+
     @Override
     public void init() {
         auto.robot.init(hardwareMap);
@@ -51,7 +50,7 @@ public class SilverSampleRebuild extends OpMode {
 
     @Override
     public void loop() {
-        switch(auto.command) {
+        switch (auto.command) {
             case 0:
                 if (auto.robot.lift.newYears()) {
                     auto.command++;
@@ -97,7 +96,7 @@ public class SilverSampleRebuild extends OpMode {
                 break;
 
             case 8:
-                switch(sampleLocation) {
+                switch (sampleLocation) {
                     case LEFT:
                         auto.setTarget(distLeftSample);
                         break;
@@ -144,7 +143,7 @@ public class SilverSampleRebuild extends OpMode {
                 auto.PIDTurn(rotParalellSample, 1);
                 break;
             case 16:
-                switch(sampleLocation) {
+                switch (sampleLocation) {
                     case LEFT:
                         auto.setTarget(distLeftSample - distLeftSample + distToWall);
                         break;
@@ -182,8 +181,14 @@ public class SilverSampleRebuild extends OpMode {
                 break;
 
             case 23: // this might be deprecated
-                auto.robot.intakeSlides.outtake();
-                auto.command++;
+                if (auto.timer.milliseconds() > 250) {
+                    //auto.robot.intakeSlides.outtake();
+                    auto.timer.reset();
+                    auto.command++;
+                } else {
+                    auto.robot.intakeSlides.pivotMiddle();
+                    auto.robot.intakeSlides.outtake();
+                }
                 break;
 
             case 24:
@@ -211,7 +216,7 @@ public class SilverSampleRebuild extends OpMode {
 
             case 31:
                 auto.robot.driveTrain.drivepow(0);
-                    auto.command++;
+                auto.command++;
                 break;
 
             case 32:
