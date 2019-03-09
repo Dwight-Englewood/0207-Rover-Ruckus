@@ -120,7 +120,7 @@ public class IntakeSlides implements Subsystem {
         if (pow < -.05) {
             if (magSwitchIntake.getState() == true) {
                 extendo.setPower(.5*d);
-                pivotMiddle();
+                //pivotMiddle();
             }
         } else if (pow > 0.5) {
             extendo.setPower(.5*d);
