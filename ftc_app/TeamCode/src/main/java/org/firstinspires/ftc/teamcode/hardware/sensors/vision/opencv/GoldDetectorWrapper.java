@@ -25,7 +25,7 @@ public class GoldDetectorWrapper extends OpenCVPipeline implements Subsystem {
     private Mat hsv = new Mat();
     private Mat thresholded = new Mat();
     // this is just here so we can expose it later thru getContours.
-    private List<MatOfPoint> contours = new ArrayList<>();
+    public List<MatOfPoint> contours = new ArrayList<>();
 
     public synchronized List<MatOfPoint> getContours() {
         return contours;
@@ -83,10 +83,17 @@ public class GoldDetectorWrapper extends OpenCVPipeline implements Subsystem {
 
     private void updateState() {
         List<MatOfPoint> contours = this.getContours();
+        for (int i = 0; i < contours.size(); i++) {
+            Rect boundingRecct = Imgproc.boundingRect(contours.get(i));
+            if (boundingRecct.area() < 50) {
+                contours.remove(i);
+                i--;
+            }
+        }
 
         if (contours.size() == 0) {
             this.currentState = MineralPosition.RIGHT;
-        } else if (contours.size() == 1) {
+        } else if (contours.size() >= 1) {
             try {
                 Rect boundingRect = Imgproc.boundingRect(contours.get(0));
                 //telemetry.addData("x", boundingRect.x + boundingRect.width / 2);

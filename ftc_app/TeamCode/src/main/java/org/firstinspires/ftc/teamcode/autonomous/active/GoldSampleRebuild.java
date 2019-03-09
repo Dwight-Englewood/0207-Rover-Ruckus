@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode.autonomous.active;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.autonomous.AutonMethods;
+import org.firstinspires.ftc.teamcode.hardware.sensors.vision.opencv.GoldDetectorWrapper;
 import org.firstinspires.ftc.teamcode.hardware.sensors.vision.opencv.MineralPosition;
 
 
@@ -13,26 +15,29 @@ public class GoldSampleRebuild extends OpMode {
 
     AutonMethods auto = new AutonMethods();
     MineralPosition sampleLocation;
+    private GoldDetectorWrapper goldDetector = new GoldDetectorWrapper();
 
-    int distExitBracket = -12;
+    int distExitBracket = 12;
     int distStrafeOut = 50;
     int rotFaceSample = 0;
     int rotParalellSample = 90;
     int distLeftSample = 12;
     int distCenterSample = -30;
     int distRightSample = -68;
-    int rotFaceLander = -180;
+    int rotFaceLander = 90;
     int distIntakeSample = -40;
     int distIntakeSampleAdd = -5;
     int distToWall = 45;
     int rotParalellToWall = 315;
     int distStrafeWall = -50;
     int distToDepot = 100;
-    int distToCrater = -195;
+    int distToCrater = 0;
 
     @Override
     public void init() {
         auto.robot.init(hardwareMap);
+        goldDetector.init(hardwareMap);
+        goldDetector.start();
         telemetry.addLine("ready");
         telemetry.update();
     }
@@ -40,6 +45,9 @@ public class GoldSampleRebuild extends OpMode {
     @Override
     public void init_loop() {
         telemetry.addLine("in init");
+        this.sampleLocation = (MineralPosition) goldDetector.getState();
+        telemetry.addData("Location'", this.sampleLocation);
+
     }
 
     @Override
@@ -55,7 +63,6 @@ public class GoldSampleRebuild extends OpMode {
                 if (auto.robot.lift.newYears()) {
                     auto.command++;
                 }
-                this.sampleLocation = (MineralPosition) auto.robot.goldDetector.getState();
                 break;
 
             case 1:
@@ -67,7 +74,7 @@ public class GoldSampleRebuild extends OpMode {
                 break;
 
             case 3:
-                auto.PIDTurn(rotParalellSample, 1);
+                auto.gyroCorrect(rotParalellSample, 1, .4, .7);
                 auto.timer.reset();
                 break;
 
@@ -90,7 +97,7 @@ public class GoldSampleRebuild extends OpMode {
                 auto.finishDrive();
                 break;
             case 7:
-                auto.PIDTurn(rotParalellSample, 1);
+                auto.gyroCorrect(rotParalellSample, 1, .4, .7);
                 break;
 
             case 8:
@@ -136,7 +143,7 @@ public class GoldSampleRebuild extends OpMode {
                 auto.finishDrive();
                 break;
             case 15:
-                auto.PIDTurn(rotParalellSample, 1);
+                auto.gyroCorrect(rotParalellSample, 1, .4, .7);
                 break;
             case 16:
                 switch (sampleLocation) {
@@ -158,7 +165,7 @@ public class GoldSampleRebuild extends OpMode {
                 auto.finishDrive();
                 break;
             case 18:
-                auto.PIDTurn(rotParalellToWall, 1);
+                auto.gyroCorrect(rotParalellToWall, 1, .4, .7);
                 break;
             case 19:
                 auto.setStrafeTarget(distStrafeWall);
@@ -184,7 +191,7 @@ public class GoldSampleRebuild extends OpMode {
                 break;
                 //auto.command++;
             case 24:
-                auto.PIDTurn(rotParalellToWall, 1);
+                auto.gyroCorrect(rotParalellToWall, 1, .4, .7);
                 break;
             case 25:
                 auto.setStrafeTarget(-20);

@@ -15,7 +15,7 @@ public class DumperPivot implements Subsystem {
     private final double pivotScorePos = 0;
     private final double pivotMovingUpPos = .6;
     private final double pivotNotScorePos = 1;
-    private final double pivotAltScorPos = .4;
+    private final double pivotAltScorPos = .3;
     private final double distanceMaxDumper = 50; // in cm, guessed value
     private final double distanceCargoHold = 50; // changes based on minerals in lander - might get sketch? have to test values and stuff, also the fact that mienrals prolly wont stack that high
     private final double distanceLander = 10;

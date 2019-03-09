@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.autonomous.active;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.autonomous.AutonMethods;
 import org.firstinspires.ftc.teamcode.hardware.sensors.vision.opencv.MineralPosition;
@@ -15,7 +16,7 @@ public class SilverSampleRebuild extends OpMode {
     MineralPosition sampleLocation;
 
     int distExitBracket = 12;
-    int distStrafeOut = 50;
+    int distStrafeOut = -50;
     int rotFaceSample = 0;
     int rotParalellSample = 90;
     int distLeftSample = 12;
@@ -26,13 +27,18 @@ public class SilverSampleRebuild extends OpMode {
     int distIntakeSampleAdd = -5;
     int distToWall = 45;
     int rotParalellToWall = 135;
-    int distStrafeWall = 60;
+    int distStrafeWall = -60;
     int distToDepot = 120;
     int distToCrater = -190;
 
     @Override
     public void init() {
         auto.robot.init(hardwareMap);
+        auto.robot.driveTrain.fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        auto.robot.driveTrain.bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        auto.robot.driveTrain.fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        auto.robot.driveTrain.br.setDirection(DcMotorSimple.Direction.FORWARD);
+
         telemetry.addLine("ready");
         telemetry.update();
     }
@@ -40,6 +46,8 @@ public class SilverSampleRebuild extends OpMode {
     @Override
     public void init_loop() {
         telemetry.addLine("in init");
+        this.sampleLocation = (MineralPosition) auto.robot.goldDetector.getState();
+        telemetry.addData("sample", this.sampleLocation);
     }
 
     @Override
@@ -55,7 +63,6 @@ public class SilverSampleRebuild extends OpMode {
                 if (auto.robot.lift.newYears()) {
                     auto.command++;
                 }
-                this.sampleLocation = (MineralPosition) auto.robot.goldDetector.getState();
                 break;
 
             case 1:

@@ -122,6 +122,8 @@ public class IntakeSlides implements Subsystem {
             }
             if (!shouldStop) {
                 extendo.setPower(d);
+            } else {
+                extendo.setVelocity(0);
             }
 
         } else if (pow > 0.5) {

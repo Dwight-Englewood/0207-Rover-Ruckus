@@ -17,8 +17,8 @@ public class GoldDetectorPipeline {
 
     public static final double BLUR_RADIUS = 8.108108108108109;
 
-    public static final int hsvHueLow = 30;
-    public static final int hsvHueHigh = 60;
+    public static final int hsvHueLow = 25;
+    public static final int hsvHueHigh = 55;
 
     public static final int hsvSatLow = 150;
     public static final int hsvSatHigh = 255;

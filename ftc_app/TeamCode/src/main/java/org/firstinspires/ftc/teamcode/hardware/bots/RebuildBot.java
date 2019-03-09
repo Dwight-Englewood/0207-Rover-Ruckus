@@ -40,9 +40,6 @@ public class RebuildBot {
         for (Field f : fields) {
             try {
                 if (f.get(this) instanceof Subsystem) {
-                    if (!isAuton && f.get(this) instanceof GoldDetectorWrapper) {
-                        continue;
-                    }
                     if (f.get(this) instanceof VumarkWrapper && vumarkOff) {
                         continue;
                     }
