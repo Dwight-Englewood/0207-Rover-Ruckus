@@ -14,24 +14,22 @@ import org.firstinspires.ftc.teamcode.hardware.Subsystem;
 
 public class IntakeSlides implements Subsystem {
 
-    private final double pivotUpPos = .2 ;
+    private final double pivotUpPos = .2;
     private final double pivotMidPos = .65;
     private final double pivotDownPos = 1;
 
     private final double intakePower = .7;
     private final double outtakePower = -.7;
     private final double notakePower = 0;
-
     private final double kp = 1;
     private final double ki = 0;
     private final double kd = 0;
-
     private final int encoderTicksExtended = 5000; // dummy val
     private final int encoderTicksRetracted = 0;
     private final int encoderTicksPivotDeadzone = 100;
-
     private final double resolution = 10;
     public DigitalChannel magSwitchIntake;
+    private boolean shouldStop = false;
     private DcMotorEx extendo;
     private CRServo intake;
     private Servo intakePivot;
@@ -119,11 +117,16 @@ public class IntakeSlides implements Subsystem {
         double pow = Range.clip(d, -1, 1);
         if (pow < -.05) {
             if (magSwitchIntake.getState() == true) {
-                extendo.setPower(.5*d);
+                this.shouldStop = true;
                 //pivotMiddle();
             }
+            if (!shouldStop) {
+                extendo.setPower(.9 * d);
+            }
+
         } else if (pow > 0.5) {
-            extendo.setPower(.5*d);
+            extendo.setPower(.9 * d);
+            this.shouldStop = false;
         } else {
             extendo.setVelocity(0);
         }

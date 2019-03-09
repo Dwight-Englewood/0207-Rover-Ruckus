@@ -61,7 +61,11 @@ public class TelebopRebuildBot extends OpMode {
         } else if (gamepad1.b) {
             boot.dumperPivot.pivotAltScorePos();
         } else {
-            boot.dumperPivot.pivotNotScore();
+           if (boot.dumperPivot.isMovingUp) {
+               boot.dumperPivot.pivotMovingUpPos();
+           } else {
+               boot.dumperPivot.pivotNotScore();
+           }
         }
 
         boot.intakeSlides.variableMove(-gamepad2.left_stick_y);

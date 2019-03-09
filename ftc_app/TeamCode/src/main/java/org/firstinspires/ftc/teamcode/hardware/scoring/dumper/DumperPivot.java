@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.hardware.Subsystem;
 
 public class DumperPivot implements Subsystem {
     private final double pivotScorePos = 0;
+    private final double pivotMovingUpPos = .2;
     private final double pivotNotScorePos = 1;
     private final double pivotAltScorPos = .8;
     private final double distanceMaxDumper = 50; // in cm, guessed value
@@ -22,6 +23,7 @@ public class DumperPivot implements Subsystem {
     private final double speedUp = 1;
     private final double speedDown = -.5;
     private final double speedStop = 0;
+    public boolean isMovingUp = false;
 
     private Servo dumperPivot;
     public DcMotorEx spool;
@@ -75,6 +77,9 @@ public class DumperPivot implements Subsystem {
         this.dumperPivot.setPosition(pivotScorePos);
 
     }
+    public void pivotMovingUpPos() {
+        this.dumperPivot.setPosition(pivotMovingUpPos);
+    }
 
     public void pivotAltScorePos() {
         this.dumperPivot.setPosition(pivotAltScorPos);
@@ -110,8 +115,11 @@ public class DumperPivot implements Subsystem {
     public void variableSafe(double liftPow) {
         if (liftPow > 0.05) {
             this.upNotSafe(liftPow);
+            this.pivotMovingUpPos();
+            this.isMovingUp = true;
         } else if (liftPow < -0.05) {
             this.downSafe(liftPow);
+            this.isMovingUp = false;
         } else {
             //this.idle();
             this.spool.setVelocity(0);
