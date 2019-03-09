@@ -9,8 +9,8 @@ import org.firstinspires.ftc.teamcode.hardware.bots.RebuildBot;
 
 import wen.control.PIDController;
 
-public class AutonMethods {
-    public RebuildBot robot;
+public class OldAutonMethods {
+    public Bot robot;
     public ElapsedTime timer;
     public int command;
 
@@ -19,8 +19,8 @@ public class AutonMethods {
     private double kd = 20; //kinda big kinda ank but they work for turning
     private PIDController gyroPID = new PIDController(kp, ki, kd);
 
-    public AutonMethods() {
-        this.robot = new RebuildBot(true, true);
+    public OldAutonMethods() {
+        this.robot = new Bot(true, true);
         timer = new ElapsedTime();
         command = 0;
     }
@@ -67,7 +67,7 @@ public class AutonMethods {
         }
     }
     public int gyroCorrect(int gyroTarget, int gyroRange, double minSpeed, double addSpeed) {
-        int gyroVal = (int) this.robot.imu.getGyroRotation(AngleUnit.DEGREES);
+        int gyroVal = (int) this.robot.sensorSystem.getGyroRotation(AngleUnit.DEGREES);
         this.robot.driveTrain.gyroCorrect(gyroTarget, gyroRange, gyroVal, minSpeed, addSpeed);
         if (this.robot.driveTrain.fl.getPower() == 0) {
             this.timer.reset();
@@ -76,7 +76,7 @@ public class AutonMethods {
         return gyroVal;
     }
 
-    public void PIDTurn(int gyroTarget, int resolution) {
+    /*public void PIDTurn(int gyroTarget, int resolution) {
         double gyroActual = robot.imu.getGyroRotation(AngleUnit.DEGREES);
 
         double delta = (gyroActual + 360.0) % 360.0; //the difference between target and actual mod 360
@@ -91,7 +91,7 @@ public class AutonMethods {
             double pidcorrect = gyroPID.correction();
             this.robot.driveTrain.turn(pidcorrect);
         }
-    }
+    }*/
 
     public void setTarget(int target) {
         this.robot.driveTrain.setTarget(target);

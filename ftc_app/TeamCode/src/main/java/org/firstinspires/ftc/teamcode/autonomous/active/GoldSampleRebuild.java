@@ -4,18 +4,19 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.autonomous.AutonMethods;
+import org.firstinspires.ftc.teamcode.hardware.sensors.vision.opencv.MineralPosition;
 
 import static org.firstinspires.ftc.teamcode.hardware.sensors.vision.tensorflow.TFWrapper2Mineral.TFState;
 
 
-@Autonomous(name = "GoldSample", group = "AutonOppositeCrater")
+@Autonomous(name = "GoldSampleRebuild", group = "AutonOppositeCrater")
 //@Disabled
-public class GoldSample extends OpMode {
+public class GoldSampleRebuild extends OpMode {
 
     AutonMethods auto = new AutonMethods();
-    TFState sampleLocation;
+    MineralPosition sampleLocation;
 
-    int distExitBracket = 12;
+    int distExitBracket = -12;
     int distStrafeOut = 50;
     int rotFaceSample = 0;
     int rotParalellSample = 90;
@@ -55,6 +56,7 @@ public class GoldSample extends OpMode {
                 if (auto.robot.lift.newYears()) {
                     auto.command++;
                 }
+                this.sampleLocation = (MineralPosition) auto.robot.goldDetector.getState();
                 break;
 
             case 1:
@@ -63,17 +65,16 @@ public class GoldSample extends OpMode {
 
             case 2:
                 auto.finishDrive();
-                auto.timer.reset();
                 break;
 
             case 3:
-                auto.gyroCorrect(rotParalellSample, 1, .1, .2);
+                auto.PIDTurn(rotParalellSample, 1);
                 auto.timer.reset();
                 break;
 
             case 4:
-                this.sampleLocation = auto.robot.tensorFlow.getState();
-                if (this.sampleLocation != TFState.NOTVISIBLE) {
+                this.sampleLocation = (MineralPosition) auto.robot.goldDetector.getState();
+                if (this.sampleLocation != MineralPosition.NOTVISIBLE) {
                     auto.timer.reset();
                     auto.command++;
                 }
@@ -90,7 +91,7 @@ public class GoldSample extends OpMode {
                 auto.finishDrive();
                 break;
             case 7:
-                auto.gyroCorrect(rotParalellSample, 1, .1, .2);
+                auto.PIDTurn(rotParalellSample, 1);
                 break;
 
             case 8:
@@ -133,11 +134,10 @@ public class GoldSample extends OpMode {
                 //auto.setTarget(-(distIntakeSampleSilver + distIntakeSampleAdd));
                 break;
             case 14:
-                auto.robot.intake.stop();
                 auto.finishDrive();
                 break;
             case 15:
-                auto.gyroCorrect(rotParalellSample, 1, .1, .2);
+                auto.PIDTurn(rotParalellSample, 1);
                 break;
             case 16:
                 switch(sampleLocation) {
@@ -159,7 +159,7 @@ public class GoldSample extends OpMode {
                 auto.finishDrive();
                 break;
             case 18:
-                auto.gyroCorrect(rotParalellToWall, 1, .1, .2);
+                auto.PIDTurn(rotParalellToWall, 1);
                 break;
             case 19:
                 auto.setStrafeTarget(distStrafeWall);
@@ -174,7 +174,7 @@ public class GoldSample extends OpMode {
                 auto.finishDrive();
                 break;
             case 23: // this might be deprecated
-                if (auto.timer.milliseconds() > 750) {
+               /* if (auto.timer.milliseconds() > 750) {
                     auto.robot.markerDeploy.drop();
                     auto.timer.reset();
                     auto.command++;
@@ -182,10 +182,11 @@ public class GoldSample extends OpMode {
                     auto.robot.markerDeploy.raise();
                 } else {
                     auto.robot.markerDeploy.drop();
-                }
+                }*/
+               auto.command++;
                 break;
             case 24:
-                auto.gyroCorrect(rotParalellToWall, 1, .1, .6);
+                auto.PIDTurn(rotParalellToWall, 1);
                 break;
             case 25:
                 auto.setStrafeTarget(-20);
@@ -207,11 +208,6 @@ public class GoldSample extends OpMode {
                 break;
             case 31:
                 auto.robot.driveTrain.drivepow(0);
-                //auto.robot.driveTrain.br.setPower(-.25);
-                //auto.robot.driveTrain.bl.setPower(-.25);
-                //auto.robot.driveTrain.fr.setPower(-.1);
-                //auto.robot.driveTrain.fl.setPower(-.);
-                auto.robot.markerDeploy.raise();
                 auto.command++;
                 break;
             case 32:
