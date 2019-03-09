@@ -18,14 +18,17 @@ import java.util.List;
 
 public class GoldDetectorWrapper extends OpenCVPipeline implements Subsystem {
 
+    public static final int minContourArea = 1000;
+    public static final int maxContourArea = 5000;
     public ImageView imageView = ImageView.THRESH;
     public GoldDetectorPipeline grip = new GoldDetectorPipeline();
+    // this is just here so we can expose it later thru getContours.
+    public List<MatOfPoint> contours = new ArrayList<>();
     // To keep it such that we don't have to instantiate a new Mat every call to processFrame,
     // we declare the Mats upSafe here and reuse them. This is easier on the garbage collector.
     private Mat hsv = new Mat();
     private Mat thresholded = new Mat();
-    // this is just here so we can expose it later thru getContours.
-    public List<MatOfPoint> contours = new ArrayList<>();
+    private MineralPosition currentState;
 
     public synchronized List<MatOfPoint> getContours() {
         return contours;
@@ -55,11 +58,6 @@ public class GoldDetectorWrapper extends OpenCVPipeline implements Subsystem {
 
     }
 
-    public static final int minContourArea = 1000;
-    public static final int maxContourArea = 5000;
-
-    private MineralPosition currentState;
-
     @Override
     public void init(HardwareMap hwMap) {
         this.init(hwMap.appContext, CameraViewDisplay.getInstance());
@@ -85,27 +83,37 @@ public class GoldDetectorWrapper extends OpenCVPipeline implements Subsystem {
         try {
         List<MatOfPoint> contours = this.getContours();
         for (int i = 0; i < contours.size(); i++) {
-            Rect boundingRecct = Imgproc.boundingRect(contours.get(i));
-            if (boundingRecct.area() < 50) {
+            Rect boundingRect = Imgproc.boundingRect(contours.get(i));
+            if (boundingRect.area() < 50) {
                 contours.remove(i);
                 i--;
             }
         }
 
+
         if (contours.size() == 0) {
             this.currentState = MineralPosition.RIGHT;
         } else if (contours.size() >= 1) {
-            try {
-                Rect boundingRect = Imgproc.boundingRect(contours.get(0));
-                //telemetry.addData("x", boundingRect.x + boundingRect.width / 2);
-                //telemetry.addData("y", boundingRect.y + boundingRect.height / 2);
-                if (boundingRect.x + boundingRect.width / 2 > 160) {
-                    this.currentState = MineralPosition.CENTER;
-                } else {
-                    this.currentState = MineralPosition.LEFT;
-                }
-            } catch (IndexOutOfBoundsException e) {
+            double areaSum = 0;
+            double xAvg = 0;
+            //double yAvg = 0;
+            for (int i = 0; i < contours.size(); i++) {
+                Rect boundingRect = Imgproc.boundingRect(contours.get(i));
+                double areaLol = boundingRect.area();
+                areaSum = areaSum + areaLol;
+                xAvg = xAvg + areaLol * (boundingRect.x + boundingRect.width / 2d);
+                //yAvg = yAvg + areaLol*(boundingRect.y + boundingRect.height / 2d);
             }
+            xAvg = xAvg / areaSum;
+            //yAvg = yAvg / areaSum;
+            //telemetry.addData("x", boundingRect.x + boundingRect.width / 2);
+            //telemetry.addData("y", boundingRect.y + boundingRect.height / 2);
+            if (xAvg > 160) {
+                this.currentState = MineralPosition.CENTER;
+            } else {
+                this.currentState = MineralPosition.LEFT;
+            }
+
         } else {
             this.currentState = MineralPosition.NOTVISIBLE;
         }} catch (IndexOutOfBoundsException e) {

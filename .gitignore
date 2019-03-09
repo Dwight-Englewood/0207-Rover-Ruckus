@@ -14,6 +14,3 @@ autoLogStuff/outputLog.pdf
 
 *.DS_Store
 
-Testing/*
-
-opencvPYTesting
