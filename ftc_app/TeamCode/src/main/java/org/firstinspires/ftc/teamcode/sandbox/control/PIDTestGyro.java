@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.hardware.bots.Bot;
+import org.firstinspires.ftc.teamcode.hardware.bots.RebuildBot;
 
 import wen.control.PIDController;
 
@@ -12,7 +13,7 @@ import wen.control.PIDController;
 @TeleOp(name = "PIDTestGyro", group = "kms")
 public class PIDTestGyro extends OpMode {
 
-    Bot boot = new Bot(true, true);
+    RebuildBot boot = new RebuildBot(true, true);
     double kp = 10;
     double ki = 0;
     double kd = 20; //kinda big kinda ank but they work for turning
@@ -45,14 +46,14 @@ public class PIDTestGyro extends OpMode {
         }
 
         if (gamepad1.a) {
-            double gyroActual = boot.sensorSystem.getGyroRotation(AngleUnit.DEGREES);
+            double gyroActual = boot.imu.getGyroRotation(AngleUnit.DEGREES);
 
 
             double delta = (gyroActual + 360.0) % 360.0; //the difference between target and actual mod 360
             if (delta > 180.0) {
                 delta -= 360.0; //makes delta between -180 and 180
             }
-            pid.updateError(gyroActual / 360);
+            pid.updateError((gyroActual-70) / 360);
             if (pid.goalReached(.01)) { //checks if delta is out of range
                 telemetry.addData("Done", 0);
                 boot.driveTrain.turn(0.0);

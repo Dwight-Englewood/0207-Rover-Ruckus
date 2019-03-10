@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.hardware.bots.Bot;
+import org.firstinspires.ftc.teamcode.hardware.bots.RebuildBot;
 
 import wen.control.PIDController;
 
@@ -12,7 +13,7 @@ import wen.control.PIDController;
 @TeleOp(name = "PIDTestDistance ", group = "kms")
 public class PIDTestDistance extends OpMode {
 
-    Bot boot = new Bot(true, true);
+    RebuildBot boot = new RebuildBot(true, true);
     double kp = 2;
     double ki = 0.0005;
     double kd = 5;

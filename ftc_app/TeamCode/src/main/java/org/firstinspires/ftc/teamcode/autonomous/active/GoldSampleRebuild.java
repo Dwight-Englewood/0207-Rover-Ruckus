@@ -21,8 +21,8 @@ public class GoldSampleRebuild extends OpMode {
     int distStrafeOut = 50;
     int rotFaceSample = 0;
     int rotParalellSample = 90;
-    int distLeftSample = 12;
-    int distCenterSample = -30;
+    int distLeftSample = 20;
+    int distCenterSample = -25;
     int distRightSample = -68;
     int rotFaceLander = 90;
     int distIntakeSample = -40;
@@ -30,8 +30,8 @@ public class GoldSampleRebuild extends OpMode {
     int distToWall = 45;
     int rotParalellToWall = 315;
     int distStrafeWall = -50;
-    int distToDepot = 100;
-    int distToCrater = 0;
+    int distToDepot = 90;
+    int distToCrater = 100;
 
     @Override
     public void init() {
@@ -74,7 +74,7 @@ public class GoldSampleRebuild extends OpMode {
                 break;
 
             case 3:
-                auto.gyroCorrect(rotParalellSample, 1, .4, .7);
+                auto.gyroCorrect(rotParalellSample, 1, .3, .5);
                 auto.timer.reset();
                 break;
 
@@ -97,7 +97,7 @@ public class GoldSampleRebuild extends OpMode {
                 auto.finishDrive();
                 break;
             case 7:
-                auto.gyroCorrect(rotParalellSample, 1, .4, .7);
+                auto.gyroCorrect(rotParalellSample, 1,.3,.5);
                 break;
 
             case 8:
@@ -143,7 +143,7 @@ public class GoldSampleRebuild extends OpMode {
                 auto.finishDrive();
                 break;
             case 15:
-                auto.gyroCorrect(rotParalellSample, 1, .4, .7);
+                auto.gyroCorrect(rotParalellSample, 1,.3,.5);
                 break;
             case 16:
                 switch (sampleLocation) {
@@ -165,7 +165,7 @@ public class GoldSampleRebuild extends OpMode {
                 auto.finishDrive();
                 break;
             case 18:
-                auto.gyroCorrect(rotParalellToWall, 1, .4, .7);
+                auto.gyroCorrect(rotParalellToWall, 1,.3,.5);
                 break;
             case 19:
                 auto.setStrafeTarget(distStrafeWall);
@@ -181,8 +181,8 @@ public class GoldSampleRebuild extends OpMode {
                 break;
             case 23: // this might be deprecated? This might work? make sure the distance is ok, check timings and the like
                 if (auto.timer.milliseconds() > 250) {
-                    //auto.robot.intakeSlides.outtake();
                     auto.timer.reset();
+                    auto.robot.intakeSlides.outtake();
                     auto.command++;
                 } else {
                     auto.robot.intakeSlides.pivotMiddle();
@@ -191,7 +191,7 @@ public class GoldSampleRebuild extends OpMode {
                 break;
                 //auto.command++;
             case 24:
-                auto.gyroCorrect(rotParalellToWall, 1, .4, .7);
+                auto.gyroCorrect(rotParalellToWall, 1,.3, .5);
                 break;
             case 25:
                 auto.setStrafeTarget(-20);
@@ -206,16 +206,32 @@ public class GoldSampleRebuild extends OpMode {
                 auto.finishDrive();
                 break;
             case 29:
-                auto.setTarget(distToCrater);
+                auto.gyroCorrect(135, 1,.1, .3);
                 break;
             case 30:
-                auto.finishDrive();
+                auto.setTarget(distToCrater);
                 break;
             case 31:
-                auto.robot.driveTrain.drivepow(0);
-                auto.command++;
+                auto.finishDrive();
                 break;
             case 32:
+                auto.robot.driveTrain.drivepow(0);
+                auto.robot.intakeSlides.notake();
+                auto.timer.reset();
+                auto.command++;
+                break;
+            case 33:
+                if (auto.timer.milliseconds() > 1000) {
+                    //auto.robot.intakeSlides.outtake();
+                    auto.timer.reset();
+                    auto.robot.intakeSlides.stop();
+                    auto.command++;
+                    auto.robot.intakeSlides.notake();
+                } else {
+                    auto.robot.intakeSlides.extend(1);
+                }
+                break;
+            case 34:
                 auto.robot.stop();
                 auto.command++;
                 break;

@@ -123,15 +123,19 @@ public class IntakeSlides implements Subsystem {
             if (!shouldStop) {
                 extendo.setPower(d);
             } else {
-                extendo.setVelocity(0);
+                extendo.setPower(0);
             }
 
         } else if (pow > 0.5) {
             extendo.setPower(d);
             this.shouldStop = false;
         } else {
-            extendo.setVelocity(0);
+            extendo.setPower(0);
         }
+    }
+
+    public void extend(double d) {
+        this.extendo.setPower(d);
     }
 
     /*public void setIntakePosition(double d) {

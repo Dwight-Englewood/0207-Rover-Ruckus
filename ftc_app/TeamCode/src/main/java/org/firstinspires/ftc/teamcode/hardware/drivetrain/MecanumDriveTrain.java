@@ -152,14 +152,14 @@ public class MecanumDriveTrain extends DriveTrain {
             //scale left strafe for precision mode
             leftTrigger *= (slowMode ? .5 : 1);
             //apply scaled power to motors
-            this.strafepow(leftTrigger);
+            this.strafepow(-leftTrigger);
             return;
         }
         if (rightTrigger > .15) {
             //scale right strafe for precision mode
             rightTrigger *= (slowMode ? .5 : 1);
             //apply scaled power to motors
-            this.strafepow(-rightTrigger);
+            this.strafepow(rightTrigger);
             return;
         }
         //scale tank drive for precision mode

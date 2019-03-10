@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.bots.RebuildBot;
 
@@ -24,6 +25,9 @@ public class TelebopRebuildBot extends OpMode {
 
     int timerSwap = 0;
 
+    ElapsedTime reverseTimer = new ElapsedTime();
+    boolean reverse = false;
+
     @Override
     public void init() {
         boot.init(hardwareMap);
@@ -39,12 +43,18 @@ public class TelebopRebuildBot extends OpMode {
         boot.driveTrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lastTime = System.currentTimeMillis();
 
+        reverseTimer.reset();
+
     }
 
     @Override
     public void loop() {
-        
-        boot.driveTrain.tankControl(gamepad1, false, gamepad1.start);
+        if (gamepad1.start && reverseTimer.milliseconds() >= 750) {
+            reverse = !reverse;
+            reverseTimer.reset();
+        }
+
+        boot.driveTrain.tankControl(gamepad1, false, reverse);
 
         this.boot.dumperPivot.variableSafe(-gamepad2.right_stick_y);
 

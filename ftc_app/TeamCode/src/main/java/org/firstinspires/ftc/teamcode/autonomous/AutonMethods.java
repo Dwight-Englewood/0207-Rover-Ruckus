@@ -83,8 +83,8 @@ public class AutonMethods {
         if (delta > 180.0) {
             delta -= 360.0; //makes delta between -180 and 180
         }
-        gyroPID.updateError(gyroActual / 360); //TODO: MIGHT NEED TO BE DELTA
-        if (gyroPID.goalReached(.01)) { //checks if delta is out of range
+        gyroPID.updateError((gyroActual - gyroTarget) / 360 ); //TODO: MIGHT NEED TO BE DELTA
+        if (gyroPID.goalReached(resolution)) { //checks if delta is out of range
             this.command++;
             this.robot.driveTrain.turn(0.0);
         } else {

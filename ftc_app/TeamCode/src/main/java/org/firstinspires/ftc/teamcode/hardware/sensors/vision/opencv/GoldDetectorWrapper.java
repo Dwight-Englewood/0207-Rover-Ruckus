@@ -82,6 +82,7 @@ public class GoldDetectorWrapper extends OpenCVPipeline implements Subsystem {
     }
 
     private void updateState() {
+        try {
         List<MatOfPoint> contours = this.getContours();
         for (int i = 0; i < contours.size(); i++) {
             Rect boundingRecct = Imgproc.boundingRect(contours.get(i));
@@ -107,6 +108,8 @@ public class GoldDetectorWrapper extends OpenCVPipeline implements Subsystem {
             }
         } else {
             this.currentState = MineralPosition.NOTVISIBLE;
+        }} catch (IndexOutOfBoundsException e) {
+
         }
     }
 
