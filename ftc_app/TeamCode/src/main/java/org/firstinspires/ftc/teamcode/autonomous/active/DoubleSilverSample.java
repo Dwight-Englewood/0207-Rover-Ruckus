@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonomous.active;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.autonomous.AutonMethods;
@@ -10,7 +11,7 @@ import static org.firstinspires.ftc.teamcode.hardware.sensors.vision.tensorflow.
 
 
 @Autonomous(name = "DoubleSilverSample", group = "AutonOppositeCrater")
-//@Disabled
+@Disabled
 public class DoubleSilverSample extends OpMode {
 
     OldAutonMethods auto = new OldAutonMethods();

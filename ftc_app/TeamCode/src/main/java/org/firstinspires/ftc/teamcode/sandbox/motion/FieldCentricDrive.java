@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.sandbox.motion;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -18,7 +19,7 @@ import org.firstinspires.ftc.teamcode.hardware.sensors.imu.NaiveAccelerationInte
 
 
 @TeleOp(name = "FieldCentricDrive", group = "Teleop")
-//@Disabled
+@Disabled
 public class FieldCentricDrive extends OpMode {
 
     RebuildBot boot = new RebuildBot(false, true);

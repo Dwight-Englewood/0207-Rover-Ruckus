@@ -2,43 +2,41 @@ package org.firstinspires.ftc.teamcode.autonomous.active;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.autonomous.AutonMethods;
+import org.firstinspires.ftc.teamcode.hardware.sensors.vision.opencv.GoldDetectorWrapper;
 import org.firstinspires.ftc.teamcode.hardware.sensors.vision.opencv.MineralPosition;
 
 
-@Autonomous(name = "SilverSampleRebuild", group = "AutonOppositeCrater")
+@Autonomous(name = "SilevrSampleRebuild", group = "AutonOppositeCrater")
 //@Disabled
-public class SilverSampleRebuild extends OpMode {
+public class SilevrSampleRebuild extends OpMode {
 
     AutonMethods auto = new AutonMethods();
     MineralPosition sampleLocation;
+    private GoldDetectorWrapper goldDetector = new GoldDetectorWrapper();
 
     int distExitBracket = 12;
-    int distStrafeOut = -50;
+    int distStrafeOut = 50;
     int rotFaceSample = 0;
     int rotParalellSample = 90;
-    int distLeftSample = 12;
-    int distCenterSample = -30;
-    int distRightSample = -64;
-    int rotFaceLander = -180;
+    int distLeftSample = 20;
+    int distCenterSample = -25;
+    int distRightSample = -68;
+    int rotFaceLander = 90;
     int distIntakeSample = -40;
     int distIntakeSampleAdd = -5;
     int distToWall = 45;
     int rotParalellToWall = 135;
-    int distStrafeWall = -60;
-    int distToDepot = 120;
-    int distToCrater = -190;
+    int distStrafeWall = -50;
+    int distToDepot = 100;
+    int distToCrater = 90;
 
     @Override
     public void init() {
         auto.robot.init(hardwareMap);
-        auto.robot.driveTrain.fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        auto.robot.driveTrain.bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        auto.robot.driveTrain.fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        auto.robot.driveTrain.br.setDirection(DcMotorSimple.Direction.FORWARD);
-
+        goldDetector.init(hardwareMap);
+        goldDetector.start();
         telemetry.addLine("ready");
         telemetry.update();
     }
@@ -46,8 +44,9 @@ public class SilverSampleRebuild extends OpMode {
     @Override
     public void init_loop() {
         telemetry.addLine("in init");
-        this.sampleLocation = (MineralPosition) auto.robot.goldDetector.getState();
-        telemetry.addData("sample", this.sampleLocation);
+        this.sampleLocation = (MineralPosition) goldDetector.getState();
+        telemetry.addData("Location'", this.sampleLocation);
+
     }
 
     @Override
@@ -71,15 +70,15 @@ public class SilverSampleRebuild extends OpMode {
 
             case 2:
                 auto.finishDrive();
-                auto.timer.reset();
                 break;
 
             case 3:
-                auto.PIDTurn(rotParalellSample, 1);
+                auto.gyroCorrect(rotParalellSample, 1, .3, .5);
                 auto.timer.reset();
                 break;
 
             case 4:
+                this.sampleLocation = (MineralPosition) auto.robot.goldDetector.getState();
                 if (this.sampleLocation != MineralPosition.NOTVISIBLE) {
                     auto.timer.reset();
                     auto.command++;
@@ -89,7 +88,6 @@ public class SilverSampleRebuild extends OpMode {
                     auto.command++;
                 }
                 break;
-
             case 5:
                 auto.setStrafeTarget(distStrafeOut);
                 break;
@@ -97,9 +95,8 @@ public class SilverSampleRebuild extends OpMode {
             case 6:
                 auto.finishDrive();
                 break;
-
             case 7:
-                auto.PIDTurn(rotParalellSample, 1);
+                auto.gyroCorrect(rotParalellSample, 1,.3,.5);
                 break;
 
             case 8:
@@ -122,7 +119,6 @@ public class SilverSampleRebuild extends OpMode {
             case 9:
                 auto.finishDrive();
                 break;
-
             case 10:
                 auto.command++;
                 //auto.gyroCorrect(rotFaceLander, 1, .1, .5);
@@ -143,11 +139,10 @@ public class SilverSampleRebuild extends OpMode {
                 //auto.setTarget(-(distIntakeSampleSilver + distIntakeSampleAdd));
                 break;
             case 14:
-                //auto.robot.intake.stop();
                 auto.finishDrive();
                 break;
             case 15:
-                auto.PIDTurn(rotParalellSample, 1);
+                auto.gyroCorrect(rotParalellSample, 1,.3,.5);
                 break;
             case 16:
                 switch (sampleLocation) {
@@ -169,7 +164,7 @@ public class SilverSampleRebuild extends OpMode {
                 auto.finishDrive();
                 break;
             case 18:
-                auto.PIDTurn(rotParalellToWall, 1);
+                auto.gyroCorrect(rotParalellToWall, 1,.3,.5);
                 break;
             case 19:
                 auto.setStrafeTarget(distStrafeWall);
@@ -177,56 +172,65 @@ public class SilverSampleRebuild extends OpMode {
             case 20:
                 auto.finishDrive();
                 break;
-
             case 21:
                 auto.setTarget(distToDepot);
                 break;
-
             case 22:
                 auto.finishDrive();
-
                 break;
-
-            case 23: // this might be deprecated
+            case 23: // this might be deprecated? This might work? make sure the distance is ok, check timings and the like
                 if (auto.timer.milliseconds() > 250) {
-                    //auto.robot.intakeSlides.outtake();
                     auto.timer.reset();
+                    auto.robot.intakeSlides.outtake();
                     auto.command++;
                 } else {
                     auto.robot.intakeSlides.pivotMiddle();
                     auto.robot.intakeSlides.outtake();
                 }
                 break;
-
+                //auto.command++;
             case 24:
-                auto.PIDTurn(rotParalellToWall, 1);
+                auto.gyroCorrect(rotParalellToWall, 1,.3, .5);
                 break;
             case 25:
-                auto.setStrafeTarget(20);
+                auto.setStrafeTarget(-20);
                 break;
             case 26:
                 auto.finishDrive();
                 break;
             case 27:
-                auto.setStrafeTarget(-3);
+                auto.setStrafeTarget(9);
                 break;
             case 28:
                 auto.finishDrive();
                 break;
             case 29:
+                auto.gyroCorrect(315, 1,.1, .3);
+                break;
+            case 30:
                 auto.setTarget(distToCrater);
                 break;
-
-            case 30:
+            case 31:
                 auto.finishDrive();
                 break;
-
-            case 31:
+            case 32:
                 auto.robot.driveTrain.drivepow(0);
+                auto.robot.intakeSlides.notake();
+                auto.timer.reset();
                 auto.command++;
                 break;
-
-            case 32:
+            case 33:
+                if (auto.timer.milliseconds() > 1000) {
+                    //auto.robot.intakeSlides.outtake();
+                    auto.timer.reset();
+                    auto.robot.intakeSlides.stop();
+                    auto.command++;
+                    auto.robot.intakeSlides.notake();
+                } else {
+                    auto.robot.intakeSlides.extend(1);
+                }
+                break;
+            case 34:
                 auto.robot.stop();
                 auto.command++;
                 break;

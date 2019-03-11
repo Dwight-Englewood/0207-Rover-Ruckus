@@ -45,8 +45,12 @@ public class GoldSampleRebuild extends OpMode {
     @Override
     public void init_loop() {
         telemetry.addLine("in init");
-        this.sampleLocation = (MineralPosition) goldDetector.getState();
-        telemetry.addData("Location'", this.sampleLocation);
+        try {
+            this.sampleLocation = (MineralPosition) goldDetector.getState();
+            telemetry.addData("Location'", this.sampleLocation);}
+        catch (NullPointerException e) {
+
+        }
 
     }
 

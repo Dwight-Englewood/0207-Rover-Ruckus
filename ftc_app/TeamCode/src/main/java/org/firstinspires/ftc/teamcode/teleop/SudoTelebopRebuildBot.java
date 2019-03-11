@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.teamcode.hardware.bots.RebuildBot;
 
 
 @TeleOp(name = "SudoTeleopRebuildBot", group = "Teleop")
-//@Disabled
+@Disabled
 public class SudoTelebopRebuildBot extends OpMode {
 
     RebuildBot boot = new RebuildBot(false, true);

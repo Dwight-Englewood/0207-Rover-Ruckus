@@ -1,24 +1,22 @@
-package org.firstinspires.ftc.teamcode.autonomous.old;
+package org.firstinspires.ftc.teamcode.autonomous.active;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.autonomous.AutonMethods;
-import org.firstinspires.ftc.teamcode.autonomous.OldAutonMethods;
-
-import static org.firstinspires.ftc.teamcode.hardware.sensors.vision.tensorflow.TFWrapper2Mineral.TFState;
+import org.firstinspires.ftc.teamcode.hardware.sensors.vision.opencv.MineralPosition;
 
 
 @Autonomous(name = "SilverSampleRebuildOldAndBad", group = "AutonOppositeCrater")
-@Disabled
-public class SilverSample extends OpMode {
+//@Disabled
+public class SilverSampleRebuildOldAndBad extends OpMode {
 
-    OldAutonMethods auto = new OldAutonMethods();
-    TFState sampleLocation;
+    AutonMethods auto = new AutonMethods();
+    MineralPosition sampleLocation;
 
     int distExitBracket = 12;
-    int distStrafeOut = 50;
+    int distStrafeOut = -50;
     int rotFaceSample = 0;
     int rotParalellSample = 90;
     int distLeftSample = 12;
@@ -29,12 +27,18 @@ public class SilverSample extends OpMode {
     int distIntakeSampleAdd = -5;
     int distToWall = 45;
     int rotParalellToWall = 135;
-    int distStrafeWall = 60;
+    int distStrafeWall = -60;
     int distToDepot = 120;
     int distToCrater = -190;
+
     @Override
     public void init() {
         auto.robot.init(hardwareMap);
+        auto.robot.driveTrain.fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        auto.robot.driveTrain.bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        auto.robot.driveTrain.fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        auto.robot.driveTrain.br.setDirection(DcMotorSimple.Direction.FORWARD);
+
         telemetry.addLine("ready");
         telemetry.update();
     }
@@ -42,6 +46,8 @@ public class SilverSample extends OpMode {
     @Override
     public void init_loop() {
         telemetry.addLine("in init");
+        this.sampleLocation = (MineralPosition) auto.robot.goldDetector.getState();
+        telemetry.addData("sample", this.sampleLocation);
     }
 
     @Override
@@ -52,7 +58,7 @@ public class SilverSample extends OpMode {
 
     @Override
     public void loop() {
-        switch(auto.command) {
+        switch (auto.command) {
             case 0:
                 if (auto.robot.lift.newYears()) {
                     auto.command++;
@@ -69,12 +75,12 @@ public class SilverSample extends OpMode {
                 break;
 
             case 3:
-                auto.gyroCorrect(rotParalellSample, 1, .1, .2);
+                auto.PIDTurn(rotParalellSample, 1);
                 auto.timer.reset();
                 break;
+
             case 4:
-                this.sampleLocation = auto.robot.tensorFlow.getState();
-                if (this.sampleLocation != TFState.NOTVISIBLE) {
+                if (this.sampleLocation != MineralPosition.NOTVISIBLE) {
                     auto.timer.reset();
                     auto.command++;
                 }
@@ -93,11 +99,11 @@ public class SilverSample extends OpMode {
                 break;
 
             case 7:
-                auto.gyroCorrect(rotParalellSample, 1, .1, .2);
+                auto.PIDTurn(rotParalellSample, 1);
                 break;
 
             case 8:
-                switch(sampleLocation) {
+                switch (sampleLocation) {
                     case LEFT:
                         auto.setTarget(distLeftSample);
                         break;
@@ -137,14 +143,14 @@ public class SilverSample extends OpMode {
                 //auto.setTarget(-(distIntakeSampleSilver + distIntakeSampleAdd));
                 break;
             case 14:
-                auto.robot.intake.stop();
+                //auto.robot.intake.stop();
                 auto.finishDrive();
                 break;
             case 15:
-                auto.gyroCorrect(rotParalellSample, 1, .1, .5);
+                auto.PIDTurn(rotParalellSample, 1);
                 break;
             case 16:
-                switch(sampleLocation) {
+                switch (sampleLocation) {
                     case LEFT:
                         auto.setTarget(distLeftSample - distLeftSample + distToWall);
                         break;
@@ -163,7 +169,7 @@ public class SilverSample extends OpMode {
                 auto.finishDrive();
                 break;
             case 18:
-                auto.gyroCorrect(rotParalellToWall, 1, .1, .5);
+                auto.PIDTurn(rotParalellToWall, 1);
                 break;
             case 19:
                 auto.setStrafeTarget(distStrafeWall);
@@ -182,19 +188,18 @@ public class SilverSample extends OpMode {
                 break;
 
             case 23: // this might be deprecated
-                if (auto.timer.milliseconds() > 750) {
-                    auto.robot.markerDeploy.drop();
+                if (auto.timer.milliseconds() > 250) {
+                    //auto.robot.intakeSlides.outtake();
                     auto.timer.reset();
                     auto.command++;
-                } else if (auto.timer.milliseconds() > 500) {
-                    auto.robot.markerDeploy.raise();
                 } else {
-                    auto.robot.markerDeploy.drop();
+                    auto.robot.intakeSlides.pivotMiddle();
+                    auto.robot.intakeSlides.outtake();
                 }
                 break;
 
             case 24:
-                auto.gyroCorrect(rotParalellToWall, 1, .1, .2);
+                auto.PIDTurn(rotParalellToWall, 1);
                 break;
             case 25:
                 auto.setStrafeTarget(20);
@@ -218,11 +223,6 @@ public class SilverSample extends OpMode {
 
             case 31:
                 auto.robot.driveTrain.drivepow(0);
-                //auto.robot.driveTrain.br.setPower(-.25);
-                //auto.robot.driveTrain.bl.setPower(-.25);
-                //auto.robot.driveTrain.fr.setPower(-.25);
-                //auto.robot.driveTrain.fl.setPower(-.1);
-                auto.robot.markerDeploy.raise();
                 auto.command++;
                 break;
 

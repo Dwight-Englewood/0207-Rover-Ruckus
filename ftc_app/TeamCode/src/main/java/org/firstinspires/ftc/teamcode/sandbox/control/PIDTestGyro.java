@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.sandbox.control;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -11,6 +12,7 @@ import wen.control.PIDController;
 
 
 @TeleOp(name = "PIDTestGyro", group = "kms")
+@Disabled
 public class PIDTestGyro extends OpMode {
 
     RebuildBot boot = new RebuildBot(true, true);
